@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Travel Claim Approver 1 Remark -->
+    <record id='form_multi_payslip' model="ir.ui.view">
+        <field name="name">form.multi.payslip</field>
+        <field name="model">multi.payslip</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Generate Payslip">
+                <group>
+                    <field name="payslip_date"/>
+                </group>
+               <footer>
+                    <button name="action_generate_payslip" string="Generate Payslip" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    <button name="compute_sheet_payslip" string="Compute Sheet" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    <button name="action_confirm_payslip" string="Confirm" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    
+    <record id="action_form_multi_payslip_wizard" model="ir.actions.act_window">
+         <field name="name">Generate Payslip</field>
+         <field name="res_model">multi.payslip</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+    </record>
+
+</odoo>

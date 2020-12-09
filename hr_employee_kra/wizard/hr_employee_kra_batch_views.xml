@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_employee_kra_batch" model="ir.ui.view">
+        <field name="name">KRA Creation</field>
+        <field name="model">hr.employee.kra.batch</field>
+        <field name="arch" type="xml">
+            <form string="Choose your date">
+                <group>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="job_id"/>
+                        <field name="quarter" widget="selection"/>
+                        <field name="employee_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="month" widget="selection"/>
+                        <field name="year" widget="selection"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="create_kra" string="Create KRA" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_hr_employee_kra_batch" model="ir.actions.act_window">
+        <field name="name">KRA Creation</field>
+        <field name="res_model">hr.employee.kra.batch</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_hr_employee_kra_batch"/>
+        <field name="target">new</field>
+        <field name="context">{'default_compute_at_date': 0}</field>
+    </record>
+
+    <menuitem id="batch_kra_menu" action="action_hr_employee_kra_batch" parent="hr_recruitment.menu_hr_recruitment_root" name="Create KRA for employees"/>
+
+
+</odoo>
+

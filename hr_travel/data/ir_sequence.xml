@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- <data noupdate="0"> -->
+        <record id="sequence_travel" model="ir.sequence">
+            <field name="name">Travel Request Sequence</field>
+            <field name="code">hr.travel</field>
+            <field name="prefix">TRE/%(prefix)s/</field>
+            <field eval="False" name="company_id"/>
+            <field name="padding">5</field>
+        </record>
+
+        <record id="sequence_travel_admin" model="ir.sequence">
+            <field name="name">Travel Admin Sequence</field>
+            <field name="code">hr.travel.admin</field>
+            <field name="prefix">TRA/REQ/%(prefix)s/</field>
+            <field eval="False" name="company_id"/>
+            <field name="padding">5</field>
+        </record>
+
+        <record id="sequence_travel_claim" model="ir.sequence">
+            <field name="name">Travel Claim Sequence</field>
+            <field name="code">hr.travel.claim</field>
+            <field name="prefix">TRA/CLA/%(prefix)s/</field>
+            <field eval="False" name="company_id"/>
+            <field name="padding">5</field>
+        </record>
+        
+     <!-- </data> -->
+</odoo>

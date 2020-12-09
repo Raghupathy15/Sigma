@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Archived time sheets should move to seperate screen -->
+        <record id="ir_cron_creation_to_timesheet" model="ir.cron">
+            <field name="name">Archived time sheets should move to seperate screen</field>
+            <field name="model_id" ref="model_account_analytic_line"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_expired_timesheet()</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 12:00:00')"/>
+            <field eval="False" name="doall" />
+        </record>
+
+        <!--If account is blocked for more than 2/4 days - mail to employees -->
+        <record id="ir_cron_creation_if_account_blocked_to_employees" model="ir.cron">
+            <field name="name">Indglobal - If account is blocked for 2 or 4 days - mail to employees</field>
+            <field name="model_id" ref="model_account_analytic_line"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_is_blocked_mail_to_employees()</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 17:00:00')"/>
+            <field eval="False" name="doall" />
+        </record>
+
+        <record id="ir_cron_to_trigger_single_mail" model="ir.cron">
+            <field name="name">Indglobal - To trigger single mail for multiple employees</field>
+            <field name="model_id" ref="model_account_analytic_line"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_single_mail_for_multiple_employees()</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 01:30:00')" />
+            <field eval="False" name="doall" />
+        </record>
+    </data>
+
+</odoo>

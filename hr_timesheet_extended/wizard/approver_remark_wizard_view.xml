@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <!--  <record id='form_approver_remark_wizard' model="ir.ui.view">
+        <field name="name">form.approver.remark.wizard</field>
+        <field name="model">approver.remark.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Approver Remarks">
+                <group string="All the timesheet entries of the particular day will be approved">
+                    <field name="name" required="context.get('is_reject', False)"/>
+                </group>
+               <footer>
+                    <button name="action_approver_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_approver_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Approver Remarks</field>
+         <field name="res_model">approver.remark.wizard</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+    </record> -->
+
+    <record id='form_approver_reject_wizard' model="ir.ui.view">
+        <field name="name">form.approver.reject.wizard</field>
+        <field name="model">approver.reject.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Approver Rejects">
+                <group string="All the timesheet entries of the particular day will be rejected">
+                    <field name="name" required="1"/>
+                </group>
+               <footer>
+                    <button name="action_approver_reject" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_approver_reject_wizard" model="ir.actions.act_window">
+         <field name="name">Approver Rejects</field>
+         <field name="res_model">approver.reject.wizard</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+    </record>
+</odoo>

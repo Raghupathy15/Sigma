@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_job_inherit_recruitments" model="ir.ui.view">
+        <field name="name">hr.kra.probation.master.recruitment</field>
+        <field name="model">hr.annual.appraisal</field>
+        <field name="inherit_id" ref="hr_employee_kra.hr_annual_appraisal_form"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='details_of_achievment']" position="after">
+        		<button name="action_create_probation" string="Create Probation" class="btn btn-primary" type="object"/>
+        	</xpath>
+        </field>
+    </record>
+</odoo>

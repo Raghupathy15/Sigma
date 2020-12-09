@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- <record id="employee_visibility" model="ir.rule">
+        <field name="name">Attendance Visibility</field>
+        <field ref="model_attendance_regular" name="model_id"/>
+        <field name="domain_force">[('employee.address_home_id.id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('hr_attendance.group_hr_attendance'))]"/>
+    </record>
+    <record id="admin_visibility" model="ir.rule">
+        <field name="name">Admin Visibility</field>
+        <field ref="model_attendance_regular" name="model_id"/>
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('hr_attendance.group_hr_attendance_manager'))]"/>
+    </record> -->
+    <!-- Attendance Rule for User -->
+    <record id="attendance_regular_user_rule" model="ir.rule">
+        <field name="name">Attendance Regular User rule</field>
+        <field name="model_id" ref="attendance_regularization.model_attendance_regular"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('employee.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+    </record>
+    <!-- Attendance Rule for Approver1 -->
+    <record id="attendance_regular_approver1_rule" model="ir.rule">
+        <field name="name">Attendance Regular Approver1 rule</field>
+        <field name="model_id" ref="attendance_regularization.model_attendance_regular"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|',('employee.user_id','=',user.id),('employee.lone_manager_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')),(4, ref('hr_employee_kra.group_kra_approver_1'))]"/>
+    </record>
+    <!-- Attendance Rule for Approver2 -->
+    <record id="attendance_regular_approver2_rule" model="ir.rule">
+        <field name="name">Attendance Regular Approver2 rule</field>
+        <field name="model_id" ref="attendance_regularization.model_attendance_regular"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|','|',('employee.user_id','=',user.id),('employee.lone_manager_id.user_id','=',user.id),('employee.ltwo_manager_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')),(4, ref('hr_employee_kra.group_kra_approver_1')),(4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+    </record>
+    <!-- Attendance Rule for HOD -->
+    <record id="attendance_regular_hod_rule" model="ir.rule">
+        <field name="name">Attendance Regular HOD rule</field>
+        <field name="model_id" ref="attendance_regularization.model_attendance_regular"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', '|', '|', ('employee.user_id','=',user.id), ('employee.lone_manager_id.user_id','=',user.id), ('employee.ltwo_manager_id.user_id','=',user.id), ('employee.hod_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')),(4, ref('hr_employee_kra.group_kra_approver_1')),(4, ref('hr_employee_kra.group_kra_approver_2')),(4, ref('hr_employee_kra.group_kra_hod'))]"/>
+    </record>
+    <!-- Attendance Rule for Director -->
+    <record id="attendance_regular_director_rule" model="ir.rule">
+        <field name="name">Attendance Regular Director rule</field>
+        <field name="model_id" ref="attendance_regularization.model_attendance_regular"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', '|', '|','|', ('employee.user_id','=',user.id), ('employee.lone_manager_id.user_id','=',user.id), ('employee.ltwo_manager_id.user_id','=',user.id), ('employee.hod_id.user_id','=',user.id),('employee.parent_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')),(4, ref('hr_employee_kra.group_kra_approver_1')),(4, ref('hr_employee_kra.group_kra_approver_2')),(4, ref('hr_employee_kra.group_kra_hod')),(4, ref('hr_employee_kra.group_kra_director'))]"/>
+    </record>
+    <!-- Attendance Rule for HR -->
+    <record id="attendance_regular_hr_rule" model="ir.rule">
+        <field name="name">Attendance Regular HR rule</field>
+        <field name="model_id" ref="attendance_regularization.model_attendance_regular"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_hr'))]"/>
+    </record>
+
+    <!-- Attendance Rule for HR -->
+    <record id="attendance_regular_multi_company_rule" model="ir.rule">
+        <field name="name">Attendance Regular Multi Company rule</field>
+        <field name="model_id" ref="attendance_regularization.model_attendance_regular"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('employee.company_id','child_of',[user.company_id.id])]</field>
+    </record>
+    
+</odoo>

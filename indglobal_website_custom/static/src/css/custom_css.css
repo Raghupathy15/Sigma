@@ -1,0 +1,19 @@
+.o_brand_promotion {
+    display: none;
+}
+.o_footer > #footer {
+    
+    display: none;
+}
+.o_footer_copyright {
+    background: #000;
+}
+.o_footer .text-muted span{
+    color: #fff !important;
+}
+nav.navbar.navbar-expand-md.navbar-light.bg-light {
+    background-color: #000000 !important;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: #fff !important;
+}

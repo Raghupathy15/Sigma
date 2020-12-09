@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.rule" id="hr_leave_encash">
+            <field name="name">Leave Encashment - user</field>
+            <field name="model_id" ref="model_leave_encash"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('create_uid','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_create" eval="True"/>
+        </record>
+
+        <record model="ir.rule" id="hr_leave_encash_hr_payroill">
+            <field name="name">Leave Encashment - HR/Payroll</field>
+            <field name="model_id" ref="model_leave_encash"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_hr')), (4, ref('payroll_extended.group_payroll_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_create" eval="True"/>
+        </record>
+
+        <record model="ir.rule" id="hr_leave_encash_multi_company">
+           <field name="name">Leave Encashment - Multi Company</field>
+           <field name="model_id" ref="model_leave_encash"/>
+           <field name="global" eval="True"/>
+           <field name="domain_force">[('employee_id.company_id','child_of',[user.company_id.id])]</field>
+           <field name="perm_read" eval="True"/>
+           <field name="perm_write" eval="True"/>
+           <field name="perm_unlink" eval="False"/>
+           <field name="perm_create" eval="True"/>
+        </record>
+
+        <record model="ir.rule" id="hr_employee_leave_rule">
+            <field name="name">HR - Employee</field>
+            <field name="model_id" ref="model_hr_leave"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_create" eval="True"/>
+        </record>
+
+        <record model="ir.rule" id="hr_approver1_leave_rule">
+            <field name="name">HR - Approver1</field>
+            <field name="model_id" ref="model_hr_leave"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('user_id', '=', user.id), ('employee_id.lone_manager_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_create" eval="True"/>
+        </record>
+
+        <record model="ir.rule" id="hr_approver2_leave_rule">
+            <field name="name">HR - Approver2</field>
+            <field name="model_id" ref="model_hr_leave"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', '|', ('user_id', '=', user.id), ('employee_id.lone_manager_id.user_id','=',user.id), ('employee_id.ltwo_manager_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1')), (4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_create" eval="True"/>
+        </record>
+        <record id="hr_holidays.hr_leave_rule_employee" model="ir.rule">
+        <field name="name">Leaves: employee: read all</field>
+        <field name="model_id" ref="model_hr_leave"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="active" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+
+    <record id="hr_holidays.hr_leave_rule_employee_update" model="ir.rule">
+        <field name="name">Leaves: employee: create/write/unlink not validated own</field>
+        <field name="model_id" ref="model_hr_leave"/>
+        <field name="domain_force">[('employee_id.user_id','=',user.id), ('state', 'in', ['draft', 'confirm', 'cancel', 'refuse'])]</field>
+        <field name="active" eval="False"/>
+        <field name="perm_read" eval="False"/>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+
+    <record id="hr_holidays.hr_leave_rule_officer_read" model="ir.rule">
+        <field name="name">Leaves: officer: read all</field>
+        <field name="model_id" ref="model_hr_leave"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="active" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="groups" eval="[(4, ref('hr_holidays.group_hr_holidays_user'))]"/>
+    </record>
+
+    <record id="hr_holidays.hr_leave_rule_officer_update" model="ir.rule">
+        <field name="name">Leaves: officer: create/write/unlink own + managed employee + without department + same or managed department</field>
+        <field name="model_id" ref="model_hr_leave"/>
+        <field name="domain_force">['|',
+'|', ('employee_id.user_id', '=', user.id), ('employee_id.parent_id.user_id', '=', user.id),
+'|', '|', ('department_id', '=', False), ('department_id.member_ids.user_id', 'in', [user.id]), ('department_id.manager_id.user_id', '=', user.id)]</field>
+<field name="active" eval="False"/>
+        <field name="perm_read" eval="False"/>
+        <field name="groups" eval="[(4, ref('hr_holidays.group_hr_holidays_user'))]"/>
+    </record>
+
+    <record id="hr_holidays.hr_leave_rule_manager" model="ir.rule">
+       <field name="active" eval="False"/>
+    </record>
+
+    <record id="hr_holidays.hr_leave_rule_multicompany" model="ir.rule">
+        <field name="name">Leaves: multi company global rule</field>
+        <field name="model_id" ref="model_hr_leave"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('holiday_status_id.company_id', '=', False), ('holiday_status_id.company_id', 'in', [user.company_id.id])]</field>
+        <field name="active" eval="False"/>
+    </record>
+
+        <!-- <record model="ir.rule" id="hr_employee_admin_leave_rule">
+            <field name="name">Admin</field>
+            <field name="model_id" ref="model_hr_leave"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('base.group_erp_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="perm_create" eval="True"/>
+        </record> -->
+
+        <record id="hr_emp_remaining_leaves" model="ir.rule">
+            <field name="name">For remaining leaves in Employee</field>
+            <field name="model_id" ref="model_hr_leave"/>
+            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>    
+            <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+        </record>
+        <!-- Leave Rule for HR -->
+        <record id="hr_leave_hr_rule" model="ir.rule">
+            <field name="name">Leave HR rule</field>
+            <field name="model_id" ref="model_hr_leave"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_hr'))]"/>
+        </record>
+
+    </data>
+</odoo>

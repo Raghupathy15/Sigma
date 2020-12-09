@@ -1,0 +1,21 @@
+{
+    'name': 'Employee ECI Details',
+    'version': '12.0.1.0.0',
+    'summary': 'Employee ECI Details',
+    'description': """Employee ECI Details""",
+    'category': 'Employee',
+    'author': 'Vishal',
+    'depends': ['hr','hr_contract','attendance_custom', 'leave_custom', 'hr_timesheet_extended'],
+    'data': [
+        'security/ir.model.access.csv',
+        # 'security/hr_employee_security.xml',
+        'data/employee_mail_templates.xml',
+        'data/self_declaration_cron.xml',
+        'wizard/unblock_remark_wizard_view.xml',
+        'views/hr_employee.xml',
+    ],
+    'demo': [],
+    'installable': True,
+    'auto_install': False,
+    'application': True,
+}

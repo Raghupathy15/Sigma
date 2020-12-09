@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- <data noupdate="0"> -->
+    <record id="sequence_crm_lead" model="ir.sequence">
+        <field name="name">CRM LEAD Sequence</field>
+        <field name="code">crm.lead</field>
+        <field name="prefix">CRM/LD/%(prefix)s/</field>
+        <field eval="False" name="company_id"/>
+        <field name="padding">5</field>
+    </record>
+    <record id="sequence_partner_lead" model="ir.sequence">
+        <field name="name">Partner Sequence</field>
+        <field name="code">res.partner</field>
+        <field name="prefix">C</field>
+        <field eval="False" name="company_id"/>
+        <field name="padding">4</field>
+    </record>
+     <!-- </data> -->
+</odoo>

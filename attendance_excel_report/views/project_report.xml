@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="project_xlsx"
+            model="project.project"
+            string="Project Excel Report"
+            report_type="xlsx"
+            name="attendance_excel_report.project_xlsx"
+            file="attendance_excel_report.project_xlsx"
+            attachment_use="True"
+            menu = "False"
+        />
+    </data>
+</odoo>

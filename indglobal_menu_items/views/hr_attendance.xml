@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <record model="ir.ui.view" id="hr_attendance_view_form_type">
+        <field name="name">hr.attendance.type</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+            <field name="arch" type="xml">
+                <field name="employee_id" position="after">
+                    <field name="attendance_type" invisible="1"/>
+                    <field name="my_id" invisible="1"/>
+                    <field name="device_id" attrs="{'invisible': [('attendance_type', '=', 'rfid')]}" readonly="1"/>
+                    <field name="mobile_type" invisible="1"/>
+                </field>
+                <xpath expr="//form/sheet" position='before'>
+                    <header>  
+                        <button name="start_time_attendance" id="start_time" string="Start Time" type="object" class="oe_highlight start_time" attrs="{'invisible': ['|', ('attendance_type', '=', 'rfid'), '|', ('mobile_type', '=', 'ios'), '|',('is_today', '=', False),('state', 'not in', 'draft')]}" onClick="getlocation()"/>
+                        <button name="stop_time_attendance" id="stop_time" string="Stop Time" type="object" class="btn-danger stop_time" attrs="{'invisible': ['|', ('attendance_type', '=', 'rfid'), '|', ('mobile_type', '=', 'ios'), '|',('is_today', '=', False),('state', 'not in', 'started')]}" onClick="getlocationn()"/>
+                        <button name="start_time_attendance_ios" id="start_time" string="Start Time" type="object" class="oe_highlight start_time" attrs="{'invisible': ['|', ('attendance_type', '=', 'rfid'), '|', ('mobile_type', '=', 'android'),'|',('is_today', '=', False), ('state', 'not in', 'draft')]}" onClick="getioslocation()"/>
+                        <button name="stop_time_attendance_ios" id="stop_time" string="Stop Time" type="object" class="btn-danger stop_time" attrs="{'invisible': ['|', ('attendance_type', '=', 'rfid'), '|',  ('mobile_type', '=', 'android'), '|',('is_today', '=', False),('state', 'not in', 'started')]}" onClick="getiosloc()"/>
+                        <field name="state" statusbar_visible="draft,started,done" invisible="1"/>
+                    </header>
+                </xpath>
+                <xpath expr="//form/sheet/group" position='after'>
+                    <group attrs="{'invisible': [('attendance_type', '=', 'rfid')]}">
+                        <group string="Start Geolocation">
+                            <div>
+                                <field class='version' name="start_latitude" nolabel="1" readonly="1" force_save="1"/>
+                            </div>
+                        </group>
+                        <group string="Stop Geolocation">
+                            <div>
+                                <field class='versionn' name="stop_latitude" nolabel="1" readonly="1" force_save="1"/>
+                            </div>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+    </record>
+    <template id="new_device_temp" name="mobile">
+        <script type='text/javascript' src="/hr_leave_calculation/static/src/js/mobile_attendance.js">
+        </script>
+    </template>
+
+    <record model="ir.ui.view" id="hr_attendance_view_tree_type">
+        <field name="name">hr.attendance.tree.type</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[5]" position='after'>
+                <field name="start_latitude"/>
+                <field name="stop_latitude"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_attendance.hr_attendance_view_filter" model="ir.ui.view">
+        <field name="name">hr_attendance_view_filter</field>
+        <field name="model">hr.attendance</field>
+        <field name="arch" type="xml">
+   <search string="Hr Attendance Search">
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <filter string="My Attendances" name="myattendances" domain="[('employee_id.user_id.id', '=', uid)]"/>
+       <filter string="Logged Date" name="logged_date" domain="[('employee_id.user_id.id', '=', uid), ('logged_date', '=', datetime.datetime.now().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="check_in_filter" string="Check In Date" date="check_in"/>
+                <filter string="No Check Out" name="nocheckout" domain="[('check_out', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="employee" string="Employee" context="{'group_by':'employee_id'}"/>
+                    <separator/>
+                    <filter name="groupby_name" string="Check In Date" context="{'group_by': 'check_in'}"/>
+                    <filter name="groupby_check_out" string="Check Out Date" context="{'group_by': 'check_out'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="hr_attendance.hr_attendance_action" model="ir.actions.act_window">
+        <field name="name">Attendances</field>
+        <field name="res_model">hr.attendance</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="context">{"search_default_myattendances":1}</field>
+        <field name="search_view_id" ref="hr_attendance.hr_attendance_view_filter" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No attendance records found
+            </p><p>
+                The attendance records of your employees will be displayed here.
+            </p>
+        </field>
+    </record>
+</odoo>
+

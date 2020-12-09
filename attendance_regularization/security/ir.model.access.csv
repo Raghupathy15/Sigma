@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_attendance_regular_approver1,attendance.regular.approver1,model_attendance_regular,hr_employee_kra.group_kra_approver_1,1,1,1,1
+access_attendance_regular_approver2,attendance.regular.approver2,model_attendance_regular,hr_employee_kra.group_kra_approver_2,1,1,1,1
+access_attendance_regular_user,attendance.regular.user,model_attendance_regular,hr_employee_kra.group_kra_user,1,1,1,1
+access_attendance_regular_hr,attendance.regular.hr,model_attendance_regular,hr_employee_kra.group_kra_hr,1,1,1,1

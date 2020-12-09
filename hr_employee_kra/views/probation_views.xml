@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="kra_probation_master_tree" model="ir.ui.view">
+            <field name="name">kra.probation.master.tree</field>
+            <field name="model">kra.probation.master</field>
+            <field name="arch" type="xml">
+                <tree string="KRA Probation Master">
+                    <field name="name"/>
+                </tree>
+
+            </field>
+        </record>
+        <record id="kra_probation_master_form" model="ir.ui.view">
+            <field name="name">kra.probation.master.form</field>
+            <field name="model">kra.probation.master</field>
+            <field name="arch" type="xml">
+                <form string="KRA Probation Master">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+
+            </field>
+        </record>
+
+        <record id="action_kra_probation_master" model="ir.actions.act_window">
+            <field name="name">Probation Master</field>
+            <field name="res_model">kra.probation.master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="kra_probation_master_tree"/>
+        </record>
+
+        <record id="kra_probation_pivot" model="ir.ui.view">
+            <field name="name">kra.probation.pivot</field>
+            <field name="model">kra.probation</field>
+            <field name="arch" type="xml">
+                <pivot string="KRA Probation">
+                    <field name="employee_id"/>
+                    <field name="hod_id"/>
+                    <!-- <field name="approver1_id"/> -->
+                    <field name="doj"/>
+                </pivot>
+            </field>
+        </record>
+        <!--
+                <record  id="probation_case_calendar_view" model="ir.ui.view">
+                    <field name="name">kra.probation.calendar.lead</field>
+                    <field name="model">kra.probation</field>
+                    <field name="priority" eval="2"/>
+                    <field name="arch" type="xml">
+                        <calendar string="Probation Period" date_start="doj" color="user_id">
+                            <field name="name"/>
+                            <field name="employee_id"/>
+                        </calendar>
+                    </field>
+                </record> -->
+
+
+        <record id="view_kra_probation_filter" model="ir.ui.view">
+            <field name="name">kra.probation.list.select</field>
+            <field name="model">kra.probation</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Induction Form">
+                    <field name="employee_id"/>
+                    <field name="employee_code"/>
+                    <separator/>
+                    <filter string="My Probation" name="employee" domain="[('employee_id.user_id', '=', uid)]"
+                            help="My Probation List" groups="hr_employee_kra.group_kra_user"/>
+                    <filter domain="[('state','in',('hod', 'resubmit'))]" string="To Approve" name="approve"/>
+
+                </search>
+            </field>
+        </record>
+        <record id="kra_probation_tree" model="ir.ui.view">
+            <field name="name">kra.probation.tree</field>
+            <field name="model">kra.probation</field>
+            <field name="arch" type="xml">
+                <tree string="KRA Probation" create="false">
+                    <field name="name" string="Seq No" invisible="1"/>
+                    <field name="seq_date" invisible="1"/>
+                    <field name="employee_id"/>
+                    <field name="employee_code" invisible="1"/>
+                    <field name="hod_id"/>
+                    <field name="approver1_id" invisible="1"/>
+                    <field name="designation_id"/>
+                    <field name="doj"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="kra_probation_form" model="ir.ui.view">
+            <field name="name">kra.probation.form</field>
+            <field name="model">kra.probation</field>
+            <field name="arch" type="xml">
+                <form string="Probation Plan" create="false">
+                    <header>
+                        <button name="action_submit" string="Submit" class="btn btn-primary" type="object"
+                                attrs="{'invisible':[('state','not in',['draft', 'reject'])]}"
+                                groups="hr_employee_kra.group_kra_approver_1"/>
+                        <button name="action_cancel" string="Cancel" class="btn btn-default" type="object"
+                                attrs="{'invisible':[('state','in',['cancel','hod','done','reject'])]}"/>
+                        <button name="set_to_draft" string="Set to Draft" class="btn btn-primary" type="object"
+                                attrs="{'invisible':[('state','not in',['cancel'])]}"/>
+                        <button name="action_approve" string="Approve" class="btn btn-primary" type="object"
+                                attrs="{'invisible':[('state','not in',['hod', 'resubmit'])]}"
+                                groups="hr_employee_kra.group_kra_hod"/>
+                        <button name="action_reject" string="Reject" class="btn btn-primary" type="object"
+                                attrs="{'invisible':[('state','not in',['hod', 'resubmit'])]}"
+                                groups="hr_employee_kra.group_kra_hod"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group string="Employee Information">
+                            <group>
+                                <field name="is_respective_a1" invisible="1" />
+                                <field name="employee_id" readonly="1"
+                                       options='{"no_open": True, "no_create": True}'/>
+                                <field name="employee_code" invisible="1"
+                                       attrs="{'readonly': [('state', 'not in', 'draft', 'cancel')]}"/>
+                                <field name="department_id" readonly="1"
+                                       options='{"no_open": True, "no_create": True}'/>
+                                <field name="designation_id" readonly="1"
+                                       options='{"no_open": True, "no_create": True}'/>
+                                <field name="hod_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                                <field name="approver1_id" readonly="1" options='{"no_open": True, "no_create": True}'
+                                       invisible="1"/>
+
+                                <field name="hr_reminder_approver1_ids" invisible="1"/>
+                                <field name="hr_reminder_approver2_ids" invisible="1"/>
+                                <field name="hr_reminder_hod_ids" invisible="1"/>
+                                <field name="hr_reminder_director_ids" invisible="1"/>
+                                <field name="employee_ids" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="prob_date" readonly="1"/>
+                                <field name="doj" readonly="1"/>
+                                <field name="is_approver1" invisible="1"/>
+                                <field name="is_hod" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="l1_manager_ack_date" invisible="1"/>
+                                <field name="hod_date" invisible="1"/>
+                                <!--  <field name="a1_submit_date" invisible="1"/> -->
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Review">
+                                <field name="review_ids" attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}">
+                                    <tree editable="bottom" create="false" delete="false">
+                                        <field name="name" readonly="1" force_save="1"/>
+                                        <field name="quality"
+                                               attrs="{'readonly':[('state', 'not in', ['draft','reject'])]}"/>
+                                        <field name="probation_id" invisible="1"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="name"/>
+                                                    <field name="state" invisible="1"/>
+                                                </group>
+                                                <group>
+                                                    <field name="quality"/>
+                                                    <field name="probation_id" invisible="1"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                        <p>
+                            <strong>If any areas of performance, conduct or attendance require improvement please
+                                provide details below
+                            </strong>
+                        </p>
+                        <field name="area_performance" attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+                        <p>
+                            <strong>Where concerns have been identified, please summarise how these will be addressed
+                                during further period of employee survice in the commpany.
+                            </strong>
+                        </p>
+                        <field name="employee_service" attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+                        <p>
+                            <strong>Summarise the employee's performance.</strong>
+                        </p>
+                        <field name="employee_performance" attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+                        <group>
+                            <group>
+                                <field name="identify_period"
+                                       attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+                                <field name="performance_text"
+                                       attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft', 'reject'])], 'invisible':[('identify_period','!=', 'no')]}"/>
+                                <field name="employee_appointment"
+                                       attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+                                <field name="reason_appointment"
+                                       attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft', 'reject'])],'invisible':[('employee_appointment','!=', 'no')]}"/>
+                                <field name="training_development"
+                                       attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+                                <field name="training_text"
+                                       attrs="{'invisible':[('training_development','!=', 'no')], 'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+
+                                <field name="employee_probation_extend"
+                                       attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft', 'reject'])]}"/>
+                                <field name="reason_probation_extend"
+                                       attrs="{'invisible':[('employee_probation_extend','!=', 'yes')], 'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+                                <field name="new_prob_date"
+                                       attrs="{'invisible':[('employee_probation_extend','!=', 'yes')], 'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+                                <field name="length_extension"
+                                       attrs="{'invisible':[('employee_probation_extend','!=', 'yes')], 'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+                                <field name="director_remarks" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="apprver1_remarks"
+                                       attrs="{'readonly':['|', ('is_respective_a1','=',False), ('state', 'not in', ['draft','reject'])]}"/>
+                                <field name="hod_remarks" readonly="1" attrs="{'invisible':[('hod_remarks','=',False)]}"/>
+                                <field name="hod_status" readonly="1"/>
+                            </group>
+                        </group>i
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <!-- Action for Probation Creation-->
+        <record id="action_kra_probation" model="ir.actions.act_window">
+            <field name="name">Probation Creation</field>
+            <field name="res_model">kra.probation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_id" ref="kra_probation_tree"/>
+            <field name="search_view_id" ref="view_kra_probation_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new operation type
+                </p>
+                <p>
+                    The operation type system allows you to assign each stock
+                    operation a specific type which will alter its views accordingly.
+                    On the operation type you could e.g. specify if packing is needed by default,
+                    if it should show the customer.
+                </p>
+            </field>
+        </record>
+
+
+        <!-- Widget -->
+        <record id="act_hr_employee_probation_list" model="ir.actions.act_window">
+            <field name="res_model">kra.probation</field>
+            <field name="name">Probation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_employee_id': [active_id], 'default_employee_id': active_id}</field>
+        </record>
+        <!-- Action For Probation Approval-->
+        <record id="action_probation_approval" model="ir.actions.act_window">
+            <field name="name">Probation Approval</field>
+            <field name="res_model">kra.probation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('employee_id.hod_id.user_id', '=', uid)]</field>
+            <field name="context">{'search_default_approve':1}</field>
+        </record>
+
+
+    </data>
+</odoo>

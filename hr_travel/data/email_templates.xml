@@ -1,0 +1,1237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Email template for normal and emergency priority -->
+		<record id="email_template_approval_normal_and_emergency" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Travel Request for ${object.employee_id.name} </field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.lone_manager_id.work_email or object.employee_id.lone_manager_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.lone_manager_id.name},</p>
+				<br/>
+				<p>The Below Employee has raised a travel request</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for HOD TR Rejection -->
+		<record id="email_template_hod_tr_reject" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Travel Request Rejected by ${object.employee_id.hod_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_travel_admin_hod_remark"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your travel request is rejected due to the following reason.</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<span>Location From : ${object.travel_id.from_location_id.name}</span><br />
+				<span>Location To : ${object.travel_id.to_location_id.name}</span><br />
+				<span>Travel Type : ${object.travel_id.travel_type}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Cancel Employee -->
+		<record id="email_template_cancel_employee" model="mail.template">
+			<field name="name">TR Employee Cancel</field>
+			<field name="subject">Travel Request Cancelled by ${object.employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.lone_manager_id.work_email or object.employee_id.lone_manager_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_employee_cancel_remark"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.lone_manager_id.name},</p>
+				<br/>
+				<p>The Below Employee has Cancelled a travel request due to</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<span>Location From : ${object.travel_id.from_location_id.name}</span><br />
+				<span>Location To : ${object.travel_id.to_location_id.name}</span><br />
+				<span>Travel Type : ${object.travel_id.travel_type}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Cancel Process -->
+		<record id="email_template_hod_tr_cancel" model="mail.template">
+			<field name="name">TR For Cancel Process</field>
+			<field name="subject">Travel Request Cancelled by ${object.employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.hod_id.work_email or object.employee_id.hod_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.hod_id.name},</p>
+				<br/>
+				<p>The Below Employee has Cancelled a travel request due to</p>
+				<p>${object.emp_remarks}</p>
+				<div>
+					<span>Req ID: ${object.name}</span><br />
+					<span>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</span><br />
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+					<span>Status : ${object.state}</span>
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Return to employee -->
+		<record id="email_template_tr_retun_employee" model="mail.template">
+			<field name="name">TR Return for employee</field>
+			<field name="subject">Travel Request Returned by Travel Admin</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_travel_request_return"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your travel request is returned due to the following reason.</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<span>Location From : ${object.travel_id.from_location_id.name}</span><br />
+				<span>Location To : ${object.travel_id.to_location_id.name}</span><br />
+				<span>Travel Type : ${object.travel_id.travel_type}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this Email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for TR Mode Change -->
+		<record id="email_template_tr_mode_change" model="mail.template">
+			<field name="name">TR Return for Mode Change</field>
+			<field name="subject">Travel Request Mode Change Request</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.hod_id.work_email or object.employee_id.hod_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_travel_request_modify"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.hod_id.name},</p>
+				<br/>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<span>Location From : ${object.travel_id.from_location_id.name}</span><br />
+				<span>Location To : ${object.travel_id.to_location_id.name}</span><br />
+				<span>Travel Type : ${object.travel_id.travel_type}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for APP1 TR Rejection -->
+		<record id="email_template_app1_tr_reject" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Travel Request Rejected by ${object.employee_id.lone_manager_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_travel_admin_app1_remark"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your request is rejected due to the following reason.</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<span>Location From : ${object.travel_id.from_location_id.name}</span><br />
+				<span>Location To : ${object.travel_id.to_location_id.name}</span><br />
+				<span>Travel Type : ${object.travel_id.travel_type}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for APP2 TR Rejection -->
+		<record id="email_template_app2_tr_reject" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Travel Request Rejected by ${object.employee_id.ltwo_manager_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_travel_admin_app2_remark"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your travel request is rejected due to the following reason.</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<span>Location From : ${object.travel_id.from_location_id.name}</span><br />
+				<span>Location To : ${object.travel_id.to_location_id.name}</span><br />
+				<span>Travel Type : ${object.travel_id.travel_type}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Director TR Rejection -->
+		<record id="email_template_director_tr_reject" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Travel Request Rejected by ${object.employee_id.parent_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_travel_director_remarks"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your travel request is rejected due to the following reason.</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<span>Location From : ${object.travel_id.from_location_id.name}</span><br />
+				<span>Location To : ${object.travel_id.to_location_id.name}</span><br />
+				<span>Travel Type : ${object.travel_id.travel_type}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Claim rejection by App1 -->
+		<record id="email_template_claim_rejection_app1" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Travel Claim Rejected by ${object.employee_id.lone_manager_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_claim_request_remark"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your travel claim is rejected due to the following reason.</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Claim rejection by Acc -->
+		<record id="email_template_claim_rejection_acc" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Travel Claim Rejected by ${object.reject_employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_travel_request_remark2"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your travel claim is rejected due to the following reason.</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Claim rejection by Acc Head-->
+		<record id="email_template_claim_rejection_acc_head" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Travel Claim Rejected by ${object.reject_employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_travel_accounts_head_remark"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your travel claim is rejected due to the following reason.</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Claim rejection by HOD-->
+		<record id="email_template_claim_rejection_hod" model="mail.template">
+			<field name="name">Claim Rejection for HOD</field>
+			<field name="subject">Travel Claim Rejected by ${object.employee_id.hod_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_travel_request_remark"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your travel claim is rejected due to the following reason.</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+		<!-- Email template for Claim rejection by Director-->
+		<record id="email_template_claim_rejection_director" model="mail.template">
+			<field name="name">Every stage of Director</field>
+			<field name="subject">Travel Claim Rejected by ${object.employee_id.parent_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_travel_claim_director_remark"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your travel claim is rejected due to the following reason.</p>
+				<span>Reason : ${object.name}</span><br />
+				<span>Travel ID : ${object.travel_id.name}</span><br />
+				<span>From Date : ${object.travel_id.date_from}</span><br />
+				% if object.date_to:
+   					<span>To Date : ${object.travel_id.date_to}</span><br />
+				% endif
+				<span>No of Days : ${object.travel_id.no_of_days}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template Travel Claim for Approver1-->
+		<record id="email_template_tc_approver1" model="mail.template">
+			<field name="name">Email template for Approver1 Travel Claim</field>
+			<field name="subject">Travel Claim for ${object.employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.lone_manager_id.work_email or object.employee_id.lone_manager_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_claim"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.lone_manager_id.name},</p>
+				<br/>
+				<p>The Below Employee has raised a Travel Claim</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TC NO: ${object.name}</p>
+					<span>Accommodation-Eligibility: ${object.acc_eligibility}</span><br />
+					<span>Accommodation-Actual : ${object.actual_accommodation}</span><br />
+					<span>Food-Eligibility : ${object.food_eligibility}</span><br />
+					<span>Food-Actual: ${object.food_actual}</span><br />
+					<span>Local Conveyance: ${object.local_conveyance}</span><br />
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />                    
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template Travel Claim for HOD-->
+		<record id="email_template_tc_hod" model="mail.template">
+			<field name="name">Email template for Hod Travel Claim</field>
+			<field name="subject">Travel Claim for ${object.employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.hod_id.work_email or object.employee_id.hod_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_claim"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.hod_id.name},</p>
+				<br/>
+				<p>The Below Employee has raised a Travel Claim</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TC NO: ${object.name}</p>
+					<span>Accommodation-Eligibility: ${object.acc_eligibility}</span><br />
+					<span>Accommodation-Actual : ${object.actual_accommodation}</span><br />
+					<span>Food-Eligibility : ${object.food_eligibility}</span><br />
+					<span>Food-Actual: ${object.food_actual}</span><br />
+					<span>Local Conveyance: ${object.local_conveyance}</span><br />
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />                    
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template Travel Claim for Director-->
+		<record id="email_template_tc_director" model="mail.template">
+			<field name="name">Email template for Director Travel Claim</field>
+			<field name="subject">Travel Claim for ${object.employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.parent_id.work_email or object.employee_id.parent_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_claim"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.parent_id.name},</p>
+				<br/>
+				<p>The Below Employee has raised a Travel Claim</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TC NO: ${object.name}</p>
+					<span>Accommodation-Eligibility: ${object.acc_eligibility}</span><br />
+					<span>Accommodation-Actual : ${object.actual_accommodation}</span><br />
+					<span>Food-Eligibility : ${object.food_eligibility}</span><br />
+					<span>Food-Actual: ${object.food_actual}</span><br />
+					<span>Local Conveyance: ${object.local_conveyance}</span><br />
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />                    
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template Travel Claim for Accounts-->
+		<record id="email_template_tc_accounts" model="mail.template">
+			<field name="name">Email template for Accounts Travel Claim</field>
+			<field name="subject">Travel Claim for ${object.employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to"></field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_claim"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear Accounts</p>
+				<br/>
+				<p>The Below Employee has raised a Travel Claim</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TC NO: ${object.name}</p>
+					<span>Accommodation-Eligibility: ${object.acc_eligibility}</span><br />
+					<span>Accommodation-Actual : ${object.actual_accommodation}</span><br />
+					<span>Food-Eligibility : ${object.food_eligibility}</span><br />
+					<span>Food-Actual: ${object.food_actual}</span><br />
+					<span>Local Conveyance: ${object.local_conveyance}</span><br />
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />                    
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p>ERP Automation</p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for emergency fast track -->
+		<record id="email_template_approval_fast_track" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Travel Request for ${object.employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.hod_id.work_email or object.employee_id.hod_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.hod_id.name},</p>
+				<br/>
+				<p>The Below Employee has raised a travel request</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Approver2 -->
+		<record id="email_template_tr_approval" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">${object.employee_id.name} Travel Request has Approved by ${object.employee_id.lone_manager_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.ltwo_manager_id.work_email or object.employee_id.ltwo_manager_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.ltwo_manager_id.name},</p>
+				<br/>
+				<p>The Below Employee has raised a travel request</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for HOD Approval -->
+		<record id="email_template_hod_approval" model="mail.template">
+			<field name="name">TR HOD Approval</field>
+			<field name="subject">Travel Request for ${object.employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.hod_id.work_email or object.employee_id.hod_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.hod_id.name},</p>
+				<br/>
+				<p>The Below Employee has raised a travel request</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Director Approval -->
+		<record id="email_template_director_approval" model="mail.template">
+			<field name="name">TR HOD Approval</field>
+			<field name="subject">Travel Request for ${object.employee_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.parent_id.work_email or object.employee_id.parent_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.parent_id.name},</p>
+				<br/>
+				<p>The Below Employee has raised a travel request</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Employee Travelling app by HOD-->
+		<record id="email_template_employee_travelling" model="mail.template">
+			<field name="name">TR Employee Travelling</field>
+			<field name="subject">${object.employee_id.name} Travel Request is approved by ${object.employee_id.hod_id.name} </field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Employee Travelling app by Admin desk-->
+		<record id="email_template_employee_travelling_admin" model="mail.template">
+			<field name="name">TR Employee Travelling</field>
+			<field name="subject">${object.employee_id.name} Travel Request is Booked Successfully</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Travel Admin -->
+		<record id="email_template_travel_admin" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">${object.employee_id.name} raised a Travel Request</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">traveladmin@sigmaavit.com</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear Travel Admin</p>
+				<br/>
+				<p>The Below Employee has raised a travel request</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email id</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Travel Accounts -->
+		<record id="email_template_tr_travel_accounts" model="mail.template">
+			<field name="name">TR for Accounts</field>
+			<field name="subject">Reg: Travel Request for ${object.employee_id.name</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to"></field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear Accounts Head,</p>
+				<br/>
+				<p>The Below Employee has raised a travel request</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Employee when TR booked -->
+		<record id="email_template_account_emp" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">${object.employee_id.name} Travel Request has Booked Successfully</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Travel Request is Successfully booked !..</p>
+				<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+				<p>TR NO: ${object.name}</p>
+				<p>Booking Agent: ${object.booking_agent}</p>
+				<p>Onward Ticket Cost: ${object.onward_ticket_cost}</p>
+				<br/>
+
+				% if (object.hotel_cost > 0):
+				   <p>Hotel Cost: ${object.hotel_cost}</p>
+				% endif
+
+				<div>
+					<span>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</span><br />
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Advance amount -->
+		<record id="email_template_for_advance" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Travel Request Advance Amount is Approved</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>The following advance amount is approved from your travel request</p>
+				<p>Approved advance: ${object.approved_advance}</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Additional Advance amount -->
+		<record id="email_template_for_additional_advance" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">${object.employee_id.name} raised Additional Advance Amount</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.lone_manager_id.work_email or object.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.lone_manager_id.name},</p>
+				<br/>
+				<p>The following Employee requested for additional advance amount</p>
+				<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+				<p>TR NO: ${object.name}</p>
+				<p>Additional adv amount: ${object.additional_advance_amount}</p>
+				<div>
+					<span>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</span><br />
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Additional Advance amount to HOD state-->
+		<record id="email_template_for_additional_advance_hod" model="mail.template">
+			<field name="name">Email Additional Advance Hod</field>
+			<field name="subject">${object.employee_id.name} Additional Advance Approved by ${object.employee_id.lone_manager_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.hod_id.work_email or object.employee_id.hod_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.hod_id.name},</p>
+				<br/>
+				<p>The following Employee requested for additional advance amount</p>
+				<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+				<p>TR NO: ${object.name}</p>
+				<p>Additional adv amount: ${object.additional_advance_amount}</p>
+				<div>
+					<span>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</span><br />
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Additional Advance amount to Accounts state-->
+		<record id="email_template_for_additional_advance_accounts" model="mail.template">
+			<field name="name">Email Additional Advance Accounts</field>
+			<field name="subject">${object.employee_id.name} Additional Advance Approved by ${object.employee_id.hod_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to"></field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear Accounts Head,</p>
+				<br/>
+				<p>The following Employee requested for additional advance amount</p>
+				<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+				<p>TR NO: ${object.name}</p>
+				<p>Additional adv amount: ${object.additional_advance_amount}</p>
+				<div>
+					<span>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</span><br />
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Travel Extend raised by Employee -->
+		<record id="email_template_travel_extend" model="mail.template">
+			<field name="name">Email Travel Extended</field>
+			<field name="subject">${object.employee_id.name} raised Travel Extended</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.lone_manager_id.work_email or object.employee_id.ltwo_manager_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.lone_manager_id.name},</p>
+				<br/>
+				<p>The following employee is requested to extend the travel</p>
+				<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+				<p>TR NO: ${object.name}</p>
+				<p>Days Extension: ${object.days_extension}</p>
+				<div>
+					<span>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</span><br />
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Travel Extend approved by Approver1 -->
+		<record id="email_template_for_hod_travel_extend" model="mail.template">
+			<field name="name">Email Travel Extended Approved by Approver1</field>
+			<field name="subject">${object.employee_id.name} Travel Extend Approved by ${object.employee_id.lone_manager_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.hod_id.work_email or object.employee_id.ltwo_manager_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.hod_id.name},</p>
+				<br/>
+				<p>The following employee is requested to extend the travel</p>
+				<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+				<p>TR NO: ${object.name}</p>
+				<p>Days Extension: ${object.days_extension}</p>
+				<div>
+					<span>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</span><br />
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID</p>
+			]]></field>
+		</record>
+
+		<!--Email template - if hod not approved in 60 minutes mail trigger to L2 -->
+		<record id="email_template_hod_not_approved" model="mail.template">
+			<field name="name">Every stage of Approval</field>
+			<field name="subject">Reg: Travel Request - High Importance mail</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.ltwo_manager_id.work_email or object.employee_id.ltwo_manager_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.ltwo_manager_id.name},</p>
+				<br/>
+				<p>The Travel Request is not approved by HOD Since 1Hr.Hence it moved to your concern.</p>
+				<div>
+					<p>Emp Name: ${object.employee_id.employee_id} ${object.employee_id.name}</p>
+					<p>TR NO: ${object.name}</p>
+					<span>Advance Amount Status: ${object.travel_advance}</span><br />
+					<span>Advance Amount : ${object.approved_advance}</span><br />
+					<span>Priority : ${object.priority_type}</span><br />
+					<span>From Date: ${object.date_from}</span><br />
+					% if object.date_to:
+       					<span>To Date: ${object.date_to}</span><br />
+  					% endif
+					<span>No of Days: ${object.no_of_days}</span><br />
+					<span>Location From: ${object.from_location_id.name}</span><br />
+					<span>Location To : ${object.to_location_id.name}</span><br />
+					<span>Travel Type : ${object.travel_type}</span><br />
+					<span>Travel Mode : ${object.travel_mode_id.name}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email id</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for TR User Blocked -->
+
+		<record id="email_template_travel_request_notify_blocked" model="mail.template">
+			<field name="name">TR Employee Account Block Notification</field>
+			<field name="subject">Reg: Travel Request Account Gonna Blocked</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_admin"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Please Approve your teams Travel Request EOD today, else your account will get blocked</p>
+				<span>Travel ID : ${object.name}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email id</p>
+				]]>
+				
+			</field>
+		</record>
+		<record id="email_template_travel_request_blocked" model="mail.template">
+			<field name="name">TR Employee Account Blocked</field>
+			<field name="subject">Reg: Travel Request Account is Blocked</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr.model_hr_employee"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.name},</p>
+				<br/>
+				<p>Employee ID : ${object.employee_id}</p>
+				<p>Your account is blocked because you will not completed the Travel.</p>
+				<br/>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email id</p>
+				]]>
+			</field>
+		</record>
+
+		<!-- Email template for TC Manager Blocked -->
+		<record id="email_template_travel_claim_notified_blocked" model="mail.template">
+			<field name="name">TR Approver Account Block Notification</field>
+			<field name="subject">Reg: Travel Claim Account Gonna Blocked</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.lone_manager_id.work_email or object.employee_id.lone_manager_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr_travel.model_hr_travel_claim"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.lone_manager_id.name},</p>
+				<br/>
+				<p>Please Approve your teams Travel Claim EOD today, else your account will get blocked</p>
+				<span>Travel ID : ${object.name}</span><br />
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email id</p>
+				]]>
+			</field>
+		</record>
+		<!-- <record id="email_template_travel_claim_blocked" model="mail.template">
+			<field name="name">TC Approver Account Blocked</field>
+			<field name="subject">Reg: Travel Claim Account Blocked</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to"></field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr.model_hr_employee"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.name},</p>
+				<br/>
+				<p>Employee ID : ${object.employee_id}</p>
+				<p>Employee Name : ${object.name}</p>
+				<p>Your account is blocked because you will not Approve the Travel Claim.</p>
+				<br/>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email id</p>
+				]]>
+				
+			</field>
+		</record> -->
+		
+		<!-- Email template for TC Accounts Blocked Notification -->
+		<record id="email_template_travel_claim_accounts_blocked_notify" model="mail.template">
+			<field name="name">TC Accounts Blocked Notification</field>
+			<field name="subject">Team Travel Claim approval pending</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.work_email or object.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr.model_hr_employee"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.name},</p>
+				<p>Please Approve your teams Travel Claim EOD today, else your account will get blocked</p>
+				<br/>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email id</p>
+				]]>
+				
+			</field>
+		</record>
+
+		<!-- Email template for TC Accounts Blocked -->
+		<record id="email_template_travel_claim_accounts_blocked" model="mail.template">
+			<field name="name">TC Accounts Blocked</field>
+			<field name="subject">Reg: Travel Claim Account Blocked</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.work_email or object.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="hr.model_hr_employee"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.name},</p>
+				<p>Your account is blocked because you will not Approve the Travel Claim.</p>
+				<br/>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email id</p>
+				]]>
+				
+			</field>
+		</record>
+	</data>
+</odoo>

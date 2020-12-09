@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!-- FOR LEAVE MODULE (STARTS) -->
+        <!-- Allocations Requests menu visible for HR -->
+        <menuitem id="hr_holidays.menu_open_allocation" name="Allocations Requests" 
+        parent="hr_holidays.menu_hr_holidays_my_leaves" action="hr_holidays.hr_leave_allocation_action_my" 
+        sequence="6" groups='hr_employee_kra.group_kra_hr'/>
+
+        <!-- Reporting menu show to all user -->
+        <menuitem id="hr_holidays.menu_hr_holidays_report" name="Reporting"
+        parent="hr_holidays.menu_hr_holidays_root" sequence="99"
+        groups="hr_holidays.group_hr_holidays_manager,hr_employee_kra.group_kra_user"/>
+
+        <!-- Leave menu label name changed -->
+        <menuitem id="hr_holidays.menu_open_department_leave_approve" name="Leave Approval"
+        parent="hr_holidays.hr_holidays_menu_manager_approve" groups="hr_holidays.group_hr_holidays_manager"
+        action="hr_holidays.hr_leave_action_action_approve_department" sequence="1"/>
+
+        <!-- Invisible All menu for users and managers-->
+        <menuitem id="hr_holidays.hr_holidays_menu_manager_all" name="All"
+        parent="hr_holidays.menu_hr_holidays_approvals" groups="hr_employee_kra.group_kra_hr" sequence="2"/>
+
+        <!-- Configurations menu show only for HR -->
+        <menuitem id="hr_holidays.menu_hr_holidays_configuration" name="Configuration"
+        parent="hr_holidays.menu_hr_holidays_root" sequence="100" groups="hr_employee_kra.group_kra_hr"/>
+
+        <!-- Overview menu show only for HR -->
+        <menuitem id="hr_holidays.menu_hr_holidays_dashboard" name="Overview"
+        parent="hr_holidays.menu_hr_holidays_root" sequence="1" action="hr_holidays.action_hr_holidays_dashboard" groups="hr_employee_kra.group_kra_hr"/>
+
+        <!-- Label Name changed as Leave Calendar View -->
+        <menuitem id="hr_holidays.hr_leave_menu_new_request" parent="hr_holidays.menu_hr_holidays_my_leaves"
+        action="hr_holidays.hr_leave_action_new_request" sequence="54" name = "Leave Calendar View"/>
+
+        <!-- Label Name changed as Leave Request -->
+        <menuitem id="hr_holidays.hr_leave_menu_my" parent="hr_holidays.menu_hr_holidays_my_leaves"
+        action="hr_holidays.hr_leave_action_my" sequence="4" name="Leave Request"/>
+
+        <!-- Label Name changed as Leave Summary -->
+        <menuitem id="hr_holidays.menu_open_company_allocation" name="Leave Summary"
+        parent="hr_holidays.menu_hr_holidays_my_leaves" action="hr_holidays.open_company_allocation" sequence="21"/>
+
+        <!-- Menu Name changed from managers to approvers -->
+        <menuitem id="hr_holidays.menu_hr_holidays_approvals" name="Approvers" parent="hr_holidays.menu_hr_holidays_root" sequence="4" groups="hr_holidays.group_hr_holidays_manager,hr_holidays.group_hr_holidays_user"/>
+    <!-- FOR LEAVE MODULE (ENDS) -->
+
+    <!-- FOR TIMESHEETS MODULE (STARTS) -->
+         <!-- Menu For Timesheet Approvals-->
+        <menuitem name="Timesheet Approval" id="menu_timesheet_approval" parent="hr_timesheet.timesheet_menu_root" sequence="6"/>
+        <!-- All Timesheets menu show only for HR -->
+        <menuitem id="hr_timesheet.timesheet_menu_activity_all" name="All Timesheets" 
+        parent="menu_timesheet_approval" action="hr_timesheet.timesheet_action_all" 
+        groups="hr_employee_kra.group_kra_approver_1,hr_employee_kra.group_kra_approver_2,hr_employee_kra.group_kra_hod" sequence="1"/>
+
+        <!-- Menu item for Rejected Timesheet -->
+        <menuitem id="timesheet_menu_activity_rejected" name="Rejected Timesheets"
+        parent="menu_timesheet_approval" sequence="4"
+        action="hr_timesheet_extended.timesheet_action_rejection" groups = "hr.group_hr_manager"/>
+
+        <!-- Menu item for Approved Timesheets -->
+        <menuitem id="timesheet_menu_activity_approved" name="Approved Timesheets"
+        parent="menu_timesheet_approval" sequence="3"
+        action="hr_timesheet_extended.timesheet_action_approved" groups="hr_employee_kra.group_kra_approver_1,hr_employee_kra.group_kra_approver_2,hr_employee_kra.group_kra_hod"/>
+
+        <!-- Menu item for Pending Timesheets -->
+        <menuitem id="timesheet_menu_activity_pending" name="Timesheet Approval"
+        parent="menu_timesheet_approval" sequence="2"
+        action="hr_timesheet_extended.timesheet_action_pending" groups="hr_employee_kra.group_kra_approver_1,hr_employee_kra.group_kra_approver_2,hr_employee_kra.group_kra_hod,hr_employee_kra.group_kra_director"/>
+
+        <!-- Menu item for All Timesheets -->
+       <!--  <menuitem id="hr_timesheet.timesheet_menu_activity_all" name="All Timesheets"
+        parent="hr_timesheet.menu_hr_time_tracking" sequence="2" action="hr_timesheet.timesheet_action_all" 
+        groups = "hr_employee_kra.group_kra_hr"/> -->
+
+        <!-- Menu item for Archived Timesheets -->
+        <menuitem id="timesheet_menu_activity_expired" name="Archived Timesheets"
+        parent="hr_timesheet.menu_hr_time_tracking" sequence="5"
+        action="hr_timesheet_extended.timesheet_action_expired_id"/>
+
+        <!-- Reporting menu show to HR user alone-->
+        <menuitem id="hr_timesheet.menu_timesheets_reports" name="Reporting"
+        parent="hr_timesheet.timesheet_menu_root" groups="hr_employee_kra.group_kra_hr" sequence="99"/>
+
+
+        <!-- My timeshee label change menu -->
+        <menuitem id="hr_timesheet.timesheet_menu_activity_mine" name="Create Timesheet" parent="hr_timesheet.menu_hr_time_tracking" sequence="1" action="hr_timesheet.act_hr_timesheet_line"/>
+
+        <!-- My timeshee label change menu -->
+        <menuitem id="timesheet_menu_ar_mine" name="Timesheet View" parent="hr_timesheet.menu_hr_time_tracking" sequence="2" action="hr_timesheet_extended.timesheet_action_approval"/>
+
+
+    <!-- FOR TIMESHEETS MODULE (ENDS) -->
+
+    <!-- FOR ATTENDANCE MODULE (STARTS) -->
+
+        <!-- Employees menu show to HR user alone-->
+        <menuitem id="hr_attendance.menu_hr_attendance_view_employees_kanban" name="Employees" 
+        parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="15" 
+        groups="hr_employee_kra.group_kra_hr" action="hr.open_view_employee_list_my"/>
+
+        <!-- Attendance allow all user -->
+
+        <menuitem id="hr_attendance.menu_hr_attendance_manage_attendances" name="Manage Attendances" parent="hr_attendance.menu_hr_attendance_root" sequence="1" groups="hr_attendance.group_hr_attendance_user,hr_employee_kra.group_kra_user"/>
+
+        <menuitem id="hr_attendance.menu_hr_attendance_view_attendances" name="Attendances" parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="10" groups="hr_attendance.group_hr_attendance_user,hr_employee_kra.group_kra_user,hr_employee_kra.group_kra_hr" action="hr_attendance.hr_attendance_action"/>
+        <menuitem id="hr_attendance.menu_hr_attendance_settings" name="Configuration" parent="hr_attendance.menu_hr_attendance_root"
+        sequence="99" action="hr_attendance.action_hr_attendance_settings" groups="hr_employee_kra.group_kra_hr"/>
+
+        <!-- FOR ATTENDANCE MODULE (ENDS) -->
+
+        <!-- For Employee Menu Hidden (START) -->
+        <record model="ir.ui.menu" id="hr_contract.hr_menu_contract">
+        	<field name="groups_id" eval="[(6, 0, [ref('indglobal_menu_items.group_menu_invisible')])]"/>
+        </record>
+        <record model="ir.ui.menu" id="hr_gamification.menu_hr_gamification">
+        	<field name="groups_id" eval="[(6, 0, [ref('indglobal_menu_items.group_menu_invisible')])]"/>
+        </record>
+        <!-- For HR Visible Menu -->
+        <record model="ir.ui.menu" id="hr.menu_hr_department_tree">
+        	<field name="groups_id" eval="[(6, 0, [ref('hr_employee_kra.group_kra_hr')])]"/>
+        </record>
+        <record model="ir.ui.menu" id="hr.menu_human_resources_configuration">
+        	<field name="groups_id" eval="[(6, 0, [ref('hr_employee_kra.group_kra_hr')])]"/>
+        </record>
+        <!-- For Employee Menu (ENDS) -->
+
+        <!--For Timesheet Menu (START) -->
+        <record model="ir.ui.menu" id="hr_timesheet.menu_timesheets_reports">
+        	<field name="groups_id" eval="[(6, 0, [ref('hr_employee_kra.group_kra_hr')])]"/>
+        </record>
+        <!-- For Timesheet Menu (ENDS) -->
+        <!-- For Attendance Menu (START) -->
+        <record model="ir.ui.menu" id="hr_attendance.menu_hr_attendance_view_employees_kanban">
+        	<field name="groups_id" eval="[(6, 0, [ref('indglobal_menu_items.group_menu_invisible')])]"/>
+        </record>
+        <record model="ir.ui.menu" id="hr_attendance.menu_hr_attendance_kiosk_mode">
+        	<field name="groups_id" eval="[(6, 0, [ref('indglobal_menu_items.group_menu_invisible')])]"/>
+        </record>
+        <record model="ir.ui.menu" id="hr_attendance.menu_hr_attendance_my_attendances">
+        	<field name="groups_id" eval="[(6, 0, [ref('indglobal_menu_items.group_menu_invisible')])]"/>
+        </record>
+        <!-- <record model="ir.ui.menu" id="hr_attendance.menu_hr_attendance_report">
+        	<field name="groups_id" eval="[(6, 0, [ref('indglobal_menu_items.group_menu_invisible')])]"/>
+        </record> -->
+        <record model="ir.ui.menu" id="hr_attendance.menu_hr_attendance_settings">
+        	<field name="groups_id" eval="[(6, 0, [ref('hr_employee_kra.group_kra_hr')])]"/>
+        </record>
+        <!-- For Attendance Menu (ENDS) -->
+        <!-- For Leave Menu (START) -->
+        <record model="ir.ui.menu" id="hr_holidays.hr_holidays_menu_manager_all_allocations">
+        	<field name="groups_id" eval="[(6, 0, [ref('indglobal_menu_items.group_menu_invisible')])]"/>
+        </record>
+        <record model="ir.ui.menu" id="hr_holidays.hr_holidays_menu_manager_approve_allocations">
+        	<field name="groups_id" eval="[(6, 0, [ref('hr_employee_kra.group_kra_hr')])]"/>
+        </record>
+        <record model="ir.ui.menu" id="hr_holidays.menu_open_employee_leave">
+        	<field name="groups_id" eval="[(6, 0, [ref('hr_employee_kra.group_kra_hr')])]"/>
+        </record>
+        <record model="ir.ui.menu" id="hr_holidays.hr_holidays_menu_manager_payroll_to_report">
+        	<field name="groups_id" eval="[(6, 0, [ref('indglobal_menu_items.group_menu_invisible')])]"/>
+        </record>
+        <!-- <record model="ir.ui.menu" id="hr_holidays.menu_hr_holidays_report">
+        	<field name="groups_id" eval="[(6, 0, [ref('indglobal_menu_items.group_menu_invisible')])]"/>
+        </record> -->
+        <!-- For Leave Menu (ENDS) --> 
+
+        
+
+    </data>
+</odoo>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Email template for leave request -->
+        <record id="email_template_leave_request" model="mail.template">
+            <field name="name">Requesting for Leave</field>
+            <field name="subject">Leave request from ${object.employee_id.name} - ${object.holiday_status_id.name} ${object.number_of_days_display} - days</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.lone_manager_id.work_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="leave_custom.model_hr_leave"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.employee_id.lone_manager_id.name},</p>
+                <br/>
+                ${object.employee_id.name} has applied for a leave. 
+                Following are the applied leave details:
+                <br/>
+                <p>Employee Name : ${object.employee_id.name}</p>
+                <p>Leave Type : ${object.holiday_status_id.name}</p>
+                <p>Start Date : ${format_tz(object.request_date_from, tz='UTC', format='%d-%m-%Y')}</p>
+                <p>End Date : ${format_tz(object.request_date_to, tz='UTC', format='%d-%m-%Y')}</p>
+                <p>No Of Days : ${object.number_of_days}</p>
+                <p>Reason : ${object.name}</p>
+                <p>From Session : ${object.request_date_from_period}
+                <p>To Session : ${object.request_date_to_period}
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Email template for leave approval -->
+        <record id="email_template_leave_approval" model="mail.template">
+            <field name="name">Approval of Leave</field>
+            <field name="subject">Leave approved for ${object.employee_id.name} - ${object.holiday_status_id.name} ${object.number_of_days_display} - days by ${object.employee_id.lone_manager_id.name}</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.work_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="leave_custom.model_hr_leave"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.employee_id.name},</p>
+                <br/>
+                <p>Your leave application has been accepted.</p>
+                <p>Leave Type : ${object.holiday_status_id.name}</p>
+                <p>Employee Name : ${object.employee_id.name}</p>
+                <p>Start Date : ${format_tz(object.request_date_from, tz='UTC', format='%d-%m-%Y')}</p>
+                <p>End Date : ${format_tz(object.request_date_to, tz='UTC', format='%d-%m-%Y')}</p>
+                <p>No Of Days : ${object.number_of_days}</p>
+                <p>Reason : ${object.name}</p>
+                <p>From Session : ${object.request_date_from_period}
+                <p>To Session : ${object.request_date_to_period}
+                <p>Approved By : ${object.employee_id.lone_manager_id.name}
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Email template for leave rejected -->
+        <record id="email_template_leave_rejected" model="mail.template">
+            <field name="name">Rejected of Leave</field>
+            <field name="subject">Leave Rejected for ${object.employee_id.name} - ${object.holiday_status_id.name} ${object.number_of_days_display} - days</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.work_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="leave_custom.model_hr_leave"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.employee_id.name},</p>
+                <br/>
+                <p>Your leave application has been Rejected.</p>
+                <p>Employee Name : ${object.employee_id.name}</p>
+                <p>Description : ${object.name}</p>
+                <p>Leave Type : ${object.holiday_status_id.name}</p>
+                <p>Start Date : ${format_tz(object.request_date_from, tz='UTC', format='%d-%m-%Y')}</p>
+                <p>End Date : ${format_tz(object.request_date_to, tz='UTC', format='%d-%m-%Y')}</p>
+                <p>From Session : ${object.request_date_from_period}
+                <p>To Session : ${object.request_date_to_period}
+                <p>No Of Days : ${object.number_of_days}</p>
+                <p>Reason : ${object.report_note}</p>
+                <p>Rejected By : ${object.employee_id.lone_manager_id.name}
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Email template for leave cancel -->
+        <record id="email_template_leave_cancel" model="mail.template">
+            <field name="name">Leave Cancelled</field>
+            <field name="subject">Leave Cancelled for ${object.employee_id.name} - ${object.holiday_status_id.name} ${object.number_of_days_display} - days</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.work_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="leave_custom.model_hr_leave"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.employee_id.name},</p>
+                <br/>
+                <p>Your leave is cancelled by ${object.employee_id.lone_manager_id.name}</p>
+                <p>Employee Name : ${object.employee_id.name}</p>
+                <p>Description : ${object.name}</p>
+                <p>Comment by Approver : ${object.report_note}</p>
+                <p>Leave Type : ${object.holiday_status_id.name}</p>
+                <p>No Of Days : ${object.number_of_days_display}</p>
+                <p>Start Date : ${format_tz(object.request_date_from, tz='UTC', format='%d-%m-%Y')}</p>
+                <p>End Date : ${format_tz(object.request_date_to, tz='UTC', format='%d-%m-%Y')}</p>
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Email template for leave encashment request -->
+        <record id="email_template_leave_encashment_request" model="mail.template">
+            <field name="name">Request for Leave Encashment</field>
+            <field name="subject">Leave Encashment request from ${object.employee_id.name}</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${ctx.get('email_to')}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="leave_custom.model_leave_encash"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear,</p>
+                <br/>
+                <p>Employee Name : ${object.employee_id.name}</p>
+                <p>Leave Type : ${object.holiday_status_id.name}</p>
+                <p>Previous Year : ${object.year}</p>
+                <p>Remaining Leave of Previous Year : ${object.remaining_leave}</p>
+                <p>Required Encashment days : ${object.required_days}</p>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+    </data>
+</odoo>

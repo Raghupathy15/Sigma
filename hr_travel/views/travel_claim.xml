@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hr_travel_claim_tree" model="ir.ui.view">
+        <field name="name">hr.travel.claim.tree</field>
+        <field name="model">hr.travel.claim</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Travel claim" create="false">
+                <field name="name" string="Seq.No"/>
+                <field name="date"/>
+                <field name="travel_admin_id"/>
+                <field name="employee_id"/>
+                <field name="approver1_id"/>
+                <field name="hod_id"/>
+                <field name="accommodation"/>
+                <field name="actual_cost"/>
+                <field name="claim_status"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_hr_travel_claim_form" model="ir.ui.view">
+        <field name="name">hr.travel.claim.form</field>
+        <field name="model">hr.travel.claim</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Travel Claim" duplicate="0" create="false">
+                <header>
+                    <button name="submit_employee" string="Submit" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', 'draft'),('is_employee', '=', False)]}"/>
+                    <button name="submit_approver1" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'approver1')]}" groups="hr_employee_kra.group_kra_approver_1"/>
+                    <button name="submit_hod" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'hod')]}" groups="hr_employee_kra.group_kra_hod"/>
+                    <button name="submit_director" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'director')]}" groups="hr_employee_kra.group_kra_director"/>
+                    <button name="submit_accounts" string="Verify" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'accounts')]}" groups="hr_travel.group_kra_accounts"/>
+                    <button name="submit_acc_head" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'acc_head')]}" groups="hr_travel.group_kra_accounts_head"/>
+                    <button name="reject_app1" string="Reject" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'approver1')]}" groups="hr_employee_kra.group_kra_approver_1" context="{'default_travel_id': active_id}"/>
+                    <button name="reject_hod" string="Reject" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'hod')]}" groups="hr_employee_kra.group_kra_hod" context="{'default_travel_id': active_id}"/>
+                    <button name="reject_director" string="Reject" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'director')]}" groups="hr_employee_kra.group_kra_director" context="{'default_travel_id': active_id}"/>
+                    <button name="reject_accounts" string="Reject" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'accounts')]}" groups="hr_travel.group_kra_accounts" context="{'default_travel_id': active_id}"/>
+                    <button name="reject_acc_head" string="Reject" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'acc_head')]}" groups="hr_travel.group_kra_accounts_head" context="{'default_travel_id': active_id}"/>
+                    <button name="set_draft" string="Set Draft" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'rejected')]}"/>
+                    <!-- <button name="action_cancel" string="Cancel" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'rejected')]}" groups="hr_employee_kra.group_kra_user"/> -->
+                    <field name="state" widget="statusbar" statusbar_visible="approver1,accounts,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Claim Details">
+                            <field name="employee_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="designation_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                            <field name="travel_type" readonly="1"/>
+                            <field name="project_ref_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                            <field name="approver1_id" options='{"no_open": True, "no_create": True}' invisible="1"/>
+                            <field name="approver2_id" options='{"no_open": True, "no_create": True}' invisible="1"/>
+                            <field name="from_location_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                            <field name="to_location_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                        </group>
+                        <group string="Reference">
+                            <field name="travel_admin_id" readonly="1"/>
+                            <field name="date"/>
+                            <field name="departure_date" readonly="1"/>
+                            <field name="date_from"/>
+                            <field name="date_to" readonly="1"/>
+                            <field name="claim_status" invisible="1"/>
+                            <field name="no_of_days" readonly="1" force_save="1"/>
+                            <field name="hr_reminder_approver1_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="hr_reminder_approver2_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="hr_reminder_hod_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="hr_reminder_director_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="employee_ids" invisible="1" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Accomodation">
+                            <field name="accommodation" readonly="1"/>
+                            <field name="hotel_booking" readonly="1"/>
+                            <field name="acc_eligibility" readonly="1" force_save="1"/>
+                            <field name="actual_accommodation" attrs="{'readonly': ['|', ('state', 'not in', 'draft'),'|',('accommodation', '=', 'guest_house'),('is_employee', '=', False)]}"/>
+                            <field name="justification" attrs="{'invisible':[('is_justify','=', False)], 'required': [('is_justify', '=',True)], 'readonly': ['|', ('state', 'not in',('draft')),('is_employee', '=', False)]}"/>
+                            <field name="hotel_ticket" filename="store_hotel_ticket"/>
+                            <field name="food_eligibility" readonly="1" force_save="1"/>
+                            <field name="food_actual" attrs="{'readonly': ['|',('state', 'not in', 'draft'),('is_employee', '=', False)]}"/>
+                            <field name="is_justify" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="is_employee" invisible="1"/>
+                            <field name="user_id" invisible="1"/>
+                            <field name="admin_emp_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="accounts_head_emp_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="accounts_emp_ids" invisible="1" widget="many2many_tags"/>
+                        </group>
+                        <group string="Tickets &amp; Advance">
+                            <field name="travel_mode_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                            <field name="travel_advance" readonly="1"/>
+                            <field name="onward_ticket_cost" readonly="1"/>
+                            <field name="onward_ticket" filename="store_onward_ticket"/>
+                            <field name="return_ticket_cost" attrs="{'invisible': [('return_ticket_cost', '=', 0)]}" readonly="1"/>
+                            <field name="additional_advance" attrs="{'invisible': [('additional_advance', '=', 0)]}" readonly="1"/>
+                            <field name="return_ticket" invisible="1"/>
+                            <field name="returned_ticket" filename="store_returned_ticket" attrs="{'invisible': [('return_ticket_cost', '=', 0)]}"/>
+                            <field name="return_preference" invisible="1"/>
+                            <field name="return_travel_mode_id" attrs="{'invisible': [('return_ticket_cost', '=', 0)]}" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                            <field name="return_date" attrs="{'invisible': [('travel_type', 'not in', ['round_trip','return'])]}" readonly="1"/>
+                            <field name="return_from_location_id" attrs="{'invisible': [('travel_type', 'not in', ['round_trip','return'])]}" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                            <field name="return_to_location_id" attrs="{'invisible': [('travel_type', 'not in', ['round_trip','return'])]}" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Total">
+                            <field name="total_eligible_cost" readonly="1"/>
+                            <field name="total_advance" readonly="1"/>
+                            <field name="actual_cost" readonly="1"/>
+                            <field name="balance_amount" readonly="1"/>
+                        </group>
+                        <group string="Expenses">
+                            <field name="local_conveyance" readonly="1" force_save="1"/>
+                            <field name="other_expenses" attrs="{'readonly': ['|',('state', 'not in', 'draft'),('is_employee', '=', False)]}"/>
+                            <field name="other_justification" attrs="{'readonly': ['|',('state', 'not in', 'draft'),('is_employee', '=', False)], 'invisible': [('other_expenses', '=', 0)], 'required': [('other_expenses', '!=', 0)]}"/>
+                            <field name="attach_files" attrs="{'readonly': [('state', 'not in', 'draft')]}" filename="store_attach_fname"/>
+                            <field name="store_attach_fname" invisible="1"/>
+                            <field name="store_hotel_ticket" invisible="1"/>
+                            <field name="store_onward_ticket" invisible="1"/>
+                            <field name="store_returned_ticket" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string ="Balance Amount : -ve : Payable to Company, +ve : Receivable from Company">
+                    </group>
+                    <notebook>
+                        <page string="Breakup of Conveyance">
+                            <field name="conveyance_ids" attrs="{'readonly': ['|', ('state', 'not in', 'draft'),('is_employee', '=', False)]}">
+                                <tree delete="true" editable="bottom">
+                                    <field name="state" invisible="1"/>
+                                    <field name="date"/>
+                                    <field name="from_location"/>
+                                    <field name="to_location"/>
+                                    <field name="mode_type_id" options='{"no_open": True, "no_create": True}'/>
+                                    <field name="amount"/>
+                                    <field name="justification"/>
+                                    <field name="attachments" filename="store_attachments_fname" widget="binary"/>
+                                    <field name="store_attachments_fname" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group>
+                        <group>
+                            <field name="app1_remarks" attrs="{'invisible': [('app1_remarks','=',False)]}"/>
+                            <field name="hod_remarks" attrs="{'invisible': [('hod_remarks','=',False)]}"/>
+                            <field name="dir_remarks" attrs="{'invisible': [('dir_remarks','=',False)]}"/>
+                            <field name="accounts_remarks" attrs="{'invisible': [('accounts_remarks','=',False)]}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_hr_travel_claim_search" model="ir.ui.view">
+        <field name="name">hr.travel.claim.search</field>
+        <field name="model">hr.travel.claim</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <search string="Travel Claim">
+                <filter string="My Claim" domain="[('employee_id.user_id','=', uid)]" name = "user_id"/>
+                <filter name="month" string="Date" date="date"/>
+                <group expand="0" string="Group By">
+                    <filter string="Reqest Date" name="groupby_date" domain="[]" context="{'group_by':'date:month'}" help="Timesheet by Date"/>
+                </group>
+                <filter string="To Approve" domain="[('state', 'in', ('approver1', 'hod', 'director', 'accounts', 'acc_head'))]" name = "approver"/>
+                <filter string="To Verify" domain="[('state', '=', 'accounts')]" name = "accounts"/>
+            </search>
+        </field>
+    </record>
+    <record id="travel_action_claim" model="ir.actions.act_window">
+        <field name="name">Travel Claim</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.travel.claim</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="search_view_id" ref="view_hr_travel_claim_search" />
+        <field name="domain">[('employee_id.user_id','=', uid)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+        <field name="context">{'search_default_groupby_date': 1}</field>
+    </record>
+    <record id="action_travel_claim_approver" model="ir.actions.act_window">
+        <field name="name">Claim Approvals</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.travel.claim</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="search_view_id" ref="view_hr_travel_claim_search" />
+        <field name="domain">[]</field>
+        <!-- <field name="groups" eval="[(4,ref('hr_employee_kra.group_kra_approver_1'))]"/> -->
+        <field name="context">{'search_default_groupby_date': 1,
+                                'search_default_approver': 1}</field>
+    </record>
+    <record id="action_travel_claim_accounts" model="ir.actions.act_window">
+        <field name="name">Travel Accounts</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.travel.claim</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="search_view_id" ref="view_hr_travel_claim_search" />
+        <field name="domain">[('state', 'in', ('accounts', 'acc_head', 'approved'))]</field>
+        <!-- <field name="groups" eval="[(4,ref('hr_employee_kra.group_kra_approver_1'))]"/> -->
+        <field name="context">{'search_default_groupby_date': 1,
+                                'search_default_accounts': 1}</field>
+    </record>
+</odoo>

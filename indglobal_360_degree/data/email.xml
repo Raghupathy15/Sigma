@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Email template for Department HOD's -->
+        <record id="email_template_for_hod" model="mail.template">
+            <field name="name">Indglobal - 360-Degree mail to hod</field>
+            <field name="subject">Reg:360-Degree Performance Evolution</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.dept_hod_1_id.work_email},${object.dept_hod_2_id.work_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="indglobal_360_degree.model_threesixty_degree"/>
+            <field name="body_html"><![CDATA[
+                <p>Hai,</p>
+                <br/>
+                <p>Kindly give performance evolution for ${object.assignee_hod_id.name}</p>
+                <br/>
+                <p>Regards,</p>
+                <p>${user.name}</p>
+            ]]></field>
+        </record>
+    </data>
+</odoo>

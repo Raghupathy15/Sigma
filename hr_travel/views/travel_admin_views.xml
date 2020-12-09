@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hr_travel_admin_tree" model="ir.ui.view">
+        <field name="name">hr.travel.admin.tree</field>
+        <field name="model">hr.travel.admin</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Travel Admin">
+                <field name="name" string="Seq.No"/>
+                <field name="date"/>
+                <field name="employee_id"/>
+                <field name="priority_type"/>
+                <field name="travel_mode_id"/>
+                <field name="travel_type"/>
+                <field name="project_ref_id"/>
+                <field name="no_of_days"/>
+                <field name="booking_status"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_hr_travel_admin_form" model="ir.ui.view">
+        <field name="name">hr.travel.admin.form</field>
+        <field name="model">hr.travel.admin</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Travel Request" duplicate="0">
+                <header>
+                    <button name="send_for_approver1" string="Submit" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', 'draft'),('is_employee', '=', False)]}"/>
+                    <button name="return_admin" string="Return" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', 'submit_admin'),'|',('is_return', '=', True),'|',('is_return_ticket', '=', True),('is_cancel', '=', True)]}" groups="hr_travel.group_kra_admin" context="{'default_travel_id': active_id}"/>
+                    <button name="modify_admin" string="Modify" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', ['submit_admin']),'|','&amp;',('is_return_ticket','=', False),'&amp;', ('is_return', '=', False),('is_modify','=', True),'|','&amp;',('is_return_ticket','=', False),'&amp;',('is_modify', '=', False),('is_return','=', False),'&amp;',('is_return_ticket','=', False),'&amp;',('is_modify','=', True),('is_return','=', True)]}" groups="hr_travel.group_kra_admin" context="{'default_travel_id': active_id}"/>
+                    <button name="cancelled_admin" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', 'submit_admin'),('is_cancel', '=', False)]}" groups="hr_travel.group_kra_admin"/>
+                    <button name="send_for_accounts" string="Submit" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', 'submit_admin'),'|',('is_modify_mode', '=', True),('is_cancel', '=', True)]}" groups="hr_travel.group_kra_admin"/>
+                    <button name="action_accounts" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', 'submit_accounts'),('is_cancel', '=', True)]}" groups="hr_travel.group_kra_accounts_head"/>
+                    <button name="approve_cancel_accounts" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', 'submit_accounts'),('is_cancel', '=', False)]}" groups="hr_travel.group_kra_accounts_head"/>
+                    <button name="submit_employee" string="Agree" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', 'submit_employee'),'|',('is_change_date', '=', False),('is_employee', '=', False)]}"/>
+                    <button name="submit_disagree_employee" string="Disagree" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', 'submit_employee'),('is_employee', '=', False)]}"/>
+                    <button name="action_approve1" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', 'submit_approver1'),('is_cancel', '=', True)]}" groups="hr_employee_kra.group_kra_approver_1"/>
+                    <button name="cancelled_approve" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', 'submit_approver1'),('is_cancel', '=', False)]}" groups="hr_employee_kra.group_kra_approver_1"/>
+                    <button name="reject_travel" string="Reject" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', 'submit_approver1'),('is_cancel', '=', True)]}" groups="hr_employee_kra.group_kra_approver_1" context="{'default_travel_id': active_id}"/>
+                    <button name="action_approve2" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'submit_approver2')]}" groups="hr_employee_kra.group_kra_approver_2"/>
+                    <button name="reject_app2" string="Reject" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'submit_approver2')]}" groups="hr_employee_kra.group_kra_approver_2" context="{'default_travel_id': active_id}"/>
+                    <button name="request_advance" string="Submit" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', 'travelling'),'&amp;',('additional_advance', 'not in', 'yes'),('travel_extend', 'not in', 'yes')]}"/>
+                    <button name="return_request" string="Submit" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', 'travelling'),'|',('return_ticket', '!=', 'yes'),('is_return_trip', '=', True)]}"/>
+                    <button name="action_claim" string="Completed" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', 'travelling'),('date_to', '=', False)]}"/>
+                    <button name="cancelled_hod" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', 'submit_hod'),('is_cancel', '=', False)]}" groups="hr_employee_kra.group_kra_hod"/>
+                    <button name="action_hod" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', 'submit_hod'),('is_cancel', '=', True)]}" groups="hr_employee_kra.group_kra_hod"/>
+                    <button name="reject_hod" string="Reject" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', 'submit_hod'),('is_cancel', '=', True)]}" groups="hr_employee_kra.group_kra_hod" context="{'default_travel_id': active_id}"/>
+                    <button name="action_director" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'submit_director')]}" groups="hr_employee_kra.group_kra_director"/>
+                    <button name="reject_director" string="Reject" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'submit_director')]}" groups="hr_employee_kra.group_kra_director" context="{'default_travel_id': active_id}"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="oe_highlight" attrs= "{'invisible': ['|',('state', 'in', ['draft', 'submit_claim', 'cancelled']),'|',('is_cancel', '=', True),('is_employee', '=', False)]}" context="{'default_travel_id': active_id}"/>
+                    <!-- <button name="reset_draft" string="Draft" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'cancelled')]}"/> -->
+                    <field name="state" widget="statusbar" statusbar_visible="submit_admin,submit_accounts,submit_claim"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Travel Request">
+                            <field name="employee_id" options='{"no_open": True, "no_create": True}' readonly="1" attrs="{'invisible': [('state', 'in', 'draft')]}"/>
+                            <field name="emp_grade" options='{"no_open": True, "no_create": True}'/>
+                            <field name="designation_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                            <field name="priority_type" attrs="{'readonly': [('state', 'not in', ['draft'])]}" required="1"/>
+                            <field name="project_ref_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}" options='{"no_open": True, "no_create": True}' required="1"/>
+                            <field name="travel_purpose" attrs="{'readonly': [('state', 'not in', 'draft')]}" required="1"/>
+                            <field name="travel_type" attrs="{'readonly': [('state', 'not in', 'draft')]}" required="1" force_save="1"/>
+                            <field name="travel_mode_id" attrs="{'readonly': ['|',('state', 'not in', ['draft','submit_admin']),'&amp;',('state', '=', 'submit_admin'),('is_change_mode', 'in', [False,'no'])]}" options='{"no_open": True, "no_create": True}' required="1"/>
+                            <!-- <field name="mode_type_id" attrs="{'readonly': ['|',('is_admin', '=',False),('state', 'not in',['submit_admin'])],'invisible': ['|', ('state', 'not in', ['submit_admin','submit_accounts','travelling']), '|', ('is_change_mode', '=', 'yes'), ('priority_type', 'in', ['fast_track','emergency'])]}" options='{"no_open": True, "no_create": True}'/>
+                            <field name="modify_mode_type_id" attrs="{'readonly': ['|',('state', 'not in', ['submit_admin']),'|',('is_admin', '=', False),('is_modify', '=', True)],'invisible': ['|', ('state', 'not in', ['submit_admin','submit_hod','submit_director','travelling']),'&amp;',('priority_type', '!=', ['fast_track','emergency']),('is_change_mode', '!=', 'yes')],'required':[('is_change_mode', '=', 'yes')]}" options='{"no_open": True, "no_create": True}'/> -->
+                            <field name="mode_type_id" attrs="{'readonly': ['|',('is_admin', '=',False),('state', 'not in',['submit_admin'])],'invisible': ['|', ('state', 'not in', ['submit_admin','submit_accounts','travelling']),('mode_type_access','=', False)]}" options='{"no_open": True, "no_create": True}'/>
+                            <field name="modify_mode_type_id" attrs="{'readonly': ['|',('state', 'not in', ['submit_admin']),'|',('is_admin', '=', False),('is_modify', '=', True)],'invisible': ['|', ('state', 'not in', ['submit_admin','submit_hod','submit_director','travelling']),('mode_type_access','=', True)],'required':[('is_change_mode', '=', 'yes')]}" options='{"no_open": True, "no_create": True}'/>
+                        </group>
+                        <group string="Dates">
+                            <field name="age" attrs="{'invisible': ['|',('state', 'not in', ['submit_admin']),('is_admin', '=', False)]}"/>
+                            <field name="aadhar_number" attrs="{'invisible': ['|',('state', 'not in', ['submit_admin']),('is_admin', '=', False)]}"/>
+                            <field name="contact_no" attrs="{'invisible': ['|',('state', 'not in', ['submit_admin']),('is_admin', '=', False)]}"/>
+                            <field name="date" readonly="1"/>
+                            <field name="departure_date" attrs="{'readonly': ['|',('state', 'not in', ['draft', 'submit_employee']),('is_employee', '!=', True)]}" required="1"/>
+                            <field name="date_from" attrs="{'readonly': ['|', ('state', 'not in', ['draft','submit_employee']),('is_employee', '!=', True)]}" required="1"/>
+                            <field name="date_to" attrs="{'invisible': [('state', 'not in', ['travelling','submit_claim'])], 'readonly': [('is_employee', '=', False)]}"/>
+                            <field name="no_of_days" attrs="{'readonly': ['|',('state', 'not in', ['draft', 'submit_employee']),'|',('is_employee', '!=', True),('travel_type', '=', 'round_trip')]}" force_save="1" required="1"/>
+                            <field name="preffered_departure_date" attrs="{'readonly': ['|', ('state', 'not in', ['draft', 'submit_employee']),('is_employee', '!=', True)]}" options='{"no_open": True, "no_create": True}'/>
+                            <field name="booking_status" invisible="1"/>
+                            <field name="is_modify" invisible="1"/>
+                            <field name="is_return" invisible="1"/>
+                            <field name="is_mode" invisible="1"/>
+                            <!-- <field name="is_return_modify" invisible="1"/> -->
+                            <field name="is_return_ticket" invisible="1"/>
+                            <field name="is_return_trip" invisible="1"/>
+                            <field name="is_change_date" invisible="1"/>
+                            <field name="is_modify_mode" invisible="1"/>
+                            <field name="is_change_mode" attrs="{'invisible': ['|', ('state', 'not in', 'submit_admin'),'|',('is_admin', '=', False),'&amp;',('is_return', '!=', True),('is_return_trip', '!=', True)]}" force_save="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="is_employee" invisible="1"/>
+                            <field name="is_admin" invisible="1"/>
+                            <field name="is_accounts" invisible="1"/>
+                            <field name="is_approve" invisible="1"/>
+                            <field name="is_extend" invisible="1"/>
+                            <field name="is_cancel" invisible="1"/>
+                            <field name="user_id" invisible="1"/>
+                            <field name="app1_date" invisible="1"/>
+                            <field name="app2_date" invisible="1"/>
+                            <field name="hod_date" invisible="1"/>
+                            <field name="admin_emp_ids" invisible="1" force_save="1" widget="many2many_tags"/>
+                            <field name="accounts_head_emp_ids" invisible="1" force_save="1" widget="many2many_tags"/>
+                            <field name="accounts_emp_ids" invisible="1" force_save="1" widget="many2many_tags"/>
+
+                            <field name="hr_reminder_approver1_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="hr_reminder_approver2_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="hr_reminder_hod_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="hr_reminder_director_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="employee_ids" invisible="1" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Travel Reference">
+                            <field name="travel_advance" attrs="{'readonly': [('state', 'not in', 'draft')]}"/>
+                            <field name="approved_advance" attrs="{'invisible': [('travel_advance', 'not in', 'yes')],'readonly': ['|',('state', 'not in', ['draft', 'submit_accounts']),'&amp;',('is_employee', '=', False),('is_accounts', '=', False)]}"/>
+                            <field name="additional_advance" attrs="{'invisible': [('state', 'not in', 'travelling')],'readonly': ['|',('state', 'not in', ['travelling']),'|',('return_ticket', '=', 'yes'),('is_employee', '=', False)]}"/>
+                            <field name="additional_advance_amount" attrs="{'invisible': [('additional_advance', '!=', 'yes')],'readonly': ['|',('state', 'not in', ['travelling', 'submit_accounts']),'&amp;',('is_employee', '=', False),('is_accounts', '=', False)]}"/>
+                            <field name="travel_extend" attrs="{'invisible': [('state', 'not in', 'travelling')],'readonly': ['|',('state', 'not in', ['travelling']),'|',('return_ticket', '=', 'yes'),('is_employee', '=', False)]}"/>
+                            <field name="days_extension" attrs="{'invisible': ['|', ('travel_extend', '!=', 'yes')],'readonly': [('state', 'not in', ['travelling'])]}"/>
+                            <field name="is_add_advance" invisible="1"/>
+                            <!-- Addd by Raghu for edit adv (START)-->
+                            <field name="edit_advance" invisible="1"/>
+                            <field name="account_remarks" attrs="{'invisible': [('edit_advance', '=', False)], 'required': [('edit_advance', '=',True)],'readonly': [('state', 'not in',('submit_accounts'))]}"/>
+                            <!-- Addd by Raghu for edit adv (END)-->
+                            <field name="approver1_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="approver2_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="hod_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="director_id" options='{"no_open": True, "no_create": True}'/>
+                        </group>
+                        <group string="Location">
+                            <field name="from_location_id" attrs="{'readonly': [('state', 'not in', 'draft')]}" options='{"no_open": True, "no_create": True}' required="1"/>
+                            <field name="to_location_id" attrs="{'readonly': [('state', 'not in', 'draft')]}" options='{"no_open": True, "no_create": True}' required="1"/>
+                            <field name="boarding_point" attrs="{'readonly': [('state', 'not in', 'draft')],'invisible': [('mode_type', '=', 'flight')]}"/>
+                            <field name="mode_type" invisible="1"/>
+                            <field name="accommodation" attrs="{'readonly': [('state', 'not in', ['draft'])]}" required="1"/>
+                            <field name="hotel_booking" attrs="{'invisible': [('accommodation', 'not in', 'hotel')],'readonly': [('state', 'not in', ['draft'])]}"/>
+                            <field name="hotel_cost" attrs="{'readonly': ['|', ('state', 'not in', 'submit_admin'),('is_admin', '=', False)],'invisible': ['|', ('state', 'not in', ['submit_admin','submit_accounts','travelling']),'|',('accommodation', 'in', ['guest_house','self']),('hotel_booking', '!=', 'admin')]}"/>
+                            <field name="hotel_ticket" attrs="{'readonly': [('is_admin', '=', False)],'invisible': ['|', ('state', 'not in', ['submit_admin','submit_accounts','travelling']),'|',('accommodation', 'in', ['guest_house','self']), ('hotel_booking', '!=', 'admin')]}" filename="store_hotel_fname"/>
+                            <field name="store_hotel_fname" invisible="1"/>
+
+                            <field name="preferred_area" attrs="{'invisible': [('hotel_booking', 'not in', 'admin')],'readonly': [('state', 'not in', 'draft')]}"/>
+                            <field name="return_ticket" attrs="{'invisible': ['|',('state', 'not in', ['travelling']),('travel_type', '=', 'round_trip')],'readonly': ['|', ('is_employee', '=', False),'|',('is_return_trip', '=', True),'|',('additional_advance', '=', 'yes'),('travel_extend', '=', 'yes')]}" options='{"no_open": True, "no_create": True}'/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Tickets" attrs="{'invisible': [('state', 'not in', ['submit_admin','submit_accounts','travelling','submit_claim','cancelled'])]}">
+                            <field name="booking_agent" attrs="{'readonly': ['|', ('state', 'not in', 'submit_admin'),('is_admin', '=', False)],'invisible': [('state', 'not in', ['submit_admin','submit_accounts','travelling','submit_claim'])]}"/>
+                            <field name="onward_ticket_cost" attrs="{'readonly': ['|', ('state', 'not in', 'submit_admin'),('is_admin', '=', False)],'invisible': [('state', 'not in', ['submit_admin','submit_accounts','travelling','submit_claim'])]}"/>
+                            <field name="cancel_cost" attrs="{'readonly': ['|', ('state', 'not in', 'submit_admin'),('is_admin', '=', False)],'invisible': ['|', ('state', 'not in', ['submit_admin','submit_accounts','travelling','submit_claim','cancelled']),('is_cancel', '=', False)]}"/>
+                            <field name="hotel_cancel_cost" attrs="{'readonly': ['|', ('state', 'not in', 'submit_admin'),('is_admin', '=', False)],'invisible': ['|', ('state', 'not in', ['submit_admin','submit_accounts','travelling','submit_claim','cancelled']),'|', ('hotel_booking', '!=', 'admin'),('is_cancel', '=', False)]}"/>
+                            <field name="onward_ticket" attrs="{'readonly': [('is_admin', '=', False)],'invisible': [('state', 'not in', ['submit_admin','submit_accounts','travelling','submit_claim'])]}" filename="store_fname" />
+                            <field name="store_fname" invisible="1" />
+                            <field name="return_ticket_cost" attrs="{'invisible': ['&amp;', ('travel_type', 'not in', ['round_trip']),('return_ticket', '!=', 'yes')],'readonly': [('is_admin', '=', False)]}"/>
+                            <field name="returned_ticket" attrs="{'invisible': ['&amp;', ('travel_type', 'not in', ['round_trip']),('return_ticket', '!=', 'yes')],'readonly': [('is_admin', '=', False)]}" filename="store_return_fname" />
+                            <field name="store_return_fname" invisible="1" />
+                        </group>
+                        <group string="Return" attrs="{'invisible': ['&amp;',('return_ticket', '!=', 'yes'),('travel_type', 'not in', ['round_trip'])]}">
+                            <field name="return_preference" attrs="{'invisible': [('return_ticket', '!=', 'yes')],'readonly': ['|', ('state', 'not in', ['draft','travelling']),'|',('is_return_trip', '=', True),('is_employee', '!=', True)],'required': [('return_ticket', '=', 'yes')]}"/>
+                            <field name="return_booking_agent" attrs="{'invisible': [('state', 'not in', ['submit_hod','submit_director', 'submit_admin', 'submit_accounts', 'travelling'])],'readonly': ['|',('state', '!=', 'submit_admin'),('is_admin', '=', False)]}" options='{"no_open": True, "no_create": True}'/>
+                            <field name="return_travel_mode_id" attrs="{'invisible': ['&amp;',('travel_type', 'not in', ['round_trip']),('return_ticket', '!=', 'yes')],'readonly': ['|', ('state', 'not in', ['draft','travelling']),'|',('is_return_trip', '=', True),('is_employee', '!=', True)],'required': ['|',('travel_type', 'in', ['round_trip']),('return_ticket', '=', 'yes')]}" options='{"no_open": True, "no_create": True}'/>
+                            <!-- <field name="return_mode_type_id" attrs="{'invisible': ['|',('state', 'not in', ['submit_hod','submit_director', 'submit_admin', 'submit_accounts', 'travelling']),'|',('is_change_mode', '=', 'yes'),('return_preference', '=', 'fast_track')],'readonly': ['|',('state', 'not in', ['submit_admin'])]}" options='{"no_open": True, "no_create": True}'/>
+                            
+                            <field name="modify_return_mode_type_id" attrs="{'invisible': ['|',('state', 'not in', ['submit_hod','submit_director','submit_accounts', 'submit_admin']),'&amp;',('is_change_mode', '!=', 'yes'),('return_preference', '!=', 'fast_track')],'readonly': ['|',('state', 'not in', ['submit_admin'])]}" options='{"no_open": True, "no_create": True}'/> -->
+                            <field name="mode_type_access" invisible="1"/>
+                            <field name="return_mode_type_id" attrs="{'invisible': ['|',('state', 'not in', ['submit_hod','submit_director', 'submit_admin', 'submit_accounts', 'travelling']), ('mode_type_access','=', False)],'readonly': ['|',('state', 'not in', ['submit_admin'])]}" options='{"no_open": True, "no_create": True}'/>
+                            
+                            <field name="modify_return_mode_type_id" attrs="{'invisible': ['|',('state', 'not in', ['submit_hod','submit_director','submit_accounts', 'submit_admin']), ('mode_type_access','=', True)],'readonly': ['|',('state', 'not in', ['submit_admin'])]}" options='{"no_open": True, "no_create": True}'/>
+                            
+                            <field name="return_date" attrs="{'invisible': ['&amp;',('travel_type', 'not in', ['round_trip']),('return_ticket', '!=', 'yes')],'readonly': ['|',('state', 'not in', ['draft', 'travelling', 'submit_employee']),'|',('is_return_trip', '=', True),('is_employee', '!=', True)],'required': ['|',('travel_type', 'in', ['round_trip']),('return_ticket', '=', 'yes')]}"/>
+                            <field name="returned_preffered_time" attrs="{'invisible': ['&amp;',('travel_type', 'not in', ['round_trip']),('return_ticket', '!=', 'yes')],'readonly': ['|', ('state', 'not in', ['draft','travelling']),'|',('is_return_trip', '=', True),('is_employee', '!=', True)],'required': ['|',('travel_type', 'in', ['round_trip']),('return_ticket', '=', 'yes')]}" options='{"no_open": True, "no_create": True}'/>
+                            <field name="return_from_location_id" attrs="{'invisible': [('return_ticket', '!=', 'yes')]}" options='{"no_open": True, "no_create": True}' readonly="1" force_save="1"/>
+                            <field name="return_to_location_id" attrs="{'invisible': [('return_ticket', '!=', 'yes')]}" options='{"no_open": True, "no_create": True}' readonly="1" force_save="1"/>
+                           <!--  <field name="return_boarding" attrs="{'invisible': ['&amp;',('travel_type', 'not in', ['round_trip']),('return_ticket', '!=', 'yes')],'readonly': ['|',('state', 'not in', ['draft', 'travelling', 'submit_employee']),'|',('is_return_trip', '=', True),('is_employee', '!=', True)]}"/> -->
+                            <field name="return_boarding" attrs="{'invisible': ['|',('return_mode_type', '=', 'flight'),'&amp;',('travel_type', 'not in', ['round_trip']),('return_ticket', '!=', 'yes')],'readonly': ['|',('state', 'not in', ['draft', 'travelling', 'submit_employee']),'|',('is_return_trip', '=', True),('is_employee', '!=', True)]}"/>
+                            <field name="return_mode_type" invisible='1'/>
+                        </group>
+                        <group>
+                            <field name="emp_remarks" attrs="{'invisible': [('emp_remarks','=',False)]}"/>
+                            <field name="app1_remarks" attrs="{'invisible': [('app1_remarks','=',False)]}"/>
+                            <field name="app2_remarks" attrs="{'invisible': [('app2_remarks','=',False)]}"/>
+                            <field name="hod_remarks" attrs="{'invisible': [('hod_remarks','=',False)]}"/>
+                            <field name="dir_remarks" attrs="{'invisible': [('dir_remarks','=',False)]}"/>
+                            <field name="admin_remarks" attrs="{'invisible': [('admin_remarks', '=', False)]}" readonly="1"/>
+                            <field name="modify_remarks" attrs="{'invisible': [('modify_remarks', '=', False)]}" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_hr_travel_admin_search" model="ir.ui.view">
+        <field name="name">hr.travel.admin.search</field>
+        <field name="model">hr.travel.admin</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <search string="Travel Request">
+                <filter string="My Request" domain="[('employee_id.user_id','=', uid)]" name = "user_id"/>
+                <filter name="month" string="Date" date="date"/>
+                <group expand="0" string="Group By">     
+                    <filter string="Reqest Date" name="groupby_date" domain="[]" context="{'group_by':'date:month'}" help="Timesheet by Date"/>
+                </group>
+                <filter string="To Approve" domain="[('state', 'in', ('submit_approver1', 'submit_approver2', 'submit_hod', 'submit_director'))]" name = "approver"/>
+                <filter string="Advance Approve" domain="[('state', '=', ('submit_accounts'))]" name = "accounts"/>
+                <filter string="Pending" domain="[('state', '=', ('submit_admin'))]" name = "admin_desk"/>
+            </search>
+        </field>
+    </record>
+    <record id="travel_request_admin" model="ir.actions.act_window">
+        <field name="name">Travel Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.travel.admin</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hr_travel_admin_search"/>
+        <field name="domain">[('employee_id.user_id','=', uid)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+        <field name="context">{'search_default_groupby_date': 1}</field>
+    </record>
+    <record id="action_travel_request_approver" model="ir.actions.act_window">
+        <field name="name">Travel Approval</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.travel.admin</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="search_view_id" ref="view_hr_travel_admin_search" />
+        <field name="domain">[]</field>
+        <!-- <field name="groups" eval="[(4,ref('hr_employee_kra.group_kra_approver_1'))]"/> -->
+        <field name="context">{'search_default_groupby_date': 1,
+                                'search_default_approver': 1}</field>
+    </record>
+    <record id="travel_action_admin_desk" model="ir.actions.act_window">
+        <field name="name">Travel Admin</field>
+        <field name="res_model">hr.travel.admin</field>
+        <field name="search_view_id" ref="view_hr_travel_admin_search" />
+        <field name="domain">[('state', 'in', ('submit_admin', 'travelling', 'submit_claim', 'cancelled'))]</field>
+        <field name="context">{'search_default_groupby_date': 1,
+                                'search_default_admin_desk': 1}</field>
+    </record>
+    <record id="travel_admin_action_accounts" model="ir.actions.act_window">
+        <field name="name">Travel Accounts</field>
+        <field name="res_model">hr.travel.admin</field>
+        <field name="search_view_id" ref="view_hr_travel_admin_search" />
+        <field name="domain">['&amp;',('travel_advance','=', 'yes'),('state', 'in', ('submit_accounts', 'travelling', 'submit_claim', 'cancelled'))]</field>
+        <field name="context">{'search_default_groupby_date': 1,
+                                'search_default_accounts': 1
+                               }</field>
+    </record>
+<!-- Employee ID in Users Master -->
+    <record id="view_users_inherit_sigma_form" model="ir.ui.view">
+        <field name="name">res.users.inherit.sigma.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='login']" position="after">
+                <field name="employee_id" invisible="1"/>
+                <field name="employee_code" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+    <menuitem id="menu_hr_travel" name="Travel" sequence="0" web_icon="hr_travel,static/description/travel_icon.png"/>
+    <menuitem id="menu_hr_travel_root" name="Travel" sequence="1" parent="hr_travel.menu_hr_travel"/>
+    <menuitem id="menu_hr_travel_config" name="Configuration" sequence="2" parent="hr_travel.menu_hr_travel" groups="hr_travel.group_kra_admin_config"/>
+    <menuitem id="menu_hr_travel_request" name="Travel Request" action="travel_request_admin" sequence="1" parent="hr_travel.menu_hr_travel_root" groups="base.group_user"/>
+    <menuitem id="menu_hr_travel_approver" name="Travel Approvals" action="action_travel_request_approver" sequence="2" parent="hr_travel.menu_hr_travel_root" groups="hr_employee_kra.group_kra_approver_1,hr_employee_kra.group_kra_approver_2,hr_employee_kra.group_kra_hod,hr_employee_kra.group_kra_director,hr_employee_kra.group_kra_hr"/>
+    <menuitem id="menu_hr_travel_admin" name="Admin Desk" action="travel_action_admin_desk" sequence="3" parent="hr_travel.menu_hr_travel_root" groups="hr_travel.group_kra_admin"/>
+    <menuitem id="menu_hr_travel_accounts" name="Advance Request" action="travel_admin_action_accounts" sequence="4" parent="hr_travel.menu_hr_travel_root" groups="hr_travel.group_kra_accounts_head"/>
+    <menuitem id="menu_hr_travel_claim" name="Claim Request" action="travel_action_claim" sequence="5" parent="hr_travel.menu_hr_travel_root" groups="base.group_user"/>
+    <menuitem id="menu_hr_travel_claim_approver" name="Claim Approvals" action="action_travel_claim_approver" sequence="6" parent="hr_travel.menu_hr_travel_root" groups="hr_employee_kra.group_kra_approver_1,hr_employee_kra.group_kra_hod,hr_employee_kra.group_kra_hr"/>
+    <menuitem id="menu_hr_travel_claim_accounts" name="Claim Verify" action="action_travel_claim_accounts" sequence="7" parent="hr_travel.menu_hr_travel_root" groups="hr_travel.group_kra_accounts,hr_travel.group_kra_accounts_head"/>
+</odoo>

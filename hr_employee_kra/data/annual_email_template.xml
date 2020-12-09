@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Email template for Annual Appraisal from Cron to Approver1-->
+        <record id="email_template_annual_cron_to_Emp" model="mail.template">
+            <field name="name">Email template Annual Cron to Emp</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to"></field>
+            <field name="subject">Annual Appraisal for ${object.employee_id.name}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_appraisal"/>
+            <field name="body_html"><![CDATA[
+				<p>Hi ${object.employee_id.name},</p>
+				<br/>
+				<div>
+					<span>Annual assessment is created for you. Please login to HRMS and complete the self assessment within 5 days.</span>
+				<br/>
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID.</p>
+			]]></field>
+        </record>
+        
+
+        <!-- Email template for Annual Appraisal from Employee to Approver1-->
+        <record id="email_template_annual_emp_to_a1" model="mail.template">
+            <field name="name">Email template Annual Emp to A1</field>
+            <field name="subject">Annual Appraisal for ${object.employee_id.name}</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.lone_manager_id.work_email or object.employee_id.lone_manager_id.employee_email}
+            </field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_appraisal"/>
+            <field name="body_html"><![CDATA[
+				<p>Hi ${object.employee_id.lone_manager_id.name},</p>
+				<br/>
+				<div>
+					<span>This is to inform you that ${object.employee_id.employee_id} ${object.employee_id.name} had submitted the Self assessment rating in the annual assessment form for your review and rating within 7 days. </span>
+				<br/>
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID.</p>
+			]]></field>
+        </record>
+
+        <!-- Email template for Annual Appraisal from Approver1 to Approver2 -->
+        <record id="email_template_annual_a1_to_a2" model="mail.template">
+            <field name="name">Email template Annual A1 to A2</field>
+            <field name="subject">Annual Appraisal for ${object.employee_id.name}
+            </field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.ltwo_manager_id.work_email or object.employee_id.ltwo_manager_id.employee_email}
+</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_appraisal"/>
+            <field name="body_html"><![CDATA[
+				<p>Hi ${object.employee_id.ltwo_manager_id.name},</p>
+				<br/>
+				<div>
+					<span>This is to inform you that ${object.employee_id.employee_id} ${object.employee_id.name} had submitted the Self assessment rating in the annual assessment form for your review and rating within 7 days. </span>
+				<br/>
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID.</p>
+			]]></field>
+        </record>
+
+        <!-- Email template for Annual Appraisal from Approver2 to HOD -->
+        <record id="email_template_annual_a2_to_hod" model="mail.template">
+            <field name="name">Email template Annual A2 to HOD</field>
+            <field name="subject">Annual Appraisal for ${object.employee_id.name}
+            </field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.hod_id.work_email or object.employee_id.hod_id.employee_email}
+</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_appraisal"/>
+            <field name="body_html"><![CDATA[
+				<p>Hi ${object.employee_id.hod_id.name},</p>
+				<br/>
+				<div>
+					<span>This is to inform you that ${object.employee_id.employee_id} ${object.employee_id.name} had submitted the Self assessment rating in the annual assessment form for your review and rating within 7 days. </span>
+				<br/>
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID.</p>
+			]]></field>
+        </record>
+
+		<!-- Email template for Annual Appraisal from HOD to Director -->
+        <record id="email_template_annual_hod_to_director" model="mail.template">
+            <field name="name">Email template Annual HOD to Director</field>
+            <field name="subject">Annual Appraisal for ${object.employee_id.name}
+            </field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.parent_id.work_email or object.employee_id.parent_id.employee_email}
+</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_appraisal"/>
+            <field name="body_html"><![CDATA[
+				<p>Hi ${object.employee_id.parent_id.name},</p>
+				<br/>
+				<div>
+					<span>This is to inform you that, the Annual appraisal process is compeleted for ${object.employee_id.employee_id} ${object.employee_id.name}</span>
+				<br/>
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID.</p>
+			]]></field>
+        </record>
+
+
+    </data>
+</odoo>

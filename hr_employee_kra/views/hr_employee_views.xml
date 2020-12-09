@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_job_inherit_recruitments" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.recruitment</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='work_email']" position="after">
+                <field name="applicant_id" options='{"no_open": True, "no_create": True}' groups="hr_employee_kra.group_kra_hr"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- <record id="induction_hr_employee_view_form" model="ir.ui.view">
+        <field name="name">induction.hr.employee.view.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+                <button name="toggle_active" position="before">
+                    <button name="%(act_hr_employee_induction_list)d"
+                        class="oe_stat_button"
+                        icon="fa-bars"
+                        type="action">
+                        <field name="induction_count" widget="statinfo" string="Induction"/>
+                    </button>
+                    <button name="%(act_hr_employee_probation_list)d"
+                        class="oe_stat_button"
+                        icon="fa-shield"
+                        type="action">
+                        <field name="probation_count" widget="statinfo" string="Probation"/>
+                    </button>
+                    <button name="%(act_hr_employee_kra_list)d"
+                        class="oe_stat_button"
+                        icon="fa-object-group"
+                        type="action">
+                        <field name="kra_count" widget="statinfo" string="KRA"/>
+                    </button>
+                    <button name="%(act_hr_employee_quarterly_list)d"
+                        class="oe_stat_button"
+                        icon="fa-tachometer"
+                        type="action">
+                        <field name="quarterly_count" widget="statinfo" string="Quarterly Review"/>
+                    </button>
+                    <button name="%(act_hr_employee_appraisal_list)d"
+                        class="oe_stat_button"
+                        icon="fa-american-sign-language-interpreting"
+                        type="action">
+                        <field name="appraisal_count" widget="statinfo" string="Annual Appraisal"/>
+                    </button>
+                </button>
+        </field>
+    </record> -->
+<!--       Hr Employee Inherit Kanban View -->
+    <record model="ir.ui.view" id="hr_employee_kanban_view_extened">
+        <field name="name">hr.employee.kanban.view.extened</field>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <xpath expr="//ul/li[2]" position="replace">
+                <li t-if="record.work_location.raw_value">
+                    <field name="work_location" invisible="1"/>
+                </li>
+                <li t-if="record.employee_id.raw_value">
+                    <field name="employee_id"/>
+                </li>
+                <li t-if="record.department_id.raw_value">
+                    <field name="department_id"/>
+                </li>
+                <li t-if="record.location_work_id.raw_value">
+                    <field name="location_work_id"/>
+                </li>
+            </xpath>
+        </field>
+    </record>
+</odoo>

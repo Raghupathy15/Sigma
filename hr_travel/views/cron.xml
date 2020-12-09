@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--If hod not approved in 60 minutes mail trigger to L2 -->
+    <record id="ir_cron_creation_to_l2" model="ir.cron">
+        <field name="name">If hod not approved in 60 minutes mail trigger to L2</field>
+        <field name="model_id" ref="model_hr_travel_admin"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_change_state()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+    </record>
+    <!--If Employee is not complete a Travel request Employee Account should block -->
+    <!-- <record id="ir_cron_tr_user_blocked_email" model="ir.cron">
+        <field name="name">TR User Blocked</field>
+        <field name="model_id" ref="model_hr_travel_admin"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_block_tr_user()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+    </record> -->
+
+    <!--Travel Claim Approver Account block Notification-->
+    <record id="ir_cron_tc_approver_blocked_notify_email" model="ir.cron">
+        <field name="name">TC Approver Blocked Notification</field>
+        <field name="model_id" ref="model_hr_travel_claim"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_notify_tc_approver()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta()).strftime('%Y-%m-%d 00:20:00')"/>
+        <field eval="False" name="doall" />
+    </record>
+
+    <!--If Approver is not Approve a Travel Claim Approver Account should block -->
+    <record id="ir_cron_tc_approver_blocked_email" model="ir.cron">
+        <field name="name">TC Approver Blocked</field>
+        <field name="model_id" ref="model_hr_travel_claim"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_block_tc_approver()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 00:15:00')"/>
+        <field eval="False" name="doall" />
+    </record>
+</odoo>

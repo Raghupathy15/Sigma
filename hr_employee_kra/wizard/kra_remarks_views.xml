@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='form_kra_remark_wizard' model="ir.ui.view">
+        <field name="name">form.kra.remark</field>
+        <field name="model">kra.remark</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Remark">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                </group>
+               <footer>
+                    <button name="action_kra_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_kra_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Remark</field>
+         <field name="res_model">kra.remark</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+    </record>
+
+    <record id='form_kra_emp_remark_wizard' model="ir.ui.view">
+        <field name="name">form.kra.remark</field>
+        <field name="model">kra.emp.remark</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Remark">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                </group>
+               <footer>
+                    <button name="action_kra_emp_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_kra_emp_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Remark</field>
+         <field name="res_model">kra.emp.remark</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- For Resgination request-->
+        <record id="employee_resignation_tree" model="ir.ui.view">
+            <field name="name">hr.resignation.tree</field>
+            <field name="model">hr.resignation</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Employee Resignation">
+                    <field name="name"/>
+                    <field name="seq_date"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="joined_date"/>
+                    <field name="expected_revealing_date"/>
+                    <field name="approved_revealing_date"/>
+                    <!-- <field name="notice_period"/> -->
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- For Approved Resgination -->
+        <record id="employee_approved_resignation_tree" model="ir.ui.view">
+            <field name="name">hr.resignation.tree</field>
+            <field name="model">hr.resignation</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Employee Resignation" create="false">
+                    <field name="name"/>
+                    <field name="seq_date"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="joined_date"/>
+                    <field name="expected_revealing_date"/>
+                    <field name="approved_revealing_date"/>
+                    <!-- <field name="notice_period"/> -->
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- For Resgination request-->
+        <record id="employee_resignation_form" model="ir.ui.view">
+            <field name="name">hr.resignation.form</field>
+            <field name="model">hr.resignation</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Employee Resignation">
+                    <header>
+                        <button string="Submit" type="object" name="confirm_resignation" class="oe_highlight" attrs="{'invisible':['|',('is_confirm','=',False),('state', 'not in',('draft'))]}"/>
+                        <button string="Approve" type="object" groups="hr_employee_kra.group_kra_approver_1" name="approve_resignation" states='confirm'/>
+                        <button string="Reject" type="object" groups="hr_employee_kra.group_kra_approver_1" name="reject_resignation" states='confirm'/>
+                        <!-- <button string="Set to Draft" type="object" name="set_draft" states='cancel'/> -->
+                        <button string="Cancel Resignation" type="object" name="cancel_resignation" attrs="{'invisible':['|',('is_employee','=',False),('state','in',('draft','cancel','cancel_req'))]}"/>
+                        <button string="Accept Cancellation" type="object" class="oe_highlight" name="button_acpt_cancellation" attrs="{'invisible':['|',('is_approver1','=',False),('state','not in','cancel_req','draft')]}"/>
+                        <button string="Reject Cancellation" type="object" name="button_rej_cancel_resignation" attrs="{'invisible':['|',('is_approver1','=',False),('state','not in','cancel_req','draft')]}"/>
+                        <button string="Mail employee for Releving date change" type="object" name="button_change_revealing_date" attrs="{'invisible':['|',('is_approver1','=',False),('state','not in','cancel_req','draft')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,approved,reject,cancel,cancel_req"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="employee_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                <field name="employee_code" invisible="1"/>
+                                <field name="job_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="department_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="location_work_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="manager_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                <field name="l2_manager_id" options='{"no_open": True, "no_create": True}' invisible="1"/>
+                                <field name="user_id" invisible="1"/>
+                                <field name="cancel_res" readonly="1" attrs="{'invisible':[('cancel_res','=',False)]}"/>
+
+                                <field name="hr_reminder_approver1_ids" invisible="1"/>
+                                <field name="hr_reminder_approver2_ids" invisible="1"/>
+                                <field name="hr_reminder_hod_ids" invisible="1"/>
+                                <field name="hr_reminder_director_ids" invisible="1"/>
+                                <field name="employee_ids" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="joined_date" readonly="1"/>
+                                <field name="resign_confirm_date" readonly="1"/>
+                                <field name="expected_revealing_date" attrs="{'readonly':[('state', 'not in', 'draft')]}"/>
+                                <field name="reason" attrs="{'readonly':[('state','not in',('draft'))]}"/>
+                                <field name="approved_revealing_date" states="confirm,approved,cancel_req,cancel" attrs="{'readonly':[('is_approver1','=',False)]}"/>
+                                <field name="approver_reason" states="confirm,approved" attrs="{'readonly':[('is_approver1','=',False)]}"/>
+                                <field name="is_employee" invisible="1"/>
+                                <field name="is_approver1" invisible="1"/>
+                                <field name="is_confirm" invisible="1"/>
+                                <field name="send_mail" invisible="1"/>
+                                <field name="depart_employees_ids" invisible="1" widget="many2many_tags"/>
+                                <field name="mail" states="draft,confirm,approved,cancel_req,cancel" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- For Resgination Approved-->
+        <record id="employee_approved_resignation_form" model="ir.ui.view">
+            <field name="name">hr.resignation.form</field>
+            <field name="model">hr.resignation</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Employee Resignation" create="false" >
+                    <header>
+                        <button string="Confirm" type="object" name="confirm_resignation" class="oe_highlight" states='draft'/>
+                        <button string="Approve" type="object" class="oe_highlight" groups="hr_employee_kra.group_kra_approver_1" name="approve_resignation" states='confirm'/>
+                        <button string="Reject" type="object" groups="hr_employee_kra.group_kra_approver_1" name="reject_resignation" states='confirm'/>
+                        <button string="Cancel Resignation" type="object" name="cancel_resignation" attrs="{'invisible':['|',('is_employee','=',False),('state','in',('draft','cancel','cancel_req'))]}"/>
+                        <button string="Accept Cancellation" class="oe_highlight" type="object" name="button_acpt_cancellation" attrs="{'invisible':['|',('is_approver1','=',False),('state','not in','cancel_req','draft')]}"/>
+                        <button string="Reject Cancellation" type="object" name="button_rej_cancel_resignation" attrs="{'invisible':['|',('is_approver1','=',False),('state','not in','cancel_req','draft')]}"/>
+                        <button string="Cancel" type="object" name="cancel_resignation" states='reject'/>
+                        <button string="Mail employee for Releving date change" type="object" states="approved,reject,cancel" name="button_change_revealing_date"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,approved,reject,cancel" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="employee_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                <field name="employee_code" invisible="1"/>
+                                <field name="job_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="department_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="location_work_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="manager_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                <field name="l2_manager_id" options='{"no_open": True, "no_create": True}' invisible="1"/>
+                                <field name="user_id" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="joined_date" readonly="1"/>
+                                <field name="resign_confirm_date" readonly="1"/>
+                                <field name="expected_revealing_date" attrs="{'readonly':[('state', 'not in', 'draft')]}"/>
+                                <field name="reason" attrs="{'readonly':[('state','not in',('draft'))]}"/>
+                                <field name="approved_revealing_date" states="confirm,approved" attrs="{'readonly':[('is_approver1','=',False)]}"/>
+                                <field name="approver_reason" states="confirm,approved" attrs="{'readonly':[('is_approver1','=',False)]}"/>
+                                <field name="is_employee" invisible="1"/>
+                                <field name="is_approver1" invisible="1"/>
+                                <field name="is_confirm" invisible="1"/>
+                                <field name="send_mail" invisible="1"/>
+                                <field name="depart_employees_ids" invisible="1" widget="many2many_tags"/>
+                                <!-- <field name="notice_period" states="confirm,approved"/> -->
+                                <field name="mail" states="draft,confirm,approved,cancel_req,cancel" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--approved resignation filter-->
+        <record id="view_resignation_filter" model="ir.ui.view">
+            <field name="name">hr.resignation.search</field>
+            <field name="model">hr.resignation</field>
+            <field name="arch" type="xml">
+                <search string="To Approve">
+                    <field name="state"/>
+                    <filter string="To Approve" name="to_approve" domain="[('state','=','confirm')]"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_employee_resignation">
+            <field name="name">Employee Resignation</field>
+            <field name="res_model">hr.resignation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('user_id','=',uid)]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Employee Resignation Form
+                </p>
+            </field>
+        </record>
+        <menuitem id="employee_resignation" name="Resignation"
+                  groups="base.group_user"
+                  web_icon="hr_resignation,static/description/resignation_web.png"
+                  sequence="21"/>
+
+        <menuitem id="employee_resignation_request" parent="employee_resignation" name="Resignation Request"
+                  action="view_employee_resignation" sequence="4"/>
+    </data>
+</odoo>
+
+

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- <Priority Master> -->
+    <record id="view_hr_travel_policy_tree" model="ir.ui.view">
+        <field name="name">hr.travel.policy.tree</field>
+        <field name="model">hr.travel.policy</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Travel Policy">
+                <!-- <field name="name"/> -->
+                <field name="employee_grade_id"/>
+                <field name="days_range"/>
+                <field name="city_category"/>
+                <field name="amount"/>
+                <field name="amount_food"/>
+                <field name="created_on"/>
+                <field name="created_by"/>
+                <field name="updated_on"/>
+                <field name="updated_by"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_hr_travel_policy_form" model="ir.ui.view">
+        <field name="name">hr.travel.policy.form</field>
+        <field name="model">hr.travel.policy</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Travel Policy" duplicate="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <field name="employee_grade_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="days_range"/>
+                            <field name="city_category"/>
+                            <field name="updated_on" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="amount"/>
+                            <field name="amount_food"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="act_open_hr_travel_policy_view">
+        <field name="name">Travel Policy</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.travel.policy</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hr_travel_policy_tree" />
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_hr_travel_policy" name="Travel Policy" action="act_open_hr_travel_policy_view" sequence="2" parent="hr_travel.menu_hr_travel_config"/>
+    <!-- <Travel Mode> -->
+    <record id="view_travel_mode_tree" model="ir.ui.view">
+        <field name="name">mode.type.master.tree</field>
+        <field name="model">mode.type</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Mode Type">
+                <field name="name"/>
+                <field name="travel_mode_id"/>
+                <field name="emp_grade_id" widget='many2many_tags'/>
+                <field name="created_on"/>
+                <field name="created_by"/>
+                <field name="updated_on"/>
+                <field name="updated_by"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_travel_mode_form" model="ir.ui.view">
+        <field name="name">mode.type.form</field>
+        <field name="model">mode.type</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Mode Type" duplicate="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="emp_grade_id" widget='many2many_tags' options='{"no_open": True, "no_create": True}'/>
+                        </group>
+                        <group>
+                            <field name="travel_mode_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="updated_on" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="act_open_travel_mode_view">
+        <field name="name">Mode Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mode.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_travel_mode_tree" />
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_travel_mode_master" name="Mode Type" action="act_open_travel_mode_view" sequence="3" parent="hr_travel.menu_hr_travel_config"/>
+    
+    <!-- <City Master> -->
+    <record id="view_location_master_tree" model="ir.ui.view">
+        <field name="name">location.master.tree</field>
+        <field name="model">location.master</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="City Master">
+                <field name="name"/>
+                <field name="city_category"/>
+                <field name="created_on"/>
+                <field name="created_by"/>
+                <field name="updated_on"/>
+                <field name="updated_by"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_location_master_form" model="ir.ui.view">
+        <field name="name">location.master.form</field>
+        <field name="model">location.master</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="City Master" duplicate="0">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="created_on" invisible="1"/>
+                            <field name="created_by" invisible="1"/>
+                            <field name="updated_on" invisible="1"/>
+                            <field name="updated_on" invisible="1"/>
+                            <field name="updated_by" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="city_category"/>
+                            <field name="updated_on" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="act_open_location_master_view">
+        <field name="name">City Master</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">location.master</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_location_master_tree" />
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_location_master" name="City Master" action="act_open_location_master_view" sequence="5" parent="hr_travel.menu_hr_travel_config"/>
+    <!-- <Preferred Departure> -->
+    <record id="view_preferred_departure_tree" model="ir.ui.view">
+        <field name="name">preferred.departure.tree</field>
+        <field name="model">preferred.departure</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Preferred Departure" duplicate="0">
+                <field name="name"/>
+                <field name="created_on"/>
+                <field name="created_by"/>
+                <field name="updated_on"/>
+                <field name="updated_by"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_preferred_departure_form" model="ir.ui.view">
+        <field name="name">preferred.departure.form</field>
+        <field name="model">preferred.departure</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Preferred Departure">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="updated_on" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="act_open_preferred_departure_view">
+        <field name="name">Preferred Departure</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">preferred.departure</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_preferred_departure_tree" />
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_preferred_departure" name="Preferred Departure" action="act_open_preferred_departure_view" sequence="6" parent="hr_travel.menu_hr_travel_config"/>
+    <!-- Claim Mode -->
+    <record id="view_claim_mode_tree" model="ir.ui.view">
+        <field name="name">claim.mode.tree</field>
+        <field name="model">claim.mode</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Claim Mode">
+                <field name="name"/>
+                <field name="created_on"/>
+                <field name="created_by"/>
+                <field name="updated_on"/>
+                <field name="updated_by"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_claim_mode_form" model="ir.ui.view">
+        <field name="name">claim.mode.form</field>
+        <field name="model">claim.mode</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Claim Mode" duplicate="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="updated_on" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="act_open_claim_mode_view">
+        <field name="name">Claim Mode</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">claim.mode</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_claim_mode_tree" />
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_claim_mode" name="Claim Mode" action="act_open_claim_mode_view" sequence="7" parent="hr_travel.menu_hr_travel_config"/>
+
+    <!-- Travel mode master STARTS - Raghu -->
+    <record id="view_travel_mode_master_tree" model="ir.ui.view">
+        <field name="name">travel.mode.master.tree</field>
+        <field name="model">travel.mode.master</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Travel mode master">
+                <field name="mode_type"/>
+                <field name="emp_grade_id" widget='many2many_tags'/>
+                <field name="created_on"/>
+                <field name="created_by"/>
+                <field name="updated_by"/>
+                <field name="updated_on"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_travel_mode_master_form" model="ir.ui.view">
+        <field name="name">travel.mode.master.form</field>
+        <field name="model">travel.mode.master</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Travel mode master" duplicate="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="mode_type"/>
+                            <field name="updated_on" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="emp_grade_id" widget='many2many_tags' options='{"no_open": True, "no_create": True}'/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="act_open_travel_mode_master_view">
+        <field name="name">Travel Mode Master</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">travel.mode.master</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_travel_mode_master_tree" />
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="menu_travel_mode_master_action" name="Travel Mode Master" action="act_open_travel_mode_master_view" sequence="3" parent="hr_travel.menu_hr_travel_config"/>
+    <!-- Travel mode master ENDS - Raghu -->
+
+</odoo>

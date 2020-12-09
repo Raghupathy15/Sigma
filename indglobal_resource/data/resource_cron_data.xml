@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- To create record in attendance -->
+        <record id="ir_cron_to_create_rec_in_attendance" model="ir.cron">
+            <field name="name">Indglobal - To create record in attendance from Holiday and Weekoff</field>
+            <field name="model_id" ref="model_resource_calendar_leaves"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_holiday()</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="DateTime.now().strftime('%Y-%m-%d 18:00:00')" />
+            <field eval="False" name="doall" />
+        </record>
+    </data>
+</odoo>

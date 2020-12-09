@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+
+        <!--Allocate EL and SL leave per month-->
+        <record id="ir_cron_allocate_el_sl_leave_monthly" model="ir.cron">
+            <field name="name">Allocate EL and SL Leave per Month</field>
+            <field name="model_id" ref="model_hr_leave"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_allocate_el_sl_leave_monthly()</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="DateTime.now().strftime('%Y-%m-01 00:05:00')" />
+            <field eval="False" name="doall" />
+        </record>
+
+        <!--Allocate PL after 1 year complete-->
+        <record id="ir_cron_allocate_pl_leave_year_complete" model="ir.cron">
+            <field name="name">Allocate PL Leave per Year Complete</field>
+            <field name="model_id" ref="model_hr_leave"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_allocate_pl_leave_year_complete()</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="DateTime.now().strftime('%Y-%m-%d 00:10:00')" />
+            <field eval="False" name="doall" />
+        </record>
+
+        <!--Cron for SL Leave-->
+        <!-- <record id="ir_cron_for_sl_leave" model="ir.cron">
+            <field name="name">Indglobal - Cron For SL</field>
+            <field name="model_id" ref="model_hr_leave_allocation"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_sl()</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="DateTime.now().strftime('%Y-%m-01 00:10:00')" />
+            <field eval="False" name="doall" />
+        </record> -->
+
+        <!--Cron for SL Leave create -->
+        <!-- <record id="ir_cron_for__cron_sl_create" model="ir.cron">
+            <field name="name">Indglobal - Cron For SL Create</field>
+            <field name="model_id" ref="model_hr_leave_allocation"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_sl_create()</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="DateTime.now() + timedelta(days=1).strftime('%Y-%m-01 03:15:00')" />
+            <field eval="False" name="doall" />
+        </record> -->
+
+        <!--Cron for PL(6) Leave-->
+      <!--   <record id="ir_cron_for_pl_leave" model="ir.cron">
+            <field name="name">Indglobal - Cron For PL(6)</field>
+            <field name="model_id" ref="model_hr_leave_allocation"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_pl()</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="DateTime.now().strftime('%Y-%m-01 00:10:00')" />
+            <field eval="False" name="doall" />
+        </record> -->
+    </data>
+</odoo>

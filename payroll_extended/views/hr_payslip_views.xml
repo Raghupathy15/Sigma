@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--Payslip tree views-->
+	<record model="ir.ui.view" id="view_hr_payslip_tree_custom">
+        <field name="name">hr.payslip.tree</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="designation_id" groups="payroll_extended.group_payroll_admin" />
+                <field name="struct_id" groups="payroll_extended.group_payroll_admin" />
+                <field name="location_work_id" groups="payroll_extended.group_payroll_admin" />
+                <field name="joining_date" groups="payroll_extended.group_payroll_admin" />
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="replace"/>
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="_ctc" groups="payroll_extended.group_payroll_admin" />
+                <field name="_gross" groups="payroll_extended.group_payroll_admin" />
+                <field name="_basic" groups="payroll_extended.group_payroll_admin" />
+                <field name="num_of_days_worked" string="Num of days worked" groups="payroll_extended.group_payroll_admin" />
+                <field name="_lop" groups="payroll_extended.group_payroll_admin" />
+                <field name="_total_deduction" groups="payroll_extended.group_payroll_admin" />
+                <field name="_amt_payable" groups="payroll_extended.group_payroll_admin" />
+            </xpath>
+        </field>
+    </record>
+
+
+
+    <record model="ir.ui.view" id="view_hr_payslip_form_custom">
+        <field name="name">hr.payslip</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_payslip_done']" position="after">
+                <button name="leaves_update_button" string="Confirm" type="object" class="oe_highlight" states="draft" invisible="1"/>
+                <!-- <button name="compute_sheet_payslip" string="Computation" type="object" invisible="0"/> -->
+            </xpath>
+
+            <xpath expr="//sheet/notebook/page[3]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='credit_note']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//sheet/notebook/page[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="/form/sheet/group/field[@name='name']" position="after">
+                <field name="tds"/>
+                <field name="other_earnings"/>
+                <field name="loan"/>
+                <field name="other_deduction"/>
+                <field name="designation_id" invisible="1" />
+                <field name="location_work_id" invisible="1" />
+                <field name="joining_date" invisible="1" />
+                <field name="_ctc" invisible="1" />
+                <field name="_gross" invisible="1" />
+                <field name="_basic" invisible="1" />
+                <field name="_lop" invisible="1" />
+                <field name="_total_deduction" invisible="1" />
+                <field name="_amt_payable" invisible="1" />
+            </xpath>
+            <xpath expr="//sheet/notebook/page[2]" position="after">
+            	<page string="Leaves" invisible="1">
+	                <field name="leave_id" >
+	                    <tree string="Leave" editable="bottom">
+	                        <field name="leave_payslip_ids"/>
+                            <field name="employee_id"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+	                        <field name="leaves_taken"/>
+	                        <field name="leave_type_id"/>
+                            <field name="current_year" invisible="1"/>
+	                    </tree>
+	                </field>
+	            </page>
+                <page string="Holiday Details">
+                    <group>
+                        <group>
+                            <field name="days_in_current_month"/>
+                            <field name="num_of_global_leaves"/>
+                            <field name="num_of_leaves"/>
+                        </group>
+                        <group>
+                            <field name="num_of_days_worked"/>
+                            <field name="num_of_weekoffs"/>
+                            <field name="num_of_lop"/>
+                        </group>
+
+                    </group>
+                </page>
+            </xpath>
+            <field name="contract_id" position="after">
+                <field name="leave_update_bool" invisible="1"/>
+            </field>
+            <field name="name" position="after">
+                <field name="check_bool" invisible="1"/>
+            </field>
+        </field>
+    </record>
+    
+</odoo>

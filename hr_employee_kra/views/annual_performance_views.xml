@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Induction Form View start-->
+        <record id="view_kra_appraisal_filter" model="ir.ui.view">
+            <field name="name">kra.appraisal.list.select</field>
+            <field name="model">kra.appraisal</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Annual Appraisal Form">
+                    <field name="employee_id"/>
+                    <separator/>
+                    <filter string="My Induction Form" name="employee" domain="[('employee_id.user_id', '=', uid)]"
+                            help="My Appraisal Forms" groups="hr_employee_kra.group_kra_user"/>
+                    <filter domain="[('state','in',('sub_emp', 'sub_l1', 'sub_l2', 'sub_hod'))]" string="To Approve" name="approve"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_appraisal_tree" model="ir.ui.view">
+            <field name="name">appraisal.tree.view</field>
+            <field name="model">kra.appraisal</field>
+            <field name="arch" type="xml">
+                <tree string="Appraisal Form" create="false" delete="false" duplicate="false">
+                    <field name="name" string="Seq No"/>
+                    <field name="seq_date"/>
+                    <field name="employee_id"/>
+                    <field name="employee_code"/>
+                    <field name="job_id"/>
+                    <field name="appraisal_date"/>
+                    <field name="overall_rating"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_appraisal_pivot" model="ir.ui.view">
+            <field name="name">appraisal.pivot.view</field>
+            <field name="model">kra.appraisal</field>
+            <field name="arch" type="xml">
+                <pivot string="Appraisal Form">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="employee_code"/>
+                    <field name="job_id"/>
+                    <field name="appraisal_date"/>
+                    <field name="state"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_appraisal_form" model="ir.ui.view">
+            <field name="name">appraisal.form.view</field>
+            <field name="model">kra.appraisal</field>
+            <field name="arch" type="xml">
+                <form string="Appraisal Form" create="false" delete="false" duplicate="false">
+                    <header>
+                        <button name="sub_state_employee" string="Submit to Approver 1" class="btn btn-primary" type="object"
+                                attrs="{'invisible': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"/>
+                        <button name="sub_state_l1" string="Submit to Approver 2" class="btn btn-primary" type="object"
+                                attrs="{'invisible': ['|', ('state', 'not in', ['sub_emp']), ('approver_1_check', '=', False)]}"/>
+
+                        <button name="sub_state_l2" string="Submit to Hod" class="btn btn-primary" type="object"
+                                attrs="{'invisible': ['|', ('state', 'not in', ['sub_l1']), ('approver_2_check', '=', False)]}"/>
+
+                        <button name="sub_state_hod" string="Submit to Director" class="btn btn-primary" type="object"
+                                attrs="{'invisible': ['|', ('state', 'not in', ['sub_l2']), ('hod_check', '=', False)]}"/>
+
+
+                        <button name="state_done" string="Validate" class="btn btn-primary" type="object"
+                                attrs="{'invisible': ['|', ('state', 'not in', ['sub_hod']), ('director_check', '=', False)]}"/>
+                        <!-- <button name="reset_draft" string="Reset Draft" class="btn btn-primary" type="object"/> -->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,sub_emp,sub_l1,sub_l2,sub_hod,done"
+                               nolabel="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_link_quart"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-money">
+                                <field name="kra_quart_count" widget="statinfo" string="Quarterly"/>
+                            </button>
+                            <button name="action_view_link_lop"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-money">
+                                <field name="lop_count" widget="statinfo" string="LOP"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" force_save="1" invisible="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="employee_id" options='{"no_open": True, "no_create": True}' force_save="1" readonly="1"/>
+                                <field name="employee_code" readonly="1" invisible="1"/>
+                                <field name="job_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                <field name="department_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="location_work_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="l1_manager_id" options='{"no_open": True, "no_create": True}'/>
+
+                                <field name="l2_manager_id" options='{"no_open": True, "no_create": True}'/>
+
+                                <field name="hod_id" options='{"no_open": True, "no_create": True}'/>
+
+                                <field name="director_id" options='{"no_open": True, "no_create": True}'/>
+
+
+                                <field name="current_year" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="seq_date" readonly="1"/>
+                                <field name="doj" readonly="1"/>
+                                <field name="appraisal_date" readonly="1"/>
+                                <field name="emp_sumbit_date" readonly="1"/>
+                                <field name="approver_1_date" readonly="1"/>
+                                <field name="approver_2_date" readonly="1"/>
+                                <field name="hod_approver_date" readonly="1"/>
+                                <field name="director_approver_date" readonly="1"/>
+                                <field name="contract_id" invisible="0"/>
+                                <field name="user_id" invisible="1"/>
+                                <field name="director_user_id" invisible="1"/>
+                                <field name="l1_manager" invisible="1"/>
+                                <field name="l2_manager" invisible="1"/>
+
+
+                                <field name="l1_remark" attrs="{'readonly': ['|', ('state', 'not in', ['sub_emp']), ('approver_1_check', '=', False)]}"/>
+
+                                <field name="l2_remark" attrs="{'readonly': ['|', ('state', 'not in', ['sub_l1']), ('approver_2_check', '=', False)]}"/>
+                                <field name="hod_remark" attrs="{'readonly': ['|', ('state', 'not in', ['sub_l2']), ('hod_check', '=', False)]}"/>
+                                <field name="hod_user_id" invisible="1"/>
+                                <field name="is_hr" invisible="1"/>
+
+                                <field name="user_check" invisible="1"/>
+                                <field name="approver_1_check" invisible="1"/>
+                                <field name="approver_2_check" invisible="1"/>
+                                <field name="hod_check" invisible="1"/>
+                                <field name="director_check" invisible="1"/>
+                                <field name="emp_hod_check" invisible="1"/>
+                                <field name="edit_access" invisible="1"/>
+                                <field name="goal_total_weightage" invisible="1"/>
+                                <field name="key_total_weightage" invisible="1"/>
+                                <!--Reminder IDS -->
+                                <field name="hr_reminder_approver1_ids" invisible="1"/>
+                                <field name="hr_reminder_approver2_ids" invisible="1"/>
+                                <field name="hr_reminder_hod_ids" invisible="1"/>
+                                <field name="hr_reminder_director_ids" invisible="1"/>
+                                <field name="employee_ids" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Annual">
+                                <field name="annual_appraisal_ids">
+                                    <tree editable="bottom" create="false" delete="false">
+                                        <field name="state" invisible="1"/>
+                                        <field name="kra" readonly="1" force_save="1"/>
+                                        <field name="details_kra" readonly="1" force_save="1"/>
+                                        <field name="timeline_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                                        <field name="timeline" invisible="1" force_save="1"/>
+                                        <field name="weightage" readonly="1" force_save="1" sum="Total"/>
+                                        <field name="max_rating" sum="Total" readonly="1" force_save="1"/>
+                                        <field name="details_of_achievment" force_save="1" attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"/>
+                                        <field name="employee_rating"
+                                              attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}" sum="Total"/>
+                                        <field name="l1"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_emp']), ('approver_1_check', '=', False)]}"
+                                               sum="Total"/>
+                                        <field name="l2" sum="Total"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_l1']), ('approver_2_check', '=', False)]}"/>
+                                        <field name="hod_rating" sum="Total"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_l2']), ('hod_check', '=', False)]}"/>
+                                        <field name="avg_rating" sum="Total"/>
+
+
+                                        <field name="user_check" invisible="1"/>
+                                        <field name="approver_1_check" invisible="1"/>
+                                        <field name="approver_2_check" invisible="1"/>
+                                        <field name="hod_check" invisible="1"/>
+                                        <field name="director_check" invisible="1"/>
+
+                                        <field name="employee_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <notebook>
+                            <page string="Annual Goals">
+                                <field name="annual_goals_ids" attrs="{'readonly': [('edit_access', '=', True)]}">
+                                    <tree editable="bottom">
+                                        <field name="state" invisible="1"/>
+                                        <field name="goals"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"/>
+                                        <field name="details_goal"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"/>
+                                        <field name="timeline_id"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"/>
+                                        <field name="timeline" invisible="1"/>
+                                        <field name="weightage" sum="Total"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"/>
+                                        <field name="max_rating" sum="Total" readonly="1"/>
+                                        <field name="employee_rating"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"
+                                               sum="Total"/>
+                                        <field name="l1"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_emp']), ('approver_1_check', '=', False)]}"
+                                               sum="Total"/>
+                                        <field name="l2" sum="Total"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_l1']), ('approver_2_check', '=', False)]}"/>
+                                        <field name="hod_rating" sum="Total"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_l2']), ('hod_check', '=', False)]}"/>
+                                        <field name="avg_rating" sum="Total"/>
+
+                                        <field name="user_check" invisible="1"/>
+                                        <field name="approver_1_check" invisible="1"/>
+                                        <field name="approver_2_check" invisible="1"/>
+                                        <field name="hod_check" invisible="1"/>
+                                        <field name="director_check" invisible="1"/>
+                                        <field name="hr_check" invisible="1"/>
+                                        <field name="employee_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <notebook>
+                            <page string="Key and Achievement">
+                                <field name="key_acheivement_ids" attrs="{'readonly': [('edit_access', '=', True)]}">
+                                    <tree editable="bottom">
+                                        <field name="state" invisible="1"/>
+                                        <field name="key_achievements"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"/>
+                                        <field name="details_goal"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"/>
+                                        <field name="weightage"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}" sum="Total"/>
+                                        <field name="max_rating" sum="Total"
+                                               readonly="1"/>
+                                        <field name="employee_rating"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"
+                                               sum="Total"/>
+                                        <field name="l1"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_emp']), ('approver_1_check', '=', False)]}"
+                                               sum="Total"/>
+                                        <field name="l2" sum="Total"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_l1']), ('approver_2_check', '=', False)]}"/>
+                                        <field name="hod_rating" sum="Total"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_l2']), ('hod_check', '=', False)]}"/>
+                                        <field name="avg_rating" sum="Total"/>
+
+
+                                        <field name="user_check" invisible="1"/>
+                                        <field name="approver_1_check" invisible="1"/>
+                                        <field name="approver_2_check" invisible="1"/>
+                                        <field name="hod_check" invisible="1"/>
+                                        <field name="director_check" invisible="1"/>
+                                        <field name="hr_check" invisible="1"/>
+
+                                        <field name="employee_id" invisible="1"/>
+
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                        <notebook>
+                            <page string="Annual Training">
+                                <field name="training_details_ids" attrs="{'readonly': [('edit_access', '=', True)]}">
+                                    <tree editable="bottom">
+                                        <field name="state" invisible="1"/>
+                                        <field name="training_details"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"/>
+                                        <field name="details_goal"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"/>
+                                        <field name="timeline" invisible="1"/>
+                                        <field name="timeline_id" invisible="1" />
+                                        <field name="weightage" invisible="1" sum="Total"/>
+                                        <field name="max_rating" sum="Total"
+                                               readonly="1"/>
+                                        <field name="employee_rating"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('user_check', '=', False)]}"
+                                               sum="Total"/>
+                                        <field name="l1"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_emp']), ('approver_1_check', '=', False)]}"
+                                               sum="Total"/>
+                                        <field name="l2" sum="Total"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_l1']), ('approver_2_check', '=', False)]}"/>
+                                        <field name="hod_rating" sum="Total"
+                                               attrs="{'readonly': ['|', ('state', 'not in', ['sub_l2']), ('hod_check', '=', False)]}"/>
+                                        <field name="avg_rating" sum="Total"/>
+
+
+                                        <field name="user_check" invisible="1"/>
+                                        <field name="approver_1_check" invisible="1"/>
+                                        <field name="approver_2_check" invisible="1"/>
+                                        <field name="hod_check" invisible="1"/>
+                                        <field name="director_check" invisible="1"/>
+                                        <field name="hr_check" invisible="1"/>
+
+                                        <field name="employee_id" invisible="1"/>
+
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <notebook>
+                            <page string="Overall" attrs="{'invisible':['&amp;',('is_hr', '=', False),('emp_hod_check', '=', False)]}">
+                                <field name="overall_ids" attrs="{'readonly': [('is_hr', '=', False)]}">
+                                    <tree editable="bottom">
+                                        <field name="state" invisible="1"/>
+                                        <field name="overall_appraisal"/>
+                                        <field name="max_rating" sum="Total" readonly="1"/>
+                                        <field name="employee_rating" readonly="1"/>
+                                        <field name="l1" sum="Total"/>
+                                        <field name="l2" sum="Total"/>
+
+                                        <field name="avg_rating" sum="Total"/>
+
+
+                                        <field name="hr_check" invisible="1"/>
+                                        <field name="user_check" invisible="1"/>
+                                        <field name="approver_1_check" invisible="1"/>
+                                        <field name="approver_2_check" invisible="1"/>
+                                        <field name="hod_check" invisible="1"/>
+                                        <field name="director_check" invisible="1"/>
+
+                                        <field name="employee_id" invisible="1"/>
+                                    </tree>
+                                </field>
+
+                            </page>
+                        </notebook>
+
+
+                        <group string="Overall rating" attrs="{'invisible':[('is_hr', '=', True)]}">
+                            <group>
+                                <label for="kra_rating"/>
+                                <div>
+                                    <span>70%
+                                        <field name="kra_rating" class="oe_inline"/>
+                                    </span>
+                                </div>
+                                <label for="key_acheive"/>
+                                <div>
+                                    <span>15%
+                                        <field name="key_acheive" class="oe_inline"/>
+                                    </span>
+                                </div>
+                                <label for="training_details"/>
+                                <div>
+                                    <span>15%
+                                        <field name="training_details" class="oe_inline"/>
+                                    </span>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="overall_rating"/>
+                            </group>
+
+                        </group>
+
+                        <group string="HOD Overall rating" attrs="{'invisible':[('is_hr', '=', False)]}">
+                            <group>
+                                <label for="hod_kra_rating"/>
+                                <div>
+                                    <span>50%
+                                        <field name="hod_kra_rating" class="oe_inline"/>
+                                    </span>
+                                </div>
+                                <label for="hod_key_achieve"/>
+                                <div>
+                                    <span>20%
+                                        <field name="hod_key_achieve" class="oe_inline"/>
+                                    </span>
+                                </div>
+                                <label for="hod_training_details"/>
+                                <div>
+                                    <span>15%
+                                        <field name="hod_training_details" class="oe_inline"/>
+                                    </span>
+                                </div>
+                                <label for="hod_over_all_360_rating"/>
+                                <div>
+                                    <span>15%
+                                        <field name="hod_over_all_360_rating" class="oe_inline"/>
+                                    </span>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="hod_overall_rating"/>
+                            </group>
+
+                        </group>
+
+                        <notebook>
+                            <page string="Rate Creteria">
+                                <field name="rate_creteria_ids">
+                                    <tree editable="bottom" create="false" delete="false">
+                                        <field name="rating_creteria"/>
+                                        <field name="eligible_details"/>
+                                        <field name="final_rating"/>
+                                        <field name="eligibility_details"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+                <record id="view_inherit_hr_contract" model="ir.ui.view">
+                    <field name="name">view.inherit.hr.contract</field>
+                    <field name="model">hr.contract</field>
+                    <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+                    <field name="arch" type="xml">
+                        <xpath expr="//field[@name='advantages']" position="before">
+                            <field name="hike"/>
+                            <field name="total"/>
+                        </xpath>
+                    </field>
+                </record>
+
+        <!-- Action for All employees Annual-->
+        <record id="action_kra_appraisal" model="ir.actions.act_window">
+            <field name="name">My Annual Assessment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">kra.appraisal</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('employee_id.user_id', '=', uid)]</field>
+            <field name="context">{
+                'create': False}</field>
+        </record>
+
+        <!-- Widget -->
+        <record id="act_hr_employee_appraisal_list" model="ir.actions.act_window">
+            <field name="res_model">kra.appraisal</field>
+            <field name="name">Appraisal</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_employee_id': [active_id], 'default_employee_id': active_id}</field>
+        </record>
+        <!-- Action for Annual Approval-->
+        <record id="action_kra_appraisal_approval" model="ir.actions.act_window">
+            <field name="name">Annual Assessment Approval</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">kra.appraisal</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_approve':1,
+                'create': False,}</field>
+        </record>
+
+    </data>
+</odoo>

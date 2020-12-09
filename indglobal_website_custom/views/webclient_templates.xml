@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_common_inherit" name="Common Assets (used in backend interface and website)" inherit_id="web.assets_common">
+        <!-- <xpath expr="/template/link[1]" position="after"> -->
+        <xpath expr=".">
+            <link rel="stylesheet" type="text/scss" href="/indglobal_website_custom/static/src/css/custom_css.css"/>
+        </xpath>
+    </template>
+</odoo>

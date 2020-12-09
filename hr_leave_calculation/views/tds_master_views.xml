@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- TDS Section Start -->
+	<record model="ir.ui.view" id="view_tds_section_form_custom">
+        <field name="name">tds.section</field>
+        <field name="model">tds.section</field>
+        <field name="arch" type="xml">
+        	<form string="TDS Section">
+        		<group>
+        			<group>
+		        		<field name="name"/>
+		        		<field name="description"/>
+		        		<field name="tds_group_id"/>
+		        	</group>
+		        	<group>
+		        	</group>
+		        </group>
+
+        	</form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_tds_section_tree_custom">
+		<field name="name">tds.section</field>
+		<field name="model">tds.section</field>
+		<field name="arch" type="xml">
+			<tree string="TDS Section">
+				<field name="name"/>
+        		<field name="description"/>		
+        		<field name="tds_group_id"/>
+
+			</tree>
+		</field>
+	</record>
+	<record model="ir.actions.act_window" id="tds_section_action">
+		<field name="name">TDS Section</field>
+		<field name="res_model">tds.section</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<!-- TDS Section END -->
+
+	<!-- TDS Group Start -->
+	<record model="ir.ui.view" id="view_tds_group_form_custom">
+        <field name="name">tds.group</field>
+        <field name="model">tds.group</field>
+        <field name="arch" type="xml">
+        	<form string="TDS Group">
+        		<sheet>
+	        		<group>
+	        			<group>
+			        		<field name="name"/>
+			        		<field name="amount"/>
+			        	</group>
+			        	
+			        	<group>
+			        	</group>
+			        </group>
+			        <notebook invisible="1">
+			        	<page name="section" string="Section">
+			        		<field name="group_ids" widget="one2many_widget">
+			        			<tree string="Section Tree" editable="bottom">
+			        				<field name="group_id" invisible="1"/>
+			        				<field name="section_id"/>
+			        				<field name="description"/>
+			        			</tree>
+			        		</field>
+
+			        	</page>
+			        </notebook>
+			    </sheet>
+
+        	</form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_tds_group_tree_custom">
+		<field name="name">tds.group</field>
+		<field name="model">tds.group</field>
+		<field name="arch" type="xml">
+			<tree string="TDS Group">
+				<field name="name"/>
+        		<field name="amount"/>
+			</tree>
+		</field>
+	</record>
+	<record model="ir.actions.act_window" id="tds_group_action">
+		<field name="name">TDS Group</field>
+		<field name="res_model">tds.group</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+	<!-- TDS Group End -->
+
+	<record model="ir.ui.view" id="view_tds_master_form_custom">
+        <field name="name">tds.master</field>
+        <field name="model">tds.master</field>
+        <field name="arch" type="xml">
+        	<form string="TDS Master">
+        		<group>
+        			<group>
+		        		<field name="name"/>
+		        		<field name="description"/>
+		        		<field name="section"/>
+		        		<field name="potential"/>
+		        		<field name="financial_year_from"/>
+		        		<field name="financial_year_to"/>
+		        	</group>
+		        	<group>
+		        	</group>
+		        </group>
+
+        	</form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_tds_master_tree_custom">
+		<field name="name">tds.master</field>
+		<field name="model">tds.master</field>
+		<field name="arch" type="xml">
+			<tree string="Problem Code">
+				<field name="name"/>
+				<field name="description"/>
+				<field name="section"/>
+				<field name="potential"/>
+				<field name="financial_year_from"/>
+				<field name="financial_year_to"/>
+			</tree>
+		</field>
+	</record>
+	<record model="ir.actions.act_window" id="tds_master_action">
+		<field name="name">TDS Master</field>
+		<field name="res_model">tds.master</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<record model="ir.ui.view" id="view_tds_calculation_form_custom">
+        <field name="name">tds.calculation</field>
+        <field name="model">tds.calculation</field>
+        <field name="arch" type="xml">
+        	<form string="TDS Calculation">
+        		<group>
+        			<group>
+        				<field name="employee_id"/>
+		        		<field name="name"/>
+		        		<field name="description"/>
+		        		<field name="financial_year_from"/>
+		        		<field name="financial_year_to"/>
+		        		<field name="section"/>
+		        		<field name="potential"/>
+		        		<field name="actual"/>
+		        		<field name="gap"/>
+		        	</group>
+		        	<group>
+		        	</group>
+		        </group>
+        	</form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_tds_calculation_tree_custom">
+		<field name="name">tds.calculation</field>
+		<field name="model">tds.calculation</field>
+		<field name="arch" type="xml">
+			<tree string="Problem Code">
+				<field name="employee_id"/>
+				<field name="name"/>
+				<field name="description"/>
+				<field name="financial_year_from"/>
+				<field name="financial_year_to"/>
+				<field name="section"/>
+				<field name="potential"/>
+				<field name="actual"/>
+				<field name="gap"/>
+			</tree>
+		</field>
+	</record>
+	<record model="ir.actions.act_window" id="tds_calculation_action">
+		<field name="name">TDS calculation</field>
+		<field name="res_model">tds.calculation</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+
+	<menuitem id="tds_master_root" parent="hr_payroll.menu_hr_payroll_root" name="TDS"/>
+	<menuitem action="tds_master_action" id="tds_master" parent="tds_master_root" sequence="40" name="TDS Master"/>
+	<menuitem action="tds_calculation_action" id="tds_calculation" parent="tds_master_root" sequence="40" name="TDS Calculation"/>
+	<menuitem action="tds_section_action" id="tds_section" parent="tds_master_root" sequence="40" name="TDS Section"/>
+	<menuitem action="tds_group_action" id="tds_group" parent="tds_master_root" sequence="40" name="TDS Group"/>
+</odoo>

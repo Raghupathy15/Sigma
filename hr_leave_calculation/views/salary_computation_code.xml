@@ -1,0 +1,126 @@
+####BASIC####
+if contract.struct_id.name=="L2":
+	if float(payslip.num_of_lop) >=1 :
+		result = 6500*(float(payslip.days_in_current_month)-float(payslip.num_of_lop))/float(payslip.days_in_current_month)
+	else:
+		result = 6500
+elif contract.struct_id.name=="L3":
+	if float(payslip.num_of_lop) >=1 :
+		result = 12271*(float(payslip.days_in_current_month)-float(payslip.num_of_lop))/float(payslip.days_in_current_month)
+	else:
+		result = 12271
+elif contract.struct_id.name=="L4":
+	if float(payslip.num_of_lop) >=1 :
+		result = 13271*(float(payslip.days_in_current_month)-float(payslip.num_of_lop))/float(payslip.days_in_current_month)
+	else:
+		result = 13271
+elif contract.struct_id.name=="L5":
+	if float(payslip.num_of_lop) >=1 :
+		result = 14429*(float(payslip.days_in_current_month)-float(payslip.num_of_lop))/float(payslip.days_in_current_month)
+	else:
+		result = 14429
+elif contract.struct_id.name=="L6":
+	if float(payslip.num_of_lop) >=1 :
+		result = 15704*(float(payslip.days_in_current_month)-float(payslip.num_of_lop))/float(payslip.days_in_current_month)
+	else:
+		result = 15704
+elif contract.struct_id.name=="L7":
+	if float(payslip.num_of_lop) >=1 :
+		result = 17106*(float(payslip.days_in_current_month)-float(payslip.num_of_lop))/float(payslip.days_in_current_month)
+	else:
+		result = 17106
+elif contract.struct_id.name=="L8":
+	if float(payslip.num_of_lop) >=1 :
+		result = 100000*(float(payslip.days_in_current_month)-float(payslip.num_of_lop))/float(payslip.days_in_current_month)
+	else:
+		result = 100000
+else:
+	result = 0
+
+
+###GROSS###
+if (contract.wage * 12) <=  217699:
+    result = 15000
+elif (contract.wage *12) <=   254057 and (contract.wage * 12) > 217699:
+    result = 17200
+elif (contract.wage *12) <= 290326  and (contract.wage * 12) > 254057:
+    result = 20000
+elif (contract.wage *12) <= 527952 and (contract.wage * 12) > 290326:
+    result = 40000
+elif (contract.wage *12) <= 651162 and (contract.wage * 12) > 527952:
+    result = 50000 
+elif (contract.wage *12) <= 1014573 and (contract.wage * 12) > 651162:
+    result = 80000
+else:
+    result = 200000
+
+
+###PF###
+if contract.wage >= 15000:
+    if float(payslip.num_of_lop) >=1 :
+        result = (15000*12/100)/float(payslip.days_in_current_month) * (float(payslip.days_in_current_month)-float(payslip.num_of_lop))
+    else:
+        result = -(15000*12/100)
+else:
+    result = -categories.GROSS*12/100
+
+###ESIC###
+if contract.wage <= 21000:
+    result = -(categories.GROSS*3.25/100)
+else:
+    result = 0
+
+###ESI###
+if categories.GROSS <= 21000:
+    result = -(categories.GROSS*0.75/100)
+else:
+    result = 0
+
+###PT###
+if (categories.BASIC +categories.HRA+categories.CON+categories.CALW+categories.SALW) >15000:
+    result=-200
+else:
+    result = 0
+
+
+###NET SALARY###
+result = categories.BASIC  + categories.HRA + categories.CON + categories.CALW + categories.SALW + categories.PF + categories.PT + categories.ESI
+
+
+###BONUS###
+result = -(categories.BASIC * 8.33/100)
+
+###GRATUITY###
+result = -(categories.BASIC * 4.81/100)
+
+
+###INSURANCE###
+if contract.struct_id.name=="L2":
+    result = -600
+elif contract.struct_id.name=="L3":
+    result = -500
+elif contract.struct_id.name=="L4":
+    result = -400
+elif contract.struct_id.name=="L5":
+    result = -300
+elif contract.struct_id.name=="L6":
+    result = 0
+elif contract.struct_id.name=="L7":
+    result = 0
+elif contract.struct_id.name=="L8":
+    result = 0
+else:
+    result = 0
+
+
+###Mobile Conveyance###
+if float(payslip.num_of_lop) >=1 :
+	result = contract.mobile_conveyance*(float(payslip.days_in_current_month)-float(payslip.num_of_lop))/float(payslip.days_in_current_month)
+else:
+	result = contract.mobile_conveyance
+
+###City Compensatory Allowance###
+if float(payslip.num_of_lop) >=1 :
+	result = contract.city_allowance*(float(payslip.days_in_current_month)-float(payslip.num_of_lop))/float(payslip.days_in_current_month)
+else:
+	result = contract.city_allowance

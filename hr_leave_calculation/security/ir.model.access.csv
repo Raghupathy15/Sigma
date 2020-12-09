@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_payslip_leave,hr_payslip_leave.hr_payslip_leave,model_hr_payslip_leave,,1,1,1,1
+access_tds_master,tds_master.tds_master,model_tds_master,,1,1,1,1
+access_tds_section,tds_section.tds_section,model_tds_section,,1,1,1,1
+access_tds_group,tds_group.tds_group,model_tds_group,,1,1,1,1
+access_tds_group_line,tds_group_line.tds_group_line,model_tds_group_line,,1,1,1,1
+access_tds_calculation,tds_calculation.tds_calculation,model_tds_calculation,,1,1,1,1
+access_resource_calendar_weekoffs,resource_calendar_weekoffs.resource_calendar_weekoffs,model_resource_calendar_weekoffs,,1,1,1,1

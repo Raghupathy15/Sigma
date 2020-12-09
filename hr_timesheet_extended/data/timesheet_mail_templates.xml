@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--If account is blocked for more than 2 days - mail to employees -->
+        <record id="email_template_if_account_emp_v3" model="mail.template">
+            <field name="name">Indglobal - User Account Blocked for than 2 days</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="subject">Account Blocking Escalation</field>
+            <field name="lang">${user.lang}</field>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.name},</p>
+                <br/>
+                <p>This is to inform you that your account is blocked for 2 day(s). your Immediate action is required.</p>         
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+        
+        <!--If account is blocked for more than 4 days - mail to employees -->
+        <record id="email_template_if_account_emp_v4" model="mail.template">
+            <field name="name">Indglobal - User Account Blocked for than 4 days</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="subject">Account Blocking Escalation</field>
+            <field name="lang">${user.lang}</field>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.name},</p>
+                <br/>
+                <p>This is to inform you that your account is blocked for 4 day(s). your Immediate action is required.</p>         
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!-- To trigger single mail for multiple employees-->
+        <record id="email_template_mail_for_multiple_employees" model="mail.template">
+            <field name="name">To trigger single mail for multiple employees</field>
+            <field name="subject">${object.name} Account Blocked</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.work_email or object.employee_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.name},</p>
+                <br/>
+                <p>Kindly find your account blocked details below</p>
+                <table style="width:80%" border="1px solid black">
+                    <tr border="1px solid black">
+                        <th>Employee Name<th>
+                        <th>Date<th>
+                        <th>Reason<th>
+                        <th>Blocked Date<th>
+                    </tr border="1px solid black">
+                    % for block in object.blocked_ids:
+                        <tr>
+                            % if block.blocked_date == object.block_date:
+                                <td align="center">${block.employee_id.name}<th>
+                                <td align="center">${block.date}<th>
+                                <td align="center">${block.reason}<th>
+                                <td align="center">${block.blocked_date}<th>
+                            % endif
+                        </tr>
+                     % endfor
+                </table>
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Form view -->
+        <record id="threesixty_degree_form" model="ir.ui.view">
+            <field name="name">threesixty.degree.form</field>
+            <field name="model">threesixty.degree</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Confirm" type="object" name="button_confirm" class="oe_highlight" attrs="{'invisible': [('state', '=', 'confirmed')]}" confirm="Are you sure you want to confirm ?"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Assignee Details">
+                                <field name="assignee_id" attrs="{'readonly': [('state','=', 'confirmed')]}" 
+                                options="{'no_open':True}"/>
+                                <field name="assignee_hod_id" readonly="1" force_save="1" options="{'no_open':True}"/>
+                            </group>
+                            <group string=" HOD 2 Details">
+                                <field name="hod_2_id" attrs="{'readonly': [('state','=', 'confirmed')]}" 
+                                options="{'no_open':True}"/>
+                                <field name="dept_hod_2_id" readonly="1" force_save="1" options="{'no_open':True}"/>
+                            </group>
+                            <group string="HOD 1 details">
+                                <field name="hod_1_id" attrs="{'readonly': [('state','=', 'confirmed')]}" 
+                                options="{'no_open':True}"/>
+                                <field name="dept_hod_1_id" readonly="1" force_save="1" options="{'no_open':True}"/>
+                            </group>
+                            <group string="Attachment" invisible ="1">
+                                <field name="soft_copy" attrs="{'readonly': [('state','=', 'confirmed')]}"/>
+                            </group>
+                        </group>     
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+                
+            </field>
+        </record>
+
+        <!-- Tree view -->
+        <record id="threesixty_degree_tree" model="ir.ui.view">
+            <field name="name">threesixty.degree.tree</field>
+            <field name="model">threesixty.degree</field>
+            <field name="arch" type="xml">
+                <tree decoration-info = "state == 'draft'" decoration-success = "state == 'confirmed'">
+                    <field name='assignee_id'/>
+                    <field name='hod_1_id'/>
+                    <field name='hod_2_id'/>
+                    <field name='state'/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Search view start-->
+        <record id="threesixty_degree_filter" model="ir.ui.view">
+            <field name="name">threesixty.degree.filter</field>
+            <field name="model">threesixty.degree</field>
+            <field name="arch" type="xml">
+                <search string="Search Partner">
+                   <field name="assignee_id" filter_domain="['|',('assignee_id','ilike',self),('assignee_id','=',self)]"/>
+                   <field name="hod_1_id" filter_domain="['|',('hod_1_id','ilike',self),('hod_1_id','=',self)]"/>
+                   <field name="hod_2_id" filter_domain="['|',('hod_2_id','ilike',self),('hod_2_id','=',self)]"/>
+                   <group expand="0" name="group_by" string="Group By">
+                       <filter name="assignee_id" string="Assignee" domain="[]" context="{'group_by':'assignee_id'}" />
+                       <filter name="hod_1_id" string="HOD 1" domain="[]" context="{'group_by':'hod_1_id'}" />
+                       <filter name="hod_2_id" string="HOD 2" domain="[]" context="{'group_by':'hod_2_id'}" />
+                       <filter name="state" string="Status" domain="[]" context="{'group_by':'state'}" />
+                   </group>
+               </search>
+            </field>
+        </record>
+        <!-- Search view End-->
+
+        <!-- Action window -->
+        <record id="action_threesixty_degree_custom" model="ir.actions.act_window">
+            <field name="name">360 Degree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">threesixty.degree</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu item -->
+
+        <menuitem name="360 Degree" parent="hr_employee_kra.menu_appraisal_sub" id="hr_employee_kra.menu_appraisal_config" sequence="5" action="action_threesixty_degree_custom" />
+
+    </data>
+</odoo>
+

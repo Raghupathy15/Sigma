@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Travel Claim Approver 1 Remark -->
+    <record id='form_claim_approver_remark_wizard' model="ir.ui.view">
+        <field name="name">form.claim.approver.remark</field>
+        <field name="model">claim.request.remark</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Approver Remarks">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_claim_approver_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_claim_approver_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Approver Remarks</field>
+         <field name="res_model">claim.request.remark</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+    <!-- Travel Claim HOD Remark -->
+    <record id='form_travel_hod_remark_wizard' model="ir.ui.view">
+        <field name="name">form.travel.approver.remark</field>
+        <field name="model">travel.request.remark</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="HOD Remarks">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_travel_approver_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_approver_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Approver Remarks</field>
+         <field name="res_model">travel.request.remark</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+    <!-- Travel Claim Director Remark -->
+    <record id='form_travel_director_remark_wizard' model="ir.ui.view">
+        <field name="name">form.travel.director.remark</field>
+        <field name="model">travel.claim.director.remark</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Director Remarks">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_travel_director_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_director_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Director Remarks</field>
+         <field name="res_model">travel.claim.director.remark</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+<!-- Travel Claim Accounts Remark -->
+
+    <record id='form_claim_accounts_remark_wizard' model="ir.ui.view">
+        <field name="name">form.claim.accounts.remark</field>
+        <field name="model">travel.request.remark2</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Accounts Remarks">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                    <field name="reject_employee_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_travel_approver2_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_approver2_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Approver Remarks</field>
+         <field name="res_model">travel.request.remark2</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+<!-- Travel Claim Accounts Head Remark -->
+
+    <record id='form_claim_acc_head_remark_wizard' model="ir.ui.view">
+        <field name="name">form.claim.accounts.head.remark</field>
+        <field name="model">travel.accounts.head.remark</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Accounts Head Remarks">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                    <field name="reject_employee_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_travel_acc_head_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_acc_head_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Approver Remarks</field>
+         <field name="res_model">travel.accounts.head.remark</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+<!-- Travel Admin Approver 1 Remark -->
+
+    <record id='form_travel_admin_approver1_remark_wizard' model="ir.ui.view">
+        <field name="name">form.travel.admin.app1.remark</field>
+        <field name="model">travel.admin.app1.remark</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Approver Remarks">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_travel_admin_approver1_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_admin_approver1_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Approver Remarks</field>
+         <field name="res_model">travel.admin.app1.remark</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+
+
+<!-- Travel Admin Approver 2 Remark -->
+
+    <record id='form_travel_admin_approver2_remark_wizard' model="ir.ui.view">
+        <field name="name">form.travel.admin.app2.remark</field>
+        <field name="model">travel.admin.app2.remark</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Approver Remarks">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_travel_admin_approver2_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_admin_approver2_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Approver Remarks</field>
+         <field name="res_model">travel.admin.app2.remark</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+    <!-- Travel Admin HOD Remark -->
+
+    <record id='form_travel_admin_hod_remark_wizard' model="ir.ui.view">
+        <field name="name">form.travel.admin.hod.remark</field>
+        <field name="model">travel.admin.hod.remark</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="HOD Remarks">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_travel_admin_hod_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_admin_approver2_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Approver Remarks</field>
+         <field name="res_model">travel.admin.app2.remark</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+    <!-- Travel Admin Remark -->
+
+    <record id='form_travel_admin_remark_wizard' model="ir.ui.view">
+        <field name="name">form.travel.admin.remark</field>
+        <field name="model">travel.request.return</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Admin Remarks">
+                <group>
+                    <field name="name" required="context.get('is_return', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_travel_return_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_admin_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Admin Remarks</field>
+         <field name="res_model">travel.request.return</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+         <field name="target">new</field>
+    </record>
+
+    <!-- Travel Admin Modify Remark -->
+
+    <record id='form_travel_modify_remark_wizard' model="ir.ui.view">
+        <field name="name">form.travel.modify.remark</field>
+        <field name="model">travel.request.modify</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Admin Remarks">
+                <group>
+                    <field name="name" required="context.get('is_modified', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_travel_modify_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_modify_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Admin Remarks</field>
+         <field name="res_model">travel.request.modify</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+    <!-- Travel Admin Director Remarks -->
+
+    <record id='form_travel_director_remark_wizard' model="ir.ui.view">
+        <field name="name">form.travel.director.remark</field>
+        <field name="model">travel.director.remarks</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Director Remarks">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_travel_director_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_director_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Director Remarks</field>
+         <field name="res_model">travel.director.remarks</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+    <!-- Travel Employee Remarks -->
+
+    <record id='form_travel_employee_remark_wizard' model="ir.ui.view">
+        <field name="name">form.employee.cancel.remark</field>
+        <field name="model">employee.cancel.remark</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Employee Remarks">
+                <group>
+                    <field name="name" required="context.get('is_reject', False)"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="travel_id" invisible="1"/>
+                </group>
+               <footer>
+                    <button name="action_travel_employee_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_travel_employee_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Employee Remarks</field>
+         <field name="res_model">employee.cancel.remark</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_travel_id': active_id}</field>
+    </record>
+
+</odoo>

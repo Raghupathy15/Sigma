@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Email template for Attendance Regularization for Approver -->
+		<record id="email_template_request_attendance_regularized" model="mail.template">
+			<field name="name">Email template request attendance regularized</field>
+			<field name="subject">Regularization Request for ${object.employee.name} </field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee.lone_manager_id.work_email or object.employee.lone_manager_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="attendance_regularization.model_attendance_regular"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee.lone_manager_id.name},</p>
+				<br/>
+				<p>The Below Employee has raised a Attendance Regularization</p>
+				<div>
+					<span>Req Date: ${object.req_date}</span><br />
+					<span>Emp Name:${object.employee.employee_id} ${object.employee.name}</span><br />
+					<span>Actual Check In:${object.mail_check_in}</span><br />
+					<span>Actual Check Out:${object.mail_check_out}</span><br />
+					% if object.start_latitude:
+						<span>Start Latitude:${object.start_latitude}</span><br />
+					% endif
+					% if object.stop_latitude:
+						<span>Stop Latitude:${object.stop_latitude}</span><br />
+					% endif
+					<span>Reason:${object.reg_reason}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID.</p>
+			]]></field>
+		</record>
+
+		<!-- Email template for Attendance Regularization for Approver -->
+		<record id="email_template_approval_attendance_regularized" model="mail.template">
+			<field name="name">Email template approval attendance regularized</field>
+			<field name="subject">Your Regularization has been Approved by ${object.employee.lone_manager_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee.work_email or object.employee.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="attendance_regularization.model_attendance_regular"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee.name},</p>
+				<br/>
+				<p>Your Attendance Regularization has been Approved</p>
+				<div>
+					<span>Req Date: ${object.req_date}</span><br />
+					<span>Emp Name:${object.employee.employee_id} ${object.employee.name}</span><br />
+					<span>Actual Check In:${object.mail_check_in}</span><br />
+					<span>Actual Check Out:${object.mail_check_out}</span><br />
+					% if object.start_latitude:
+						<span>Start Latitude:${object.start_latitude}</span><br />
+					% endif
+					% if object.stop_latitude:
+						<span>Stop Latitude:${object.stop_latitude}</span><br />
+					% endif
+					<span>Reason:${object.reg_reason}</span><br />
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID.</p>
+
+			]]></field>
+		</record>
+
+		<!-- Email template for Attendance Regularization for Rejected -->
+		<record id="email_template_reject_attendance_regularized" model="mail.template">
+			<field name="name">Email template rejected attendance regularized</field>
+			<field name="subject">Your Regularization has been Rejected ${object.employee_id.lone_manager_id.name}</field>
+			<field name="email_from">${user.email}</field>
+			<field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+			<field name="lang">${user.lang}</field>
+			<field name="model_id" ref="attendance_regularization.model_regular_approver_remark"/>
+			<field name="body_html"><![CDATA[
+				<p>Dear ${object.employee_id.name},</p>
+				<br/>
+				<p>Your Attendance Regularization has been Rejected due to <br/> ${object.name}</p>
+				<div>
+					<span>Req Date: ${object.regular_id.req_date}</span><br />
+					<span>Emp Name:${object.employee_id.employee_id} ${object.employee_id.name}</span><br />
+					<span>Actual Check In:${object.regular_id.mail_check_in}</span><br />
+					<span>Actual Check Out:${object.regular_id.mail_check_out}</span><br />
+					% if object.regular_id.start_latitude:
+						<span>Start Latitude:${object.regular_id.start_latitude}</span><br />
+					% endif
+					% if object.regular_id.stop_latitude:
+						<span>Stop Latitude:${object.regular_id.stop_latitude}</span><br />
+					% endif
+				</div>
+				<br/>
+				<p>Regards,</p>
+				<p><strong>ERP AUTOMATION</strong></p>
+				<p>This is a system generated email, do not reply to this email ID.</p>
+
+			]]></field>
+		</record>
+
+		
+	</data>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_case_form_view_job_inherit_hr_employee_kra" model="ir.ui.view">
+        <field name="name">hr.applicant.form</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
+        <field name="arch" type="xml">
+        	<field name="partner_mobile" position="after">
+        		<field name="employee_id" attrs="{'invisible': [('count_id', '!=', 9)]}" groups="hr_employee_kra.group_kra_hr"/>
+        	</field>
+        	<!-- <xpath expr="//button[@name='archive_applicant']" position="replace">
+        		<button string="Refuse" name="archive_applicant" type="object" attrs="{'invisible': [('active', '=', False)]}" groups="hr_employee_kra.group_kra_approver_1"/>
+        	</xpath> -->
+
+        </field>
+    </record>
+</odoo>

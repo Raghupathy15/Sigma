@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!-- KRA Form View start-->
+	<record id="view_hr_kra_filter" model="ir.ui.view">
+        <field name="name">hr.kra.list.select</field>
+        <field name="model">hr.kra</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search KRA Form">
+            	<field name="employee_id"/>
+            	<field name="employee_code"/>
+            	<field name="department"/>
+            	<separator/>
+                <filter string="My KRA Form" name="employee" domain="[('employee_id.user_id', '=', uid)]" groups="hr_employee_kra.group_kra_user"/>
+
+                <filter string="KRA List" name="L1" domain="[('document_created_by', '=', uid)]" groups="hr_employee_kra.group_kra_approver_1"/>
+
+                <filter string="Team KRA List" name="l2_manager_team" domain="[('reporting_manager_user_id', '=', uid)]" groups="hr_employee_kra.group_kra_approver_2"/>
+                <!-- Approval -->
+                <filter string="KRA's for Approval" name="l2_manager_approval" domain="[('state', '=', 'kra_created')]" groups="hr_employee_kra.group_kra_approver_2"/>
+                <!-- visible for employee -->
+                <filter string="Approved KRA's by L2 Manager" name="l2_manager_approved" domain="[('state', '=', 'employee')]" groups="hr_employee_kra.group_kra_approver_1"/>
+                <filter string="Disagreed KRA by L2 Manager" name="l2_manager_reject" domain="[('state', '=', 'reject')]" groups="hr_employee_kra.group_kra_approver_1"/>
+                <filter domain="[('state','in',('kra_created', 'resubmitted'))]" string="To Approve" name="approve"/>
+           </search>
+        </field>
+    </record>
+
+	<record model="ir.ui.view" id="view_hr_kra_form_custom">
+        <field name="name">hr.kra</field>
+        <field name="model">hr.kra</field>
+        <field name="arch" type="xml">
+        	<form string="KRA" duplicate="false">
+        		<header>
+                    <!-- Approver 1 -->
+        			<button name="l1_confirm" string="Update" type="object" class="oe_highlight" groups="hr_employee_kra.group_kra_approver_1" attrs="{'invisible': ['|',('state', '!=', 'draft'),('is_applover_l1', '=', False)]}"/>
+                    <button name="resubmit" string="Resubmit" type="object" class="oe_highlight" groups="hr_employee_kra.group_kra_approver_1" attrs="{'invisible': ['|',('state', 'not in', ['revised']),('is_applover_l1', '!=', True)]}"/>
+                    <button name="create_revisions" string="Revise" type="object" class="oe_highlight" groups="hr_employee_kra.group_kra_approver_1" attrs="{'invisible': ['|',('state', 'not in', ['reject', 'reject_by_emp']),('is_applover_l1', '!=', True)]}"/>
+
+                    <!-- Approver 2 -->
+        			<button name="l2_accept" string="Accept" type="object" class="oe_highlight" groups="hr_employee_kra.group_kra_approver_2" attrs="{'invisible': ['|',('state', 'not in', ['kra_created', 'resubmitted']),('is_applover_l2', '!=', True)]}"/>
+        			<button name="l2_reject" string="Reject" type="object" class="oe_highlight" groups="hr_employee_kra.group_kra_approver_2" attrs="{'invisible': ['|',('state', 'not in', ['kra_created', 'resubmitted']),('is_applover_l2', '!=', True)]}"/>
+                    
+                    <!-- Employee accept -->
+        			<button name="emp_accept" string="Accept" type="object" class="oe_highlight" states="employee" groups="hr_employee_kra.group_kra_user"/>
+                    <button name="emp_reject" string="Disagree" type="object" class="oe_highlight" states="employee" groups="hr_employee_kra.group_kra_user"/>
+
+        			<!-- <button name="resubmit" string="Resubmit" type="object" class="oe_highlight" states="resubmit" groups="hr_employee_kra.group_kra_approver_1"/> -->
+                    <button name="reset_to_draft" string="Reset To Draft" type="object" class="oe_highlight" groups="hr_employee_kra.group_kra_approver_1" attrs="{'invisible': [('state', 'not in', 'done')]}"/>
+        			
+        			<field name="state" widget="statusbar"/>
+        			
+        		</header>
+
+        		<sheet>
+        			<div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+        			<group>
+	        			<group>
+                            <field name="particular_user_id" invisible="1"/>
+	        				<field name="employee_id" options='{"no_open": True, "no_create": True}' attrs="{'readonly': ['|', ('state', '!=', 'draft'),('is_employee', '=', True)]}"/>
+	        				<!-- <field name="employee_id" options='{"no_open": True, "no_create": True}' attrs="{'readonly': ['|','|','|', ('state', '!=', 'draft'),('is_employee', '=', True),('is_applover_l2', '=', True),('is_employee_true', '=', True)]}"/> -->
+                            <field name="employee_code" invisible="1"/>
+                            <field name="department" options='{"no_open": True, "no_create": True}'/>
+                            <field name="date_of_joining"/>
+                            <field name="work_location" options='{"no_open": True, "no_create": True}'/>
+	        				<field name="reporting_manager" options='{"no_open": True, "no_create": True}'/>
+	        				<field name="reporting_manager_user_id" invisible="1"/>
+	        				<field name="user_id" invisible="1"/>
+                            <field name="l2_manager" options='{"no_open": True, "no_create": True}'/>
+                            <field name="l2_manager_user_id" invisible="1"/>
+                            <field name="is_applover_l1" invisible="1"/>
+                            <field name="is_applover_l2" invisible="1"/>
+                            <field name="is_employee" invisible="1"/>
+                            <field name="is_l2_reason" invisible="1"/>
+                            <field name="is_employee_reason" invisible="1"/>
+                            <field name="is_employee_true" invisible="1"/>
+                            
+                            <field name="hr_reminder_approver1_ids" invisible="1"/>
+                            <field name="hr_reminder_approver2_ids" invisible="1"/>
+                            <field name="hr_reminder_hod_ids" invisible="1"/>
+                            <field name="hr_reminder_director_ids" invisible="1"/>
+                            <field name="employee_ids" invisible="1"/>
+	        			</group>
+	        			<group>
+	        				<field name="kra_created_date" readonly="1"/>
+	        			</group>
+	        			<group>	        				
+	        				<field name="reason_l2_manager" readonly="1" attrs="{'invisible': [('is_l2_reason', '=', False)]}"/>
+                            <field name="reason_by_employee" readonly="1" attrs="{'invisible': [('is_employee_reason', '=', False)]}"/>
+	        			</group>
+	        			<group>
+	        				<field name="objective" attrs="{'readonly': ['|','|', ('state', '!=', 'draft'),('is_employee', '=', True),('is_applover_l2', '=', True)]}"/>
+	        				<field name="total_weightage" invisible="1"/>
+	        				<field name="company_id" invisible="1"/>
+	        			</group>
+	        			
+	        		</group>
+	        		<notebook>
+	        			<page string="KRA Evaluation Form">
+                            <field name="kra_line_ids" widget="one2many_widgets" attrs="{'readonly': ['|','|', ('state', 'not in', ['draft', 'reject_by_emp', 'reject']),('is_employee', '=', True),('is_applover_l1', '=', False)]}">
+	        				<!-- <field name="kra_line_ids" widget="one2many_widgets" attrs="{'readonly': ['|','|', ('state', 'not in', ['draft', 'reject_by_emp', 'reject']),('is_employee', '=', True),('is_applover_l2', '=', True)]}"> -->
+	        					<tree string="KRA" editable="bottom" delete="true">
+	        						<field name="name"/>
+	        						<field name="details"/>
+	        						<field name="timeline_id" options='{"no_open": True, "no_create": True}'/>
+                                    <field name="time_line" widget="selection" invisible="1"/>
+	        						<field name="target" sum="Total Weightage"/>
+	        						<field name="kra_id" invisible="1" options='{"no_open": True, "no_create": True}'/>
+	        					</tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="name"/>
+                                                <field name="details"/>
+                                            </group>
+                                            <group>
+                                                <field name="time_line" widget="selection"/>
+                                                <field name="target" sum="Total Weightage"/>
+                                                <field name="kra_id" invisible="1" options='{"no_open": True, "no_create": True}'/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+
+                                </form>
+	        				</field>
+	        			</page>
+
+	        		</notebook>
+        		</sheet>
+        		<div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+        	</form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_hr_kra_tree_custom">
+		<field name="name">hr.kra</field>
+		<field name="model">hr.kra</field>
+		<field name="arch" type="xml">
+			<tree string="KRA" duplicate="false">
+				<!-- <field name="name"/> -->
+				<!-- <field name="seq_date"/> -->
+				<field name="employee_id"/>
+				<field name="date_of_joining"/>
+				<field name="reporting_manager"/>
+                <field name="l2_manager" invisible="0"/>
+				<field name="department"/>
+				<field name="work_location"/>
+				<field name="state" string="Status"/>
+				<field name="user_id" invisible="1"/>
+				<field name="reporting_manager_user_id" invisible="1"/>
+			</tree>
+		</field>
+	</record>
+	 <record id="view_kra_report_pivot" model="ir.ui.view">
+        <field name="name">kra.pivot.view</field>
+        <field name="model">hr.kra</field>
+        <field name="arch" type="xml">
+            <pivot string="KRA Pivot">
+                <field name="date_of_joining" type="row"/>
+                <field name="employee_id" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="view_kra_report_graph" model="ir.ui.view">
+            <field name="name">kra.graph.view</field>
+            <field name="model">hr.kra</field>
+            <field name="arch" type="xml">
+                <graph string=" KRA Graph" type="pie">
+                    <field name="employee_id" type="row"/>
+               	 	<field name="state" type="count"/>
+                </graph>
+            </field>
+    </record>
+<!-- KRA Action for Approver1-->
+	<record model="ir.actions.act_window" id="hr_kra_action">
+		<field name="name">KRA Creation</field>
+		<field name="res_model">hr.kra</field>
+		<field name="view_mode">tree,form,pivot,graph</field>
+		<field name="search_view_id" ref="view_hr_kra_filter"/>
+        <field name="domain">[]</field>
+	</record>
+
+<!-- Widget -->
+    <record id="act_hr_employee_kra_list" model="ir.actions.act_window">
+        <field name="res_model">hr.kra</field>
+        <field name="name">KRA</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_employee_id': [active_id], 'default_employee_id': active_id}</field>
+    </record>    
+
+<!-- KRA Action for Approver-2-->
+    <record model="ir.actions.act_window" id="approval_kra_action">
+        <field name="name">KRA Approval</field>
+        <field name="res_model">hr.kra</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="domain">[('state', 'not in', ['draft'])]</field>
+        <field name="context">{'search_default_approve':1}</field>
+    </record>
+<!-- KRA Action for All employees-->
+    <record model="ir.actions.act_window" id="my_kra_action">
+        <field name="name">My KRA</field>
+        <field name="res_model">hr.kra</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('employee_id.user_id', '=', uid)]</field>
+    </record>
+
+
+    <!--Rules for KRA Company Wise -->
+		<record id="kra_company_rule" model="ir.rule">
+        <field name="name">KRA Company Rule</field>
+        <field name="model_id" ref="model_hr_kra"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    	</record>
+
+    <!--Rules for KRA HR and Admin -->
+
+		<record id="kra_hr_and_admin_rule" model="ir.rule">
+			<field name="name">KRA HR and Admin Group Rule</field>
+			<field name="model_id" ref="model_hr_kra"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[(1,'=',1)]</field>
+	        <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_hr')), (4, ref('base.group_system'))]"/>
+		</record>
+
+    <!--Rules for KRA Users -->
+
+		<record id="kra_user_rule" model="ir.rule">
+			<field name="name">KRA For User</field>
+			<field name="model_id" ref="model_hr_kra"/>
+			<field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+    	</record>
+
+    <!--Rules for Quarterly Approvers -->
+
+		<record id="kra_approver_rule" model="ir.rule">
+			<field name="name">KRA App1 And App2 Group Rule</field>
+			<field name="model_id" ref="model_hr_kra"/>
+			<field name="domain_force">['|', ('employee_id.lone_manager_id.user_id', '=', user.id), ('employee_id.ltwo_manager_id.user_id', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_1')), (4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+    	</record>
+</odoo>

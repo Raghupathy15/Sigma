@@ -1,0 +1,25 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee,access_hr_employee,hr.model_hr_employee,base.group_user,1,1,0,0
+,,,,,,,
+access_employee_education_line,access_employee_education_line,model_employee_education_line,base.group_erp_manager,1,1,1,1
+access_employee_education_line_hr,access_employee_education_line_hr,model_employee_education_line,hr.group_hr_manager,1,1,1,0
+access_employee_education_line_user,access_employee_education_line_user,model_employee_education_line,base.group_user,1,1,1,0
+,,,,,,,
+access_employee_grade,access_employee_grade,model_employee_grade,base.group_erp_manager,1,1,1,1
+access_employee_grade_hr,access_employee_grade_hr,model_employee_grade,hr.group_hr_manager,1,1,1,0
+access_employee_grade_user,access_employee_grade_user,model_employee_grade,base.group_user,1,1,0,0
+,,,,,,,
+access_company_property,access_company_property,model_company_property,base.group_erp_manager,1,1,1,1
+access_company_property_hr,access_company_property_hr,model_company_property,hr.group_hr_manager,1,1,1,0
+access_company_property_user,access_company_property_user,model_company_property,base.group_user,1,1,0,0
+,,,,,,,
+access_work_location,access_work_location,model_work_location,base.group_erp_manager,1,1,1,1
+access_work_location_hr,access_work_location_hr,model_work_location,hr.group_hr_manager,1,1,1,0
+access_work_location_user,access_work_location_user,model_work_location,base.group_user,1,1,0,0
+,,,,,,,
+access_employee_designation,access_employee_designation,model_employee_designation,base.group_erp_manager,1,1,1,1
+access_employee_designation_hr,access_employee_designation_hr,model_employee_designation,hr.group_hr_manager,1,1,1,0
+access_employee_designation_user,access_employee_designation_user,model_employee_designation,base.group_user,1,1,0,0
+,,,,,,,
+access_unblocked_details ,access_unblocked_details ,model_unblocked_details,base.group_user,1,1,1,1
+access_blocked_details ,access_blocked_details ,model_blocked_details,base.group_user,1,1,1,1

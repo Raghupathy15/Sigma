@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="lastseven_blockk" model="ir.rule">
+        <field name="name">Acount Blocking last 7 Days</field>
+        <field name="model_id" ref="model_account_blocking"/>
+        <field eval="True" name="global"/>
+        <field name="domain_force">[('employee_id.company_id','child_of',[user.company_id.id])]</field>
+    </record>
+</odoo>

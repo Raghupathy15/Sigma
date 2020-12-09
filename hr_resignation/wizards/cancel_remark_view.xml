@@ -1,0 +1,29 @@
+<odoo>
+	<data>
+		<record id="cancel_details_view_id" model="ir.ui.view">
+			<field name="name">cancel.remarks.resignation.form</field>
+			<field name="model">cancel.remarks.resignation</field>
+			<field name="arch" type="xml">
+				<form >
+					<field name= "name" required="1"/>
+					<footer>
+                    <button name="action_cancel_remark" string="Submit" type="object" class="oe_button oe_form_button_save oe_highlight" />
+                    or
+                    <button special="cancel" class="oe_link" string="Cancel" />
+               </footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_cancel_remark_wizard" model="ir.actions.act_window">
+         <field name="name">Cancel Remarks</field>
+         <field name="res_model">cancel.remarks.resignation</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+         <field name="context">{'default_resignation_id': active_id}</field>
+    </record>
+
+	</data>
+</odoo>

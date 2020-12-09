@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id="report_payslip_batch_report_doc">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                <t t-foreach="doc.slip_ids" t-as="o">
+                    <div class="oe_structure"/>
+                    <div class="page">
+                        <table class="table table-bordered" align="center" style="border:1px solid black; border-collapse: collapse;" width="850px">
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="850px" colspan="4">
+                                    <h3><b><center>Sigma AVIT Technology Solutions Pvt Ltd.</center></b></h3>
+                                    <h5>No. 407, 2nd Main,East of NGEF Layout, Kasturinagar,Bangalore- 560043.</h5>
+                               </td>
+                           </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="850px" colspan="4">
+                                    <h3><b> <div><center>PAYSLIP FOR THE MONTH OF <span t-esc="datetime.datetime.strptime(str(o.date_from), '%Y-%m-%d').strftime('%B-%Y')"/> 
+                                </center></div></b></h3>
+                               </td>
+                           </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Name:</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><t t-esc="o.employee_id.name"/></strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>Employee PAN:</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><t t-esc="o.employee_id.pan"/></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Employee Code:</strong></td>
+                                <td style="border: 1px solid black;" align="center"><strong><t t-esc="o.employee_id.code"/></strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>PF A/c. No.:</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><t t-esc="o.employee_id.pf_acc"/></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Designation:</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><t t-esc="o.employee_id.job_id.name"/></strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>PF UAN:</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><t t-esc="o.employee_id.pf_uan"/></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>D.O.J:</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><t t-esc="o.date_from"/></strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>ESIC No.:</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><t t-esc="o.employee_id.esic_no"/></strong></td>
+                            </tr>
+                             <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Department:</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><t t-esc="o.employee_id.department_id.name"/></strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>Bank A/c.No.</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><t t-esc="o.employee_id.bank_account_id.acc_number"/></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Days in Month:</strong></td>
+                                    <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><t t-esc="o.diff"/></strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>LOP</strong></td>
+                                  <td style="border: 1px solid black;" align="center" width="210px"><strong>0</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" align="center"  width="850px" colspan="4">
+                                    <br />
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="border-collapse: collapse; width:425px; float:left" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Earnings</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>Amount(Rs.)</strong></td>
+                            </tr>
+                            <t t-set="s" t-value="0" />
+                            <t t-set="i" t-value="0" /> 
+                            <tr t-foreach="o.line_ids" t-as="salary">
+                                <t set="var" t-value = "0"/>
+                                <t t-set="earn" t-value="salary.filtered(lambda x: x.total &gt; 0)"/>
+                                <t t-set="var" t-value="earn.mapped('total')"/>
+                                <t t-foreach="var" t-as="var1">
+                                    <t t-set="i" t-value="i+1"/> 
+                                    <td style="border: 1px solid black; padding:5px;" width="210px"><strong><t t-esc="salary.name"/></strong></td>
+                                    <td style="border: 1px solid black; padding:5px;" align="center" width="210px">
+                                        <strong><t t-esc="'{0:,.2f}'.format(var1)"/></strong>
+                                    </td>
+                                </t>
+                            </tr>
+                            <tr t-foreach="o.line_ids" t-as="salary">
+                                <t>
+                                    <t t-if="salary.code == 'GROSS'">
+                                        <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Gross pay</strong></td>
+                                        <td style="border: 1px solid black; padding:5px;" align="center" width="210px">
+                                        <strong><span t-field="salary.total"/></strong></td>
+                                    </t>
+                                </t>
+                            </tr>
+                        </table>
+                        <table style="border-collapse: collapse; width:425px; float:left" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>Deductions</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>Amount(Rs.)</strong></td>
+                            </tr>
+                            <t t-set="j" t-value="0" /> 
+                            <t t-set="b" t-value="0"/>
+                            <t t-set="sno" t-value="0" />
+                            <tr t-foreach="o.line_ids" t-as="salary">
+                                <t set="ded" t-value = "0"/>
+                                <t set="a" t-value="0"/>
+                                <t t-set="deductions" t-value="salary.filtered(lambda x: x.total &lt; 0)"/>
+                                <t t-set="var2" t-value="deductions.mapped('total')"/>
+                                <t t-foreach="deductions" t-as="d">
+                                    <t t-set="b" t-value="b+d.total"/>
+                                </t>
+                                <t t-foreach="var2" t-as="val">
+                                    <t t-set="j" t-value="j+1"/> 
+                                    <td style="border: 1px solid black; padding:5px;" align="center"><strong><t t-esc="salary.name"/></strong></td>
+                                    <td style="border: 1px solid black; padding:5px;" align="center" width="210px">
+                                        <strong><t t-esc="'{0:,.2f}'.format(abs(val))" width="210px"/></strong>
+                                    </td>
+                                </t>
+                            </tr>
+                            <t t-foreach="o.line_ids" t-as="salary">
+                                <t t-set="var4" t-value="salary.total"/>
+                                <t t-if="i &gt; j">
+                                    <t t-set="j" t-value="j+1"/>
+                                <tr>
+                                    <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><br /></td>
+                                    <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><br /></td>
+                                </tr>
+                                </t>
+                            </t>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Total</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px">
+                                    <strong>
+                                        <t t-esc="'{0:,.2f}'.format(abs(b))"/>
+                                    </strong></td>
+                            </tr>
+                        </table>
+                        <table class="table table-bordered" align="center" style="border:1px solid black; border-collapse: collapse;" width="850px">
+                            <tr t-foreach="o.line_ids" t-as="salary">
+                                <t t-if="salary.code == 'NET'">
+                                    <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Net Pay</strong></td>
+                                    <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><span t-field="salary.total"/></strong></td>
+                                    <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                                    <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="850px" colspan="4">
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Retiral and other benefits</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>0</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><br /></strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong><br /></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Retiral and other benefits</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>0</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Provident Fund @12%</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px">
+                                    <t t-foreach="o.line_ids" t-as="salary">
+                                        <t t-if="salary.code == 'BASIC'">
+                                            <strong><span t-esc="'{0:,.2f}'.format(salary.total * 12/100)"/></strong>
+                                        </t>
+                                    </t>
+                                </td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Employer State Insurance @4.75%</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px">
+                                    <t t-foreach="o.line_ids" t-as="salary">
+                                        <t t-if="salary.code == 'BASIC'">
+                                            <strong><span t-esc="'{0:,.2f}'.format(salary.total * 4.75/100)"/></strong>
+                                        </t>
+                                    </t>
+                                </td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Company Mediclaim</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>0</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Statutory Bonus</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>0</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" width="210px"><strong>Gratuity</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"><strong>0</strong></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="210px"></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding:5px;" align="center" width="850px" colspan="4"><strong><i>This is a computer generated document and does not require any signature</i></strong></td>
+                            </tr>                    
+                        </table>
+                        <br></br>
+                        <br></br><br></br><br></br><br></br><br></br>
+                    </div>
+                </t>
+            </t>
+            </t>
+        </template>
+
+        <template id="report_payslip_batch_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ind_sigma_payslip_batch_report.report_payslip_batch_report_doc" t-lang="en_US"/>                    
+                </t>
+             </t>
+        </template>
+
+	</data>
+</odoo>

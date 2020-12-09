@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="crm_case_form_view_oppor_inherit" model="ir.ui.view">
+		<field name="name">crm.lead.form.opportunity</field>
+		<field name="model">crm.lead</field>
+		<field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+		<field name="arch" type="xml">
+
+			<!-- <xpath expr="//sheet" position='before'>
+				<header>
+			        <button name="button_create" type="object" string="Create Activity"/>
+			    </header>
+			</xpath> -->
+
+			<xpath expr="//notebook/page[1]" position='before'>
+	    		<page string='Scheduled Activity'>
+	    			<field name="acti_ids" widget="one2many_list" mode="tree" style="text-align:center;">
+			            <tree editable="top" colspan="4" style="text-align:center;" create="false" delete="false" edit='false'>
+			                <field name="activity_type_id"/>
+			                <field name="date_deadline"/>
+			                <field name="summary"/>
+			                <field name="user_id"/>
+			                <field name="name"/>
+			            </tree>
+		        	</field>
+	    		</page>
+	    	</xpath>
+
+			<field name="date_deadline" position="after">
+				<field name="supply_order"/>
+				<field name="service_order"/>
+				<field name="additional_requirement"/>
+				<field name="usd_order_value"/>
+				<field name="inr_order_value"/>
+				<field name="supply_order_value" attrs="{'readonly': [('supply_order', '=', False)]}"/>
+				<field name="service_order_value" attrs="{'readonly': [('service_order', '=', False)]}"/>
+			</field>
+			<field name="phone" position="after">
+				<field name="so_no_in_sap"/>
+				<field name="po_num"/>
+				<field name="po_date"/>
+				<field name="po_rec_date"/>
+				<field name="product_description"/>
+			</field>
+			<field name="team_id" position="after">
+				<field name="payment_terms"/>
+			</field>
+			<field name="date_deadline" position="replace">
+				<field name="date_deadline" invisible="1"/>
+			</field>
+			<field name="probability" position="replace">
+				<field name="probability" invisible="1"/>
+			</field>
+			<field name="partner_name" position="replace">
+				<field name="partner_name" invisible="1"/>
+			</field>
+			<field name="street" position="replace">
+				<field name="street" invisible="1"/>
+			</field>
+			<field name="street2" position="replace">
+				<field name="street2" invisible="1"/>
+			</field>
+			<field name="city" position="replace">
+				<field name="city" invisible="1"/>
+			</field>
+			<field name="state_id" position="replace">
+				<field name="state_id" invisible="1"/>
+			</field>
+			<field name="zip" position="replace">
+				<field name="zip" invisible="1"/>
+			</field>
+			<field name="country_id" position="replace">
+				<field name="country_id" invisible="1"/>
+			</field>
+			<field name="website" position="replace">
+				<field name="website" invisible="1"/>
+			</field>
+			<field name="contact_name" position="replace">
+				<field name="contact_name" invisible="1"/>
+			</field>
+			<field name="title" position="replace">
+				<field name="title" invisible="1"/>
+			</field>
+			<field name="function" position="replace">
+				<field name="function" invisible="1"/>
+			</field>
+			<field name="mobile" position="replace">
+				<field name="mobile" invisible="1"/>
+			</field>
+			<field name="tag_ids" position="replace">
+				<field name="tag_ids" invisible="1"/>
+			</field>
+			<field name="tag_ids" position="after">
+				<field name="severity"/>
+				<field name="delivery_time"/>
+				<field name="date_deadline"/>
+			</field>
+			
+		</field>
+	</record>
+	<record id="crm_case_form_view_seq_inherit" model="ir.ui.view">
+		<field name="name">crm.lead.seq.opportunity</field>
+		<field name="model">crm.lead</field>
+		<field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+		<field name="arch" type="xml">
+			<xpath expr="//form/sheet/field[@name='active']" position='before'>
+				<div class="oe_title">
+					<h1><field name="seq_no" readonly="1"/></h1>
+				</div>
+			</xpath>
+			<xpath expr="//form/sheet/notebook/page/group/group[1]" position='replace'>
+				<group invisible="1">
+                              <field name="partner_name" invisible="1"/>
+                              <!-- <label for="street" string="Address"/> -->
+                              <div class="o_address_format">
+                                  <field name="street" placeholder="Street..." class="o_address_street" invisible="1"/>
+                                  <field name="street2" placeholder="Street 2..." class="o_address_street" invisible="1"/>
+                                  <field name="city" placeholder="City" class="o_address_city" invisible="1"/>
+                                  <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}' invisible="1"/>
+                                  <field name="zip" placeholder="ZIP" class="o_address_zip" invisible="1"/>
+                                  <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}' invisible="1"/>
+                              </div>
+                              <field name="website" widget="url" placeholder="e.g. https://www.odoo.com" invisible="1"/>
+                        </group>
+			</xpath>
+			<xpath expr="//form/sheet/notebook/page/group/group[2]" position='replace'>
+				<group class="mt48" invisible="1">
+                              <!-- <label for="contact_name"/> -->
+                              <div class="o_row">
+                                  <field name="contact_name" invisible="1"/>
+                                  <field name="title" placeholder="Title" domain="[]" options='{"no_open": True}' invisible="1"/>
+                              </div>
+                              <field name="function" invisible="1"/>
+                              <field name="mobile" invisible="1"/>
+                        </group>
+			</xpath>
+		</field>
+	</record>
+	<record id="view_partners_form_crm2" model="ir.ui.view">
+		<field name="name">view.res.partner.form.crm.inherited2</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//sheet" position='before'>
+				<header>
+			        <button name="action_create_seq" type="object" string="Create Deq"/>
+			    </header>
+			</xpath>
+			
+			<field name="vat" position="after">
+				<field name="customer_location"/>
+			</field>
+			<field name="city" position="after">
+				<field name="city_id" placeholder='City'/>
+			</field>
+		</field>
+	</record>
+	<record id="view_partners_seq_form_crm" model="ir.ui.view">
+		<field name="name">view.res.partner.seq.form.crm</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//form/sheet/field[@name='image']" position='before'>
+				<div class="oe_title">
+					<field name="employee_id" invisible="1"/>
+					<h1><field name="seq_no" readonly="1"/></h1>
+				</div>
+			</xpath>
+		</field>
+	</record>
+
+	<!-- Inherited list view -->
+	<record id="crm.crm_case_tree_view_oppor" model="ir.ui.view">
+        <field name="name">crm.lead.tree.opportunity</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <tree string="Opportunities" decoration-bf="message_needaction==True" decoration-muted="probability == 100" decoration-danger="activity_date_deadline and (activity_date_deadline &lt; current_date)">
+                <field name="date_deadline" invisible="1"/>
+                <field name="seq_no" string="Seq No"/>
+                <field name="create_date" />
+                <field name="name" string="Opportunity"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="country_id"/>
+                <field name="activity_date_deadline"/>
+                <field name="activity_summary"/>
+                <field name="medium_id" invisible="1"/>
+                <field name="campaign_id" invisible="1"/>
+                <field name="source_id" invisible="1"/>
+                <field name="stage_id"/>
+                <field name="planned_revenue" sum="Expected Revenues"/>
+                <field name="probability" avg="Avg. of Probability"/>
+                <field name="team_id"/>
+                <field name="user_id"/>
+                <field name="referred" invisible="1"/>
+                <field name="priority" invisible="1"/>
+                <field name="message_needaction" invisible="1"/>
+                <field name="probability" invisible="1"/>
+                <field name="write_date" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+  <record id="base.view_partner_tree" model="ir.ui.view">
+    <field name="name">res.partner.tree</field>
+    <field name="model">res.partner</field>
+    <field eval="8" name="priority"/>
+    <field name="arch" type="xml">
+        <tree string="Contacts">
+        	<field name="seq_no" string="Seq No"/>
+            <field name="display_name" string="Name"/>
+            <field name="function" invisible="1"/>
+            <field name="phone"/>
+            <field name="email"/>
+            <field name="user_id" invisible="1"/>
+            <field name="is_company" invisible="1"/>
+            <field name="country_id" invisible="1"/>
+            <field name="parent_id" invisible="1"/>
+            <field name="active" invisible="1"/>
+        </tree>
+    </field>
+    </record>
+
+</odoo>

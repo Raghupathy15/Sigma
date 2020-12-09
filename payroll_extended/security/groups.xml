@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record model="ir.module.category" id="payroll_admin_category">
+			<field name="name">Payslip Creator</field>
+			<field name="sequence">100</field>
+		</record>
+		<record model="res.groups" id="group_payroll_admin">
+			<field name="name">Payroll Admin</field>
+			<field name="category_id" ref="payroll_extended.payroll_admin_category"/>
+			<field name="users" eval="[(4,ref('base.user_root'))]"/>
+			<field name="implied_ids" eval="[(4,ref('base.group_user'))]"/>
+		</record>
+        <!-- Payroll for Employee -->
+        <record id="payroll_user_rule" model="ir.rule">
+            <field name="name">Payroll Employee rule</field>
+            <field name="model_id" ref="model_hr_payslip"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('employee_id.user_id','=',user.id),('state','=','done')]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Payroll for HR -->
+        <record id="payroll_hr_rule" model="ir.rule">
+            <field name="name">Payroll HR rule</field>
+            <field name="model_id" ref="model_hr_payslip"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('base.group_system')),(4,ref('payroll_extended.group_payroll_admin'))]"/>
+        </record>
+
+        <!-- Payroll for Multi company -->
+        <record id="payroll_multi_company_rule" model="ir.rule">
+            <field name="name">Payslip Multi company rule</field>
+            <field name="model_id" ref="model_hr_payslip"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('employee_id.company_id','child_of',[user.company_id.id])]</field>
+        </record>
+
+	</data>
+
+</odoo>

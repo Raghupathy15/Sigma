@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record model="ir.module.category" id="kra_category">
+			<field name="name">Induction / KRA / Appraisal</field>
+			<field name="sequence">1</field>
+		</record>
+		<record id="group_mrf_creator" model="res.groups">
+            <field name="name">MRF Creator</field>
+            <field name="category_id" ref="kra_category"/>
+        </record>
+
+		<record model="res.groups" id="group_kra_user">
+			<field name="name">User</field>
+			<field name="category_id" ref="hr_employee_kra.kra_category"/>
+		</record>
+
+		<record model="res.groups" id="group_kra_approver_1">
+			<field name="name">Approver 1</field>
+			<field name="category_id" ref="hr_employee_kra.kra_category"/>
+		</record>
+
+		<record model="res.groups" id="group_kra_approver_2">
+			<field name="name">Approver 2</field>
+			<field name="category_id" ref="hr_employee_kra.kra_category"/>
+		</record>
+
+		<record model="res.groups" id="group_kra_hod">
+			<field name="name">HOD</field>
+			<field name="category_id" ref="hr_employee_kra.kra_category"/>
+		</record>
+
+		<record model="res.groups" id="group_kra_director">
+			<field name="name">Director</field>
+			<field name="category_id" ref="hr_employee_kra.kra_category"/>
+		</record>
+
+		<record model="res.groups" id="group_kra_hr">
+			<field name="name">HR</field>
+			<field name="category_id" ref="hr_employee_kra.kra_category"/>
+		</record>
+		
+		<!-- Rule For Employee Profile -->
+       <!--  <record id="rule_hr_employee_user" model="ir.rule">
+            <field name="name">Employee Rule</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+        </record> -->
+
+        <!-- Rule For L1 Manager Profile -->
+        <!-- <record id="rule_lone_manager_user" model="ir.rule">
+            <field name="name">L1 Manager Rule</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('user_id','=',user.id), ('lone_manager_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1'))]"/>
+        </record> -->
+
+        <!-- Rule For L2 Manager Profile -->
+       <!--  <record id="rule_ltwo_manager_user" model="ir.rule">
+            <field name="name">L2 Manager Rule</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', '|', ('user_id','=',user.id), ('lone_manager_id.user_id','=',user.id), ('ltwo_manager_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1')), (4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+        </record> -->
+
+        <!-- Rule For HOD Profile -->
+       <!--  <record id="rule_hod_manager_user" model="ir.rule">
+            <field name="name">HOD Rule</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', '|', '|', ('user_id','=',user.id), ('lone_manager_id.user_id','=',user.id), ('ltwo_manager_id.user_id','=',user.id), ('hod_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1')), (4, ref('hr_employee_kra.group_kra_approver_2')), (4, ref('hr_employee_kra.group_kra_hod'))]"/>
+        </record> -->
+
+        <!-- Rule For Director Profile -->
+        <!-- <record id="rule_director_manager_user" model="ir.rule">
+            <field name="name">Director Rule</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_director'))]"/>
+        </record> -->
+		<!-- Induction Rule for Employee -->
+		<!-- <record id="rule_induction_employee" model="ir.rule">
+			<field name="name">Induction Rule For Employee</field>
+			<field name="model_id" ref="model_hr_induction"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('employee_id.user_id','=',user.id )]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+		</record> -->
+		<!-- Induction Rule for Approver-1-->
+		<!-- <record id="rule_induction_approver1" model="ir.rule">
+			<field name="name">Induction Rule For Approver-1</field>
+			<field name="model_id" ref="model_hr_induction"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('reporting_manager.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_1'))]"/>
+		</record> -->
+		<!-- KRA Rule for Approver-1-->
+<!--		<record id="rule_kra_approver_one" model="ir.rule">-->
+<!--			<field name="name">KRA Rule For Approver-1</field>-->
+<!--			<field name="model_id" ref="model_hr_kra"/>-->
+<!--			<field name="global" eval="True"/>-->
+<!--			<field name="domain_force">[('employee_id.lone_manager_id.user_id','=',user.id)]</field>-->
+<!--			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_1'))]"/>-->
+<!--		</record>-->
+		<!-- KRA Rule for Approver-2-->
+		<!-- <record id="rule_kra_approver2" model="ir.rule">
+			<field name="name">KRA Rule For Approver-2</field>
+			<field name="model_id" ref="model_hr_kra"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('employee_id.ltwo_manager_id.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+		</record> -->
+		<!-- KRA Rule for Employee -->
+		<!-- <record id="rule_kra_employee" model="ir.rule">
+			<field name="name">kra Rule For Employee</field>
+			<field name="model_id" ref="model_hr_kra"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('employee_id.user_id','=',user.id )]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+		</record> -->
+		<!-- Probation Rule for Employee -->
+		<!-- <record id="rule_kra_probation_employee" model="ir.rule">
+			<field name="name">Probation Rule For Employee</field>
+			<field name="model_id" ref="model_kra_probation"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('employee_id.user_id','=',user.id )]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+		</record> -->
+		<!-- Probation Rule for Approver-1 -->
+		<record id="rule_kra_probation_approver1" model="ir.rule">
+			<field name="name">KRA Probation Rule For Approver-1</field>
+			<field name="model_id" ref="model_kra_probation"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">['|',('employee_id.lone_manager_id.user_id','=',user.id),('employee_id.hod_id.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_1'))]"/>
+		</record>
+		<!-- Probation Rule Multi Company -->
+		<record id="rule_kra_probation_company" model="ir.rule">
+			<field name="name">KRA Probation Rule Company Wise</field>
+			<field name="model_id" ref="model_kra_probation"/>
+			<field eval="True" name="global"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+		</record>
+
+		<record id="rule_kra_probation_hr" model="ir.rule">
+			<field name="name">KRA Probation Rule For HR</field>
+			<field name="model_id" ref="model_kra_probation"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[(1,'=',1)]</field>
+	        <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_hr')), (4, ref('base.group_system'))]"/>
+		</record>
+
+		<!-- Probation Rule for HOD -->
+		<!-- <record id="rule_kra_probation_hod" model="ir.rule">
+			<field name="name">KRA Probation Rule For HOD</field>
+			<field name="model_id" ref="model_kra_probation"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('employee_id.hod_id.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_hod'))]"/>
+		</record> -->
+		<!--  Quarterly Rule For Employee -->
+		<!-- <record id="rule_quarterly_employee" model="ir.rule">
+			<field name="name">Quarterly Rule For Employee</field>
+			<field name="model_id" ref="model_kra_quarterly"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('employee_id.user_id','=',user.id )]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+		</record> -->
+		<!-- Quarterly Rule for Approver-1 -->
+		<!-- <record id="rule_quarterly_approver1" model="ir.rule">
+			<field name="name">Quarterly Rule For Approver-1</field>
+			<field name="model_id" ref="model_kra_quarterly"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('employee_id.lone_manager_id.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_1'))]"/>
+		</record> -->
+		<!-- Quarterly Rule for Approver-2 -->
+		<!-- <record id="rule_quarterly_approver2" model="ir.rule">
+			<field name="name">Quarterly Rule For Approver-2</field>
+			<field name="model_id" ref="model_kra_quarterly"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('employee_id.ltwo_manager_id.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+		</record> -->
+		<!-- Annual  Rule for Employee -->
+		<!-- <record id="rule_annual_employee" model="ir.rule">
+			<field name="name">Annual Rule For Employee</field>
+			<field name="model_id" ref="model_kra_appraisal"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('employee_id.user_id','=',user.id )]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+		</record> -->
+		<!-- Annual Rule for Approver-1 -->
+		<!-- <record id="rule_annual_approver1" model="ir.rule">
+			<field name="name">Annual Rule For Approver-1</field>
+			<field name="model_id" ref="model_kra_appraisal"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('l1_manager_id.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_1'))]"/>
+		</record> -->
+		<!-- Annual Rule for Approver-2 -->
+		<!-- <record id="rule_annual_approver2" model="ir.rule">
+			<field name="name">Quarterly Rule For Approver-2</field>
+			<field name="model_id" ref="model_kra_appraisal"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('l2_manager_id.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+		</record> -->
+		<!-- Annual  Rule for Employee -->
+		<!-- <record id="rule_resignation_employee" model="ir.rule">
+			<field name="name">Resignation Rule For Employee</field>
+			<field name="model_id" ref="model_hr_resignation"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('employee_id.user_id','=',user.id )]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+		</record> -->
+		<!-- Annual Rule for Approver-1 -->
+		<!-- <record id="rule_annual_approver1" model="ir.rule">
+			<field name="name">Annual Rule For Approver-1</field>
+			<field name="model_id" ref="model_kra_appraisal"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('l1_manager_id.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_1'))]"/>
+		</record> -->
+		<!-- Rule for Exit Clearance -->
+        <record id="rule_exit_clearance_employee" model="ir.rule">
+        	<field name="name">Exit Clearance Employee Rule</field>
+        	<field name="model_id" ref="model_exit_clearance"/>
+        	<field name="global" eval="True"/>
+        	<field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+        	<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1')), (4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+        </record>
+        <!-- Exit Clearance Rule for HOD -->
+		<!-- <record id="rule_exit_clearance_hod" model="ir.rule">
+			<field name="name">Exit clearance Rule For HOD</field>
+			<field name="model_id" ref="model_exit_clearance"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">['|', ('employee_id.user_id', '=', user.id), ('employee_id.hod_id.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')),(4, ref('hr_employee_kra.group_kra_hod'))]"/>
+		</record> -->
+		<!--Rule for Exit clearance Director -->
+        <!-- <record id="rule_exit_clearance_Director" model="ir.rule">
+			<field name="name">Exit clearance Rule For Director</field>
+			<field name="model_id" ref="model_exit_clearance"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">['|', ('employee_id.user_id', '=', user.id), ('employee_id.parent_id.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_director'))]"/>
+		</record> -->
+        <!-- Rule for Exit Interview -->
+        <!-- <record id="rule_exit_interview_employee" model="ir.rule">
+        	<field name="name">Exit Interview Employee Rule</field>
+        	<field name="model_id" ref="model_kra_exit_intw"/>
+        	<field name="global" eval="True"/>
+        	<field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+        	<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1')), (4, ref('hr_employee_kra.group_kra_approver_2')), (4, ref('hr_employee_kra.group_kra_hod')), (4, ref('hr_employee_kra.group_kra_director'))]"/>
+        </record> -->
+		<!--Self Declaration Group -->
+		<record id="group_self_declaration_not_create" model="res.groups">
+            <field name="name">Self Declaration Not Create</field>
+        </record>
+        <!--Rule for Exit clearance -->
+        <record id="rule_exit_clearance_all" model="ir.rule">
+			<field name="name">Exit clearance Rule</field>
+			<field name="model_id" ref="model_exit_clearance"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[('depart_employees_ids.user_id','=',user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1')), (4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+		</record>
+		<!--Rules for Self Declaration -->
+		<record id="employee_self_declaration_company_rule" model="ir.rule">
+        <field name="name">Self Declaration Company Rule</field>
+        <field name="model_id" ref="model_self_declaration"/>
+        <field eval="True" name="global"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    	</record>
+				<!--Rules for Self Declaration "group_payroll_admin" group-->
+
+		<record id="employee_self_declaration_group_rule" model="ir.rule">
+			<field name="name">Self Declaration Group Rule</field>
+			<field name="model_id" ref="model_self_declaration"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[(1,'=',1)]</field>
+	        <field name="groups" eval="[(4, ref('payroll_extended.group_payroll_admin')), (4, ref('base.group_system'))]"/>
+		</record>
+
+				<!--Rules for Employee Self Declaration -->
+
+		<record id="employee_self_declaration_employee_rule" model="ir.rule">
+	        <field name="name">Self Declaration Employee Rule</field>
+	        <field name="model_id" ref="model_self_declaration"/>
+	        <field name="global" eval="True"/>
+	        <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+	        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+	    </record>
+
+		<!--Rules for Quarterly Company Wise -->
+		<record id="quarterly_company_rule" model="ir.rule">
+        <field name="name">Quarterly Company Rule</field>
+        <field name="model_id" ref="model_kra_quarterly"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    	</record>
+
+		<!--Rules for Quarterly HR and Admin -->
+
+		<record id="quarterly_hr_and_admin_rule" model="ir.rule">
+			<field name="name">Quarterly HR and Admin Group Rule</field>
+			<field name="model_id" ref="model_kra_quarterly"/>
+			<field name="global" eval="True"/>
+			<field name="domain_force">[(1,'=',1)]</field>
+	        <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_hr')), (4, ref('base.group_system'))]"/>
+		</record>
+
+		<!--Rules for Quarterly Users -->
+
+		<record id="quarterly_user_rule" model="ir.rule">
+			<field name="name">Quarterly For User</field>
+			<field name="model_id" ref="model_kra_quarterly"/>
+			<field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+    	</record>
+
+		<!--Rules for Quarterly Approvers -->
+
+		<record id="quarterly_approver_rule" model="ir.rule">
+			<field name="name">Quarterly App1 And App2 Group Rule</field>
+			<field name="model_id" ref="model_kra_quarterly"/>
+			<field name="domain_force">['|', ('employee_id.lone_manager_id.user_id', '=', user.id), ('employee_id.ltwo_manager_id.user_id', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_approver_1')), (4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+    	</record>
+
+	</data>
+</odoo>

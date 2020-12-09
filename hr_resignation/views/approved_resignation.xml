@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.actions.act_window" id="view_approved_resignation">
+            <field name="name">Approved Resignation</field>
+            <field name="res_model">hr.resignation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','in',['confirm','reject','approved','cancel','cancel_req'])]</field>
+            <field name="search_view_id" ref="view_resignation_filter"/>
+            <field name="context">{'search_default_to_approve': 1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Approved Resignation
+                </p>
+            </field>
+        </record>
+
+        <record id="action_sub_project_groups_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="employee_approved_resignation_tree"/>
+            <field name="act_window_id" ref="view_approved_resignation"/>
+        </record>
+
+        <record id="action_approved_resignation_form" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="employee_approved_resignation_form"/>
+            <field name="act_window_id" ref="view_approved_resignation"/>
+        </record>
+
+        <menuitem id="employee_resignation_approved" parent="employee_resignation" name="Approved Resignation"
+                  action="view_approved_resignation" sequence="4"/>
+    </data>
+</odoo>
+
+

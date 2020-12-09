@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- Sequences for hr.resignation -->
+        <record id="seq_hr_resignation" model="ir.sequence">
+            <field name="name">Open HRMS Resignation</field>
+            <field name="code">hr.resignation</field>
+            <field name="prefix">RES/%(prefix)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

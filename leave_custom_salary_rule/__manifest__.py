@@ -1,0 +1,21 @@
+{
+    'name': 'Leave Salary Rule',
+    'version': '12.0.1.0.0',
+    'summary': 'Validations for leave request',
+    'description': """Validations for leave requesthr.leave""",
+    'category': 'Tools',
+    'author': 'Vishal',
+    'depends': ['leave_custom','hr_payroll','hr_contract','hr'],
+    'data': [
+        'data/cron.xml',
+        'data/email_template.xml',
+        # 'views/hr_payslip_salary_rule_category.xml',
+        'views/hr_payslip_views.xml',
+        # 'views/hr_contract_views.xml',
+        'views/hr_payroll_salary_rule.xml',
+    ],
+    'demo': [],
+    'installable': True,
+    'auto_install': False,
+    'application': True,
+}

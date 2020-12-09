@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="report_wizard_view_form" model="ir.ui.view">
+            <field name="name">report_wizard_view_form.form</field>
+            <field name="model">wizard.project.report</field>
+            <field name="arch" type="xml">
+                <form string="Select period">
+                    <b><center>The report may take some time before being ready</center></b>
+                    <group>
+                        <group >
+                            <field name="from_date"/>
+                        </group>
+                        <group >
+                            <field name="to_date" readonly="1" force_save="1"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="print_project_report_xls" type="object" string="Print XL Report" class="oe_highlight"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="attendance_report_action_window_1">
+            <field name="name">Attendance Report</field>
+            <field name="res_model">wizard.project.report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <menuitem id="menu_hr_attendance_manage_report_1" name="Attendance Report"
+                  parent="hr_attendance.menu_hr_attendance_manage_attendances" action="attendance_report_action_window_1"
+                  sequence="100" groups="hr_employee_kra.group_kra_hr,base.group_system"/>
+
+    </data>
+</odoo>

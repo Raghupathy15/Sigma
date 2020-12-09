@@ -1,0 +1,21 @@
+{
+    'name': 'Indglobal - 360 Degree',
+    'version': '12.0.1.0.0',
+    'summary': """360 Degree """,
+    'description': """360 Degree - Performance evolution""",
+    'category': 'Others',
+    'author': 'Indglobal digital private limited',
+    'company': 'Indglobal digital private limited',
+    'website': 'https://www.indglobal.com',
+    'depends': ['hr_employee_kra'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/threesixty_degree_views.xml',
+        'data/email.xml',
+    ],
+    'images': ['static/description/icon.png'],
+    'license': 'AGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}

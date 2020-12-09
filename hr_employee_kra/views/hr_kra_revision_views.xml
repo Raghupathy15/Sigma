@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+    <record id="view_hr_kra_form_customs" model="ir.ui.view">
+            <field name="name">hr.kra.revision</field>
+            <field name="model">hr.kra</field>
+            <field name="inherit_id" ref="hr_employee_kra.view_hr_kra_form_custom"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='kra_created_date']" position="after">
+                    <field name="revision_no" readonly="1"/>
+                </xpath>
+                <notebook position="inside">
+                    <page string="Revision Lines">
+                        <field name="rev_line">
+                            <tree string="Revisions" create="false" delete="false">
+                                <field name="name"/>                                   
+                            </tree>
+                            <form string="Revisions" version="7.0" readonly="1">
+                                <sheet>
+                                    <div class="oe_title">
+                                        <h1>
+                                            <field name="name" readonly="1"/>
+                                        </h1>
+                                    </div>
+                                    <group>
+                                        <group>
+                                            <field name="employee_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                            <field name="employee_code" invisible="1"/>
+                                            <field name="department" options='{"no_open": True, "no_create": True}'/>
+                                            <field name="date_of_joining"/>
+                                            <field name="work_location" options='{"no_open": True, "no_create": True}'/>
+                                            <field name="reporting_manager" options='{"no_open": True, "no_create": True}'/>
+                                            <field name="reporting_manager_user_id" invisible="1"/>
+                                            <field name="user_id" invisible="1"/>
+                                        </group>
+
+                                        <group>
+                                            <field name="kra_created_date" readonly="1"/>
+                                        </group>
+                                        <group>
+                                            
+                                            <field name="reason_l2_manager" readonly="1"/>
+                                            <field name="reason_by_employee" readonly="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="objective" readonly="1"/>
+                                            <field name="total_weightage" invisible="1"/>
+                                            <field name="company_id" invisible="1"/>
+                                        </group>
+                                        
+                                    </group>
+                                       <!--  <group>
+                                            <button name="apply_revisions" string="Apply Revision" class="oe_highlight" type="object" icon="fa-archive"/> 
+                                        </group> -->
+                                  
+                                    <notebook>
+                                        <page string="Revision Lines">
+                                            <field name="revision_line">
+                                                <tree string="Revision Lines" create="false" delete="false" editable="bottom">
+                                                    <field name="name" readonly="1" />
+                                                    <field name="details" readonly="1"/>
+                                                    <field name="time_line" widget="selection" readonly="1"/>
+                                                    <field name="target" sum="Total Weightage" readonly="1"/>
+                                                    <field name="revision_id" invisible="1" readonly="1" options='{"no_open": True, "no_create": True}'/> 
+                                                    <field name="employee_id" invisible="1" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                                                    <field name="company_id" invisible="1" readonly="1" options='{"no_open": True, "no_create": True}'/>      
+                                                </tree>
+                                                <form>
+                                                    <sheet>
+                                                        <group>
+                                                            <group>
+                                                                <field name="name" readonly="1"/>
+                                                                <field name="details" readonly="1"/>
+                                                            </group>
+                                                            <group>
+                                                                <field name="time_line" widget="selection" readonly="1"/>
+                                                                <field name="target" sum="Total Weightage" readonly="1"/>
+                                                                <field name="revision_id" invisible="1" readonly="1" options='{"no_open": True, "no_create": True}'/> 
+                                                                <field name="employee_id" invisible="1" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                                                                <field name="company_id" invisible="1" readonly="1" options='{"no_open": True, "no_create": True}'/>      
+                                                            </group>
+                                                        </group>
+                                                    </sheet>
+
+                                                </form>
+                                            </field>
+                                        </page>
+                                    </notebook>
+                                </sheet>
+                                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                            </form>
+                        </field>                             
+                    </page>
+              </notebook>
+            </field>
+        </record>
+  </data>
+</odoo>
+<!-- 
+581 4514570032039524
+4/24 -->

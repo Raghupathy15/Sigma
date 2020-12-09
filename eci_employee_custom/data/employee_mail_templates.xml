@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Email template for creating user -->
+        <record id="email_template_create_user" model="mail.template">
+            <field name="name">Send User Details</field>
+            <field name="subject">Login details for ${object.name}</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.work_email or object.employee_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="eci_employee_custom.model_hr_employee"/>
+            <field name="body_html"><![CDATA[
+                 <p>Hi,</p>
+                <br/>
+                <p>Welcome to Sigma AVIT family</p>
+                <p>Please be informed, here is your login credentials for HRMS portal where you would have to regularize attendance and apply your leaves every month. Please check and confirm us.</p>
+                <br/>
+                <p>Login : ${object.user_id.login}</p>
+                <p>Password : ${object.employee_id}</p>
+                <br/>
+                <br/>
+            ]]></field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_loan_deduction,loan.deduction,model_loan_deduction,,1,1,1,1
+access_loan_installment,loan.installment,model_loan_installment,,1,1,1,1
+access_multi_payslip,multi.payslip,model_multi_payslip,,1,1,1,1
+hr_payroll.access_hr_payslip,hr_payroll.hr.payslip,hr_payroll.model_hr_payslip,hr_payroll.group_hr_payroll_user,1,0,0,0
+access_hr_payslip_user,hr.payslip.user,hr_payroll.model_hr_payslip,base.group_user,1,0,0,0
+access_hr_payslip_creator,hr.payslip.creator,hr_payroll.model_hr_payslip,payroll_extended.group_payroll_admin,1,1,1,1
+access_hr_payslip_admin,hr.payslip.admin,hr_payroll.model_hr_payslip,base.group_system,1,1,1,1

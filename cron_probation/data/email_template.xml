@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!--Email template Probation Creation -->
+        <record id="email_template_probation_creation" model="mail.template">
+            <field name="name">Probation Creation for Mail</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.lone_manager_id.work_email}</field>
+            <field name="subject">Probation Creation for ${object.employee_id.name}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_probation"/>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.employee_id.lone_manager_id.name},</p>
+                    <p>Probation Evaluation form is created for ${object.employee_id.name}.Login to HRMS portal and complete the evaluation form.</p>
+                    <br/>
+                    <br/>
+                    <p>Regards,</p>
+                    <p><strong>ERP AUTOMATION</strong></p>
+                    <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Email template to HOD -->
+        <record id="email_template_probation_creation_hod" model="mail.template">
+            <field name="name">Probation Creation for Mail</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.hod_id.work_email}</field>
+            <field name="subject">Probation Creation for ${object.employee_id.name}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_probation"/>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.employee_id.hod_id.name},</p>
+                    <p>Probation Evaluation form is created for ${object.employee_id.name}. Please Confirm with your remarks.</p>
+                    <br/>
+                    <br/>
+                    <p>Regards,</p>
+                    <p><strong>ERP AUTOMATION</strong></p>
+                    <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!-- Rejected by HOD : Mail to A1 -->
+        <record id="email_template_probation_creation_rej" model="mail.template">
+            <field name="name">Probation Creation for Mail</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.lone_manager_id.work_email}</field>
+            <field name="subject">Probation Creation for ${object.employee_id.name}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_probation"/>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.employee_id.lone_manager_id.name},</p>
+                    <p>Probation Evaluation form is rejected for ${object.employee_id.name}.
+                    <br/>
+                    <br/>
+                    <p>Regards,</p>
+                    <p><strong>ERP AUTOMATION</strong></p>
+                    <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!-- Approved by HOD : Mail to Employee -->
+        <record id="email_template_probation_creation_app" model="mail.template">
+            <field name="name">Probation Creation for Mail</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.work_email}</field>
+            <field name="subject">Probation Creation for ${object.employee_id.name}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_probation"/>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.employee_id.name},</p>
+                    <p>The Probation Evaluation Process is completed , login to HRMS to validate the Confirmation date.
+                    <br/>
+                    <br/>
+                    <p>Regards,</p>
+                    <p><strong>ERP AUTOMATION</strong></p>
+                    <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Email template Approver 1 Blocked -->
+        <record id="email_template_kra_creation" model="mail.template">
+            <field name="name">KRA Approver 1 Manager Blocked</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.lone_manager_id.work_email}</field>
+            <field name="subject">${object.lone_manager_id.name} Your Account Gonna get Blocked</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.lone_manager_id.name},</p>
+                <br/>
+                <p>Employee ID : ${object.lone_manager_id.employee_id}</p>
+                <p>Your account gonna get blocked. Please Create a KRA for ${object.name}.</p>
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+        <!--Email template Quarterly Creation -->
+        <record id="email_template_quarterly_creation" model="mail.template">
+            <field name="name">Quarterly Creation for Mail</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to"></field>
+            <field name="subject">Quarterly Creation for ${object.employee_id.name}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_quarterly"/>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.employee_id.name},</p>
+                    <p>Quarterly Form is created for you. Kindly Check</p>
+                    <br/>
+                    <br/>
+                    <p>Regards,</p>
+                    <p><strong>ERP AUTOMATION</strong></p>
+                    <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+        <!--Email template Annual Creation -->
+        <record id="email_template_annual_creation" model="mail.template">
+            <field name="name">Annual Creation for Mail</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to"></field>
+            <field name="subject">Annual Appraisal for ${object.employee_id.name}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_employee_kra.model_kra_appraisal"/>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.employee_id.name},</p>
+                    <p>Annual Appraisal is created for you. Kindly Check</p>
+                    <br/>
+                    <br/>
+                    <p>Regards,</p>
+                    <p><strong>ERP AUTOMATION</strong></p>
+                    <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+    </data>
+</odoo>
+
+
+
+
+    

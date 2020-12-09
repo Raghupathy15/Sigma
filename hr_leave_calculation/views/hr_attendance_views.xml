@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model="ir.ui.view" id="hr_attendance_view_form_custom">
+		<field name="name">hr.attendance</field>
+		<field name="model">hr.attendance</field>
+		<field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="/form" position="attributes">
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">false</attribute>
+					<attribute name="duplicfate">false</attribute>
+                </xpath>
+                <xpath expr="//field[@name='employee_id']" position="replace">
+                	<field name="employee_id" readonly="1" force_save="1"/>
+            	</xpath>
+                <xpath expr="//field[@name='check_in']" position="replace">
+                	<field name="check_in" readonly="1" force_save="1"/>
+            	</xpath>
+                <xpath expr="//field[@name='check_out']" position="replace">
+                    <field name="check_out" readonly="1" force_save="1"/>
+            	</xpath>
+				<field name="check_out" position="after">
+					<field name="is_holiday" invisible="1"/>
+                    <field name="holiday" invisible="1"/>
+                    <field name="holiday_onch" invisible="1"/>
+                    <field name="is_weekoff" invisible="1"/>
+                    <field name="is_today" invisible="1"/>
+                    <field name="week_off" invisible="1"/>
+                    <field name="week_off_onch" invisible="1"/>
+                    <field name="is_leave" invisible="1"/>
+                    <field name="is_absent" invisible="1"/>
+                    <field name="leave_id" invisible="1"/>
+                    <field name="holiday_status_id" invisible="1"/>
+                    <field name="holiday_status_onch_id" invisible="1"/>
+                    <field name="leave_days" invisible="1"/>
+                    <field name="leave_days_onch" invisible="1"/>
+                    <field name="loss_of_pay_onch" invisible="1"/>
+                    <field name="work_hours" invisible="1"/>
+					<field name="worked_hours" invisible="1"/>
+					<field name="logged_date" invisible="1"/>
+					<field name="monthly_permission" invisible="1"/>
+					<field name="differed_time" invisible="1"/>
+					<field name="worked_time_in_sec" invisible="1"/>
+					<field name="present_day_status" invisible="1"/>
+					<field name="reg_req" invisible="1"/>
+					<field name="test_date" invisible="1"/>
+					<field name="cal_time" invisible="1" widget="float_time"/>
+					<field name="cal_out" invisible="1" widget="float_time"/>
+					<field name="reg_approved" invisible="1"/>
+					<field name="reg_rejected" invisible="1"/>
+                    <field name="reg_leave" invisible="1"/>
+					<field name="casual_leave" invisible="1"/>
+					<field name="sick_leave" invisible="1"/>
+					<field name="paid_leave" invisible="1"/>
+					<field name="comp_off" invisible="1"/>
+					<field name="loss_of_pay" invisible="1"/>
+					<field name="checked_in_within_time" invisible="1"/>
+					<label for="morn_session" invisible="1"/>
+                    <div name="creation_div" invisible="1">
+                        <field name="morn_session" class="oe_inline"/> -
+                        <field name="evng_session" class="oe_inline"/>
+                    </div>
+                    <field name="attendance_status" force_save="1" invisible="1"/>
+                    <field name="regularize_status" invisible="1"/>
+				</field>
+				<field name="employee_id" position="replace">
+					<field name="employee_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+				</field>
+				<xpath expr="//form/sheet/group" position='before'>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <!-- <button name="action_old_fetch_rec" string="Regularize Sync" type="object" class="oe_stat_button"/> -->
+                    <!-- <button name="write_logged_date" string="Log Date" type="object" class="oe_stat_button"/> -->
+                    <div class="oe_button_box" name="button_box" invisible="1">
+                        <button name="action_view_regular_req"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-money">
+                            <field name="regular_count" widget="statinfo" string="Regularize" invisible="1"/>
+                        </button>
+                        <style>
+                        	.o_form_buttons_edit {
+						    display: none !important;
+						}
+						</style>
+                    </div>
+                </xpath>		
+			</field>
+	</record>
+
+	<record id="hr_attendance.view_attendance_tree" model="ir.ui.view">
+        <field name="name">hr.attendance.tree</field>
+        <field name="model">hr.attendance</field>
+        <field name="arch" type="xml">
+            <!-- <tree decoration-danger="attendance_status != 'P - P'" decoration-info="reg_approved == True" string="Employee attendances"  edit="false" duplicate="false" default_order="logged_date desc"> -->
+            <tree decoration-danger="attendance_status in [('A - A'),('A - P'),('P - A'),('L - A'),('A - L')]" decoration-info="reg_approved == True" decoration-success="attendance_status in [('WO - WO'), ('H - H')]" string="Employee attendances"  edit="false" duplicate="false" default_order="logged_date desc" create="false">
+                <field name="employee_id"/>
+                <field name="logged_date"/>
+                <field name="check_in"/>
+                <field name="check_out"/>
+                <field name="worked_hours"/>
+                <field name="reg_approved" invisible="1"/>
+				<field name="attendance_status"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="hr_attendance.view_hr_attendance_kanban" model="ir.ui.view">
+        <field name="name">hr.attendance.kanban</field>
+        <field name="model">hr.attendance</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" create='false' edit='false' duplicate="false" default_order="logged_date desc">
+                <field name="employee_id"/>
+                <field name="logged_date"/>
+                <field name="check_in"/>
+                <field name="check_out"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div>
+                                <img t-att-src="kanban_image('hr.employee', 'image_small', record.employee_id.raw_value)" t-att-title="record.employee_id.value" t-att-alt="record.employee_id.value" width="24" height="24" class="oe_kanban_avatar mr4"/>
+                                <span class="o_kanban_record_title">
+                                    <strong><t t-esc="record.employee_id.value"/></strong>
+                                </span>
+                            </div>
+                            <hr class="mt4 mb8"/>
+                            <div class="o_kanban_record_subtitle">
+                                <p><strong><span>Date</span> - <t t-esc="record.logged_date.value"/></strong></p>
+                                <i class="fa fa-calendar" aria-label="Period" role="img" title="Period"></i>
+                                <t t-esc="record.check_in.value"/>
+                                - <t t-esc="record.check_out.value"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+	<record id="sequence_hrms_attendance" model="ir.sequence">
+        <field name="name">HRMS Attendance Sequence</field>
+        <field name="code">hr.attendance</field>
+        <field name="prefix">ATT/%(prefix)s/</field>
+        <field eval="False" name="company_id"/>
+        <field name="padding">6</field>
+    </record>
+
+    <!-- To add calendar view (Starts) -->
+    <record id="hr_attendance_views_calendar" model="ir.ui.view">
+        <field name="name">hr.attendance.view.calendar</field>
+        <field name="model">hr.attendance</field>
+        <field name="arch" type="xml">
+            <calendar string="Session" date_start="logged_date" mode="month" quick_add="False" color="employee_id">
+                <field name="attendance_status"/>
+                <!-- <field name="regularize_status"/> -->
+            </calendar>
+        </field>
+    </record>
+
+    <record id="hr_attendance_actions_calendar" model="ir.actions.act_window.view">
+        <field name="sequence">3</field>
+        <field name="view_mode">calendar</field>
+        <field name="act_window_id" ref="hr_attendance.hr_attendance_action"/>
+        <field name="view_id" ref="hr_attendance_views_calendar"/>
+    </record>
+    <!-- To add calendar view (Ends) -->
+
+    <!-- Pivot view for attendance-->
+    <record id="hr_attendance.hr_attendance_view_pivot" model="ir.ui.view">
+        <field name="name">hr.attendance.pivot</field>
+        <field name="model">hr.attendance</field>
+        <field name="arch" type="xml">
+            <pivot string="Attendance">
+                <field name="employee_id" type="row"/>
+                <field name="worked_hours" type="measure"/>
+                <field name="present_day_status_onch" type="measure"/>
+                <field name="loss_of_pay_onch" type="measure"/>
+                <field name="leave_days_onch" type="measure"/>
+                <field name="week_off_onch" type="measure" invisible="1"/>
+                <field name="holiday_onch" type="measure" invisible="1"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="hr_attendance.hr_attendance_action_graph" model="ir.actions.act_window">
+        <field name="name">Attendance Analysis</field>
+        <field name="res_model">hr.attendance</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">pivot</field>
+        <field name="view_id"></field>  <!-- force empty -->
+    </record>
+
+    <record id="view_hr_attendance_compute" model="ir.actions.server">
+        <field name="name">Compute</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="binding_model_id" ref="model_hr_attendance"/>
+        <field name="state">code</field>
+        <field name="code">
+          if records:
+              action = records.compute_reg_req()
+        </field>
+    </record>
+</odoo>

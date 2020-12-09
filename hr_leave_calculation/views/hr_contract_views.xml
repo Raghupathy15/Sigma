@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_contract_view_form_inherit_custom" model="ir.ui.view">
+            <field name="name">hr.contract.form</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='salary_and_advantages']/div[@name='wage']" position="after">
+                	<label for="mobile_conveyance"/>
+                    <div class="o_row" name="mobile_conveyance">
+                        <field name="mobile_conveyance" nolabel="1"/>
+                        <span>/ month</span>
+                    </div>
+                    <label for="city_allowance"/>
+                    <div class="o_row" name="city_allowance">
+                        <field name="city_allowance" nolabel="1"/>
+                        <span>/ month</span>
+                    </div>
+                    <field name="esi_calc"/>
+                    <field name="proposed_ctc"/>
+	            </xpath>
+	            <!-- <xpath expr="//field[@name='struct_id']" position="replace">
+	            	<label for="struct_id" string="Grade"/>
+	            	<field name="struct_id" required="1"/>
+	            </xpath> -->
+	            <xpath expr="//field[@name='reported_to_secretariat']" position="replace">
+	            	<field name="reported_to_secretariat" widget="toggle_button" options="{&quot;active&quot;: &quot;Reported to the social secretariat&quot;, &quot;inactive&quot;: &quot;To report to the social secretariat&quot;}" invisible="1"/>
+	            </xpath>
+            </field>
+        </record>
+
+        <record id="view_hr_employee_grade_form_custom_inherit" model="ir.ui.view">
+            <field name="name">hr.payroll.structure.form</field>
+            <field name="model">hr.payroll.structure</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_employee_grade_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]" position="after">
+                	<group>
+                		<group string="Basic Salary">
+                			<field name="basic_amount"/>
+                		</group>
+                		<group string="Insurance">
+                			<field name="insurance_amount"/>
+                		</group>
+                	</group>
+	            </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

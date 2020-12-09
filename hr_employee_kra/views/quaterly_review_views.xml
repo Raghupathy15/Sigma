@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <record id="view_kra_quarterly_filter" model="ir.ui.view">
+        <field name="name">kra.quarterly.list.select</field>
+        <field name="model">kra.quarterly</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Quarterly Form">
+                <field name="employee_id"/>
+                <field name="employee_code"/>
+                <separator/>
+                <filter string="My Quarterly Review" name="employee" domain="[('employee_id.user_id', '=', uid)]" help="My Quarterly Review" groups="hr_employee_kra.group_kra_user"/>
+                <filter domain="[('state','in',('app1', 'app2'))]" string="To Approve" name="approve"/>
+           </search>
+        </field>
+    </record>        
+        <record id="kra_quarterly_tree" model="ir.ui.view">
+            <field name="name">kra.quarterly.tree</field>
+            <field name="model">kra.quarterly</field>
+            <field name="arch" type="xml">
+                <tree string="Quarterly Review">
+                    <field name="name" string="Seq No"/>
+                    <field name="seq_date"/>
+                    <field name="employee_id"/>
+                    <field name="employee_code" invisible="1"/>
+                    <field name="job_id"/>
+                    <field name="manager_id" invisible ="1"/>
+                    <field name="l1_manager"/>
+                    <field name="l2_manager"/>
+                    <field name="company_id"/>
+                    <field name="overall_rating"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="kra_quarterly_form" model="ir.ui.view">
+            <field name="name">kra.quarterly.form</field>
+            <field name="model">kra.quarterly</field>
+            <field name="arch" type="xml">
+                <form string="Quarterly Plan">
+                    <header>
+                        <!-- User -->
+                        <button name="action_app1" string="Submit to Approver 1" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['draft'])]}"/>
+                        <button name="accept_pip_user" string="Accept" class="btn btn-primary" type="object" attrs="{'invisible':['|', ('state','not in',['l1_resub']), ('is_employee','=', False)]}"/>
+                        <!-- Approver 1 -->
+                        <button name="action_app2" string="Submit to Approver 2" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['app1'])]}" groups="hr_employee_kra.group_kra_approver_1"/>
+                        <button name="state_l2_resub" string="Resubmit to Employee" class="btn btn-primary" type="object" attrs="{'invisible': [('state', 'not in', ['reject'])]}" groups="hr_employee_kra.group_kra_approver_1"/>
+                        
+                        <button name="set_to_draft" string="Set to Draft" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['cancel'])]}"/>
+                        <!-- Approver 2 -->
+                        <button name="action_approve" string="Approve" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['app2'])]}" groups="hr_employee_kra.group_kra_approver_2"/>
+                        <!-- <button name="action_reject" string="Reject" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['app2','l1_resub'])]}" groups="hr_employee_kra.group_kra_approver_2"/> -->
+<!--                        <button name="action_cancel" string="Cancel" class="btn btn-default" type="object" attrs="{'invisible':[('state','in',['draft', 'done', 'cancel','app2'])]}"/>-->
+
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_kra_quart"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-money">
+                                <field name="kra_quart_count" widget="statinfo" string="Quarterly"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group string="Quarterly Performance Review">
+                            <group>
+                                <field name="is_employee" invisible="1"/>
+                                <field name="is_approver_1" invisible="1"/>
+                                <field name="is_approver_2" invisible="1"/>
+                                <field name="employee_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                                <field name="employee_code" invisible="1"/>
+                                <field name="job_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                                <field name="department_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                                <field name="location_work_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="l1_manager" options='{"no_open": True, "no_create": True}'/>
+                                <field name="l2_manager" options='{"no_open": True, "no_create": True}'/>
+                                <field name="employee_date" invisible="1"/>
+                                <field name="approver_1_date" invisible="1"/>
+                                <field name="approver_2_date" invisible="1"/>
+                                <field name="resumbitted_app_2_date" invisible="1"/>
+                                <field name="revised_emp_date" invisible="1"/>
+                                <field name="l1_manager_id" invisible="1"/>
+                                <field name="l2_manager_id" invisible="1"/>
+
+
+                                <field name="hr_reminder_approver1_ids" invisible="1"/>
+                                <field name="hr_reminder_approver2_ids" invisible="1"/>
+                                <field name="hr_reminder_hod_ids" invisible="1"/>
+                                <field name="hr_reminder_director_ids" invisible="1"/>
+                                <field name="employee_ids" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="kra_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="seq_date" readonly="1"/>
+                                <field name="date" readonly="1"/>
+                                <field name="employee_feedback" attrs="{'readonly':['|', ('state','not in','draft'),('is_employee','=', False)]}"/>
+                                <field name="l1_feedback" attrs="{'readonly':['|', ('state','not in','app1'), ('is_approver_1','=', False)]}"/>
+                                <field name="l2_feedback" attrs="{'readonly':['|', ('state','not in','app2'), ('is_approver_2','=', False)]}"/>
+                            </group>
+                            <group>
+                                <field name="doj"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="user_id" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Quarterly Performance">
+                                <field name="quarterly_ids">
+                                    <!-- <tree editable="bottom" create="false" delete="false"> -->
+                                    <tree editable="bottom" create="false" delete="false">
+                                        <field name="state" invisible="1"/>
+                                        <field name="kra" readonly="1"/>
+                                        <field name="details_kra" readonly="1"/>
+                                        <field name="timeline_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+                                        <field name="timeline" invisible="1"/>
+                                        <field name="weightage" readonly="1"/>
+                                        <field name="max_rating" sum="Total" readonly="1" force_save="1"/>
+                                        <field name="details_acheivement" attrs="{'readonly':['|', ('state', 'not in', 'draft'), ('user_check', '=', False)]}"/>
+                                        <field name="employee_rating" attrs="{'readonly':['|', ('state','not in','draft'),('user_check','=', False)]}" sum="Total"/>
+                                        <field name="l1" sum="Total" attrs="{'readonly':['|',('approver_1_check', '=', False),('state','not in',['app1', 'reject'])]}"/>
+                                        <field name="l2" sum="Total" attrs="{'readonly':['|',('approver_2_check', '=', False),('state','in',['app1', 'done','reject', 'draft', 'l1_resub'])]}"/>
+                                        <field name="avg_rating" sum="Total"/>
+                                        <field name="employee_id" invisible="1"/>
+                                        <field name="l1_manager" invisible="1"/>
+                                        <field name="l2_manager" invisible="1"/>
+                                        <field name="user_check" invisible="1"/>
+                                        <field name="approver_1_check" invisible="1"/>
+                                        <field name="approver_2_check" invisible="1"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="state" invisible="1"/>
+                                                    <field name="kra" readonly="1"/>
+                                                    <field name="details_kra" readonly="1"/>
+                                                    <field name="timeline_id" options='{"no_open": True, "no_create": True}'/>
+                                                    <field name="timeline" readonly="1"/>
+                                                    <field name="weightage" readonly="1"/>
+                                                </group>
+                                                <group>
+                                                    <field name="max_rating" sum="Total"/>
+                                                    <field name="details_acheivement" readonly="1"/>
+                                                    <field name="employee_rating" readonly="1" sum="Total"/>
+                                                    <field name="l1" sum="Total" readonly="1"/>
+                                                    <field name="l2" sum="Total" readonly="1"/>
+                                                    <field name="avg_rating" sum="Total"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook> 
+                        <group> 
+                            <field name="overall_rating"/>
+                            <field name="last_quarter_rating"/>
+                            <field name="last_quarter_pip" attrs="{'readonly':['|',('is_approver_1', '=', False), ('state','not in',['reject'])], 'required': [('state','in', 'reject')]}"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+<!-- Action for My Quarterly-->
+        <record id="action_kra_quarterly" model="ir.actions.act_window">
+            <field name="name"> My Quarterly</field>
+            <field name="res_model">kra.quarterly</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_id" ref="kra_quarterly_tree"/>
+            <!-- <field name="search_view_id" ref="view_kra_quarterly_filter"/> -->
+            <field name="domain">[('employee_id.user_id', '=', uid)]</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new operation type
+              </p><p>
+                The operation type system allows you to assign each stock
+                operation a specific type which will alter its views accordingly.
+                On the operation type you could e.g. specify if packing is needed by default,
+                if it should show the customer.
+              </p>
+            </field>
+            <field name="context">{
+                'create': False,
+            }</field>
+        </record>
+
+    <!-- Widget -->
+    <record id="act_hr_employee_quarterly_list" model="ir.actions.act_window">
+        <field name="res_model">kra.quarterly</field>
+        <field name="name">Quarterly</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_employee_id': [active_id], 'default_employee_id': active_id}</field>
+    </record>
+
+<!--Action for Approver-1-->
+    <record id="quarterly_approval_list" model="ir.actions.act_window">
+        <field name="res_model">kra.quarterly</field>
+        <field name="name">Quarterly Approval</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+<!--        <field name="domain">['|', ('employee_id.lone_manager_id.user_id', '=', uid), ('employee_id.ltwo_manager_id.user_id', '=', uid)]</field>-->
+        <field name="context">{'create': False,}</field>
+    </record>
+    
+    </data>
+</odoo>

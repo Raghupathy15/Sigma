@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model="ir.ui.view" id="view_hr_induction_master_form_custom">
+        <field name="name">hr.induction.master</field>
+        <field name="model">hr.induction.master</field>
+        <field name="arch" type="xml">
+        	<form string="Induction Master">
+        		<sheet>
+        			<div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"
+                                options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+        			<group>
+        				<field name="name"/>
+        				<field name="session_details"/>
+        				<field name="responsibility"/>
+        			</group>
+        		</sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+        	</form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_hr_induction_master_tree_custom">
+		<field name="name">hr.induction.master</field>
+		<field name="model">hr.induction.master</field>
+		<field name="arch" type="xml">
+			<tree string="Induction Master">
+				<field name="name"/>
+				<field name="session_details"/>
+				<field name="responsibility"/>
+			</tree>
+		</field>
+	</record>
+	<record model="ir.actions.act_window" id="hr_induction_master_action">
+		<field name="name">Induction Master</field>
+		<field name="res_model">hr.induction.master</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+
+	
+
+	<!-- Induction Form View start-->
+	<record id="view_hr_induction_filter" model="ir.ui.view">
+        <field name="name">hr.induction.list.select</field>
+        <field name="model">hr.induction</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Induction Form">
+            	<field name="employee_id"/>
+            	<field name="employee_code"/>
+            	<separator/>
+                <filter string="My Induction Form" name="employee" domain="[('employee_id.user_id', '=', uid)]" help="My Department Leaves" groups="hr_employee_kra.group_kra_user"/>
+
+                <filter string="Induction List" name="hr" domain="[('document_created_by', '=', uid)]" help="My Department Leaves" groups="hr_employee_kra.group_kra_hr"/>
+
+                <filter string="Team Induction List" name="l1_manager_team" domain="[('reporting_manager_user_id', '=', uid)]" help="My Department Leaves" groups="hr_employee_kra.group_kra_approver_1"/>
+                <filter domain="[('state','=','emp_approval')]" string="To Approve" name="approve"/>
+                <!-- <filter string="State" name="state"/> -->
+
+                
+           </search>
+        </field>
+    </record>
+
+	<record model="ir.ui.view" id="view_hr_induction_form_custom">
+        <field name="name">hr.induction</field>
+        <field name="model">hr.induction</field>
+        <field name="arch" type="xml">
+        	<form string="Induction">
+        		<header>
+                    <!-- HR -->
+        			<button name="action_hr_confirm" string="Confirm" type="object" class="oe_highlight" states="draft" groups="hr_employee_kra.group_kra_hr"/>
+        			<button name="action_hr_confirm_resubmit" string="Confirm" type="object" class="oe_highlight" states="acknowledged" groups="hr_employee_kra.group_kra_hr"/>
+        			<button name="action_hr_resubmit" string="Resubmit" type="object" states="reject" class="oe_highlight" groups="hr_employee_kra.group_kra_hr"/>
+                    <!-- Approver 1 -->
+        			<button name="action_l1_manager_acknowledge" string="Acknowledge" type="object" states="emp_approval" class="oe_highlight" groups="hr_employee_kra.group_kra_approver_1"/>
+                    <!-- User done-->
+        			<button name="action_emp_accept" string="Agree" type="object" states="hr_submit,resubmit" class="oe_highlight"/>
+        			<button name="action_emp_reject" string="Disagree" type="object" states="hr_submit,resubmit" class="oe_highlight"/>
+        			<field name="state" widget="statusbar"/>
+        		</header>
+
+        		<sheet>
+        				<div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+        			<group>
+	        			<group>
+	        				<field name="employee_id" options='{"no_open": True, "no_create": True}' attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="employee_code" invisible="1"/>
+                            <field name="location_work_id" options='{"no_open": True, "no_create": True}'/>
+	        				<field name="reporting_manager" options='{"no_open": True, "no_create": True}'/>
+                            <field name="created_hr_employee_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+	        				<field name="reporting_manager_user_id" invisible="1"/>
+	        				<field name="user_id" invisible="1"/>
+                            <field name="company_id" options='{"no_open": True, "no_create": True}' invisible="1"/>
+
+                            <field name="hr_reminder_approver1_ids" invisible="1"/>
+                            <field name="hr_reminder_approver2_ids" invisible="1"/>
+                            <field name="hr_reminder_hod_ids" invisible="1"/>
+                            <field name="hr_reminder_director_ids" invisible="1"/>
+                            <field name="employee_ids" invisible="1"/>
+                            <field name="hr_ids" invisible="1"/>
+	        			</group>
+	        			<group>
+                            <field name="department" options='{"no_open": True, "no_create": True}'/>
+                            <field name="date_of_joining"/>
+                            <field name="induction_created_date"/>
+                            <field name="document_created_by" invisible="1"/>
+                            <field name="remarks_by_l1_manager" invisible="1"/>
+                            <field name="remarks_by_employee" invisible="1"/>
+                        </group>
+	        		</group>
+	        		<notebook>
+	        			<page string="Induction Evaluation Form">
+	        				<field name="induction_line_ids" widget="one2many_widgets">
+	        					<tree string="Induction" editable="bottom" create="false" delete="false">
+	        						<field name="name" readonly="1" force_save="1"/>
+	        						<field name="session_details" readonly="1" force_save="1"/>
+	        						<field name="responsibility" options='{"no_open": True, "no_create": True}' readonly="1" force_save="1"/>
+	        						<field name="completed" force_save="1"/>
+                                    <field name="user_id" invisible="1"/>
+                                    <field name='is_hr' invisible="1"/>
+	        					</tree>
+	        				</field>
+
+	        			</page>
+
+	        		</notebook>
+        		</sheet>
+        		<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+        	</form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_hr_induction_tree_custom">
+		<field name="name">hr.induction</field>
+		<field name="model">hr.induction</field>
+		<field name="arch" type="xml">
+			<tree string="Induction" colors="red:state == 'draft'">
+                <field name="name" invisible="1"/>
+                <field name="seq_date" invisible="1"/>
+                <field name="employee_id"/>
+                <field name="user_id" invisible="1"/>
+                <field name="reporting_manager_user_id" invisible="1"/>
+                <field name="employee_code" invisible="1"/>
+                <field name="date_of_joining"/>
+                <field name="reporting_manager"/>
+                <field name="department"/>
+                <field name="location_work_id"/>
+                <field name="document_created_by" invisible="1"/>
+                <field name="state"/>
+            </tree>
+		</field>
+	</record>
+	<record id="induction_pivot" model="ir.ui.view">
+        <field name="name">hr.induction.pivot</field>
+        <field name="model">hr.induction</field>
+        <field name="arch" type="xml">
+            <pivot string="Induction Analysis">
+            	<field name="employee_id" type="row"/>
+            	<field name="date_of_joining" type="row"/>
+                <field name="state" type="col"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="induction_graph" model="ir.ui.view">
+        <field name="name">hr.induction.graph</field>
+        <field name="model">hr.induction</field>
+        <field name="arch" type="xml">
+            <graph string="Induction Analysis" type="pie">
+            	<field name="employee_id" type="row"/>
+                <field name="state" type="count"/>
+            </graph>
+        </field>
+    </record>
+
+	<record model="ir.actions.act_window" id="hr_induction_action">
+		<field name="name">Induction Lists</field>
+		<field name="res_model">hr.induction</field>
+		<field name="view_mode">tree,form,pivot,graph</field>
+		<field name="search_view_id" ref="view_hr_induction_filter"/>
+	</record>
+<!-- Widget -->
+    <record id="act_hr_employee_induction_list" model="ir.actions.act_window">
+        <field name="res_model">hr.induction</field>
+        <field name="name">Induction</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_employee_id': [active_id], 'default_employee_id': active_id}</field>
+    </record>
+<!-- Action for visible own Record-->
+    <record id="action_induction_creation" model="ir.actions.act_window">
+        <field name="name">My Induction</field>
+        <field name="res_model">hr.induction</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="domain">[('employee_id.user_id', '=', uid)]</field>
+    </record>
+<!-- Action for visible Subordinates Recrod-->
+    <record id="action_induction_approval" model="ir.actions.act_window">
+        <field name="name">Induction Approval</field>
+        <field name="res_model">hr.induction</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="domain">[('employee_id.lone_manager_id.user_id', '=', uid)]</field>
+        <field name="context">{'search_default_approve':1}</field>
+    </record>
+
+
+	
+
+</odoo>

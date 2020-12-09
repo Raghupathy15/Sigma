@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sequence_induction" model="ir.sequence">
+            <field name="name">Induction Sequence</field>
+            <field name="code">hr.induction</field>
+            <field name="prefix">ST/IND/%(prefix)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+        <record id="sequence_kra" model="ir.sequence">
+            <field name="name">sequence.kra</field>
+            <field name="code">hr.kra</field>
+            <field name="prefix">ST/KRA/%(prefix)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False" />
+        </record>
+        <record id="seq_kra_probation" model="ir.sequence">
+            <field name="name">KRA Probation Sequence</field>
+            <field name="code">kra.probation</field>
+            <field name="prefix">ST/PRB/%(prefix)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+        <record id="seq_kra_quarterly" model="ir.sequence">
+            <field name="name">KRA Quarterly Sequence</field>
+            <field name="code">kra.quarterly</field>
+            <field name="prefix">ST/QAT/%(prefix)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+        <record id="sequences_kra_appraisal" model="ir.sequence">
+            <field name="name">sequences.kra.appraisal</field>
+            <field name="code">kra.appraisal</field>
+            <field name="prefix">ST/ANN/%(prefix)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False" />
+        </record>
+        <record id="sequence_exit_clearance" model="ir.sequence">
+            <field name="name">sequence.exit.clearance</field>
+            <field name="code">exit.clearance</field>
+            <field name="prefix">ST/EC/%(prefix)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False" />
+        </record>
+        <record id="sequence_self_declaration" model="ir.sequence">
+            <field name="name">sequence.self.declaration</field>
+            <field name="code">self.declaration</field>
+            <field name="prefix">ST/SD/%(prefix)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False" />
+        </record>
+        <record id="seq_kra_exit_intw" model="ir.sequence">
+            <field name="name">Kra Exit Intw Sequence</field>
+            <field name="code">kra.exit.intw</field>
+            <field name="prefix">ST/EXI/%(prefix)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+    </data>
+</odoo>

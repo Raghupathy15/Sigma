@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Rule For Employee Profile -->
+        <record id="rule_hr_employee_user" model="ir.rule">
+            <field name="name">Employee Rule</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user'))]"/>
+        </record>
+
+        <!-- Rule For L1 Manager Profile -->
+        <record id="rule_lone_manager_user" model="ir.rule">
+            <field name="name">L1 Manager Rule</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('user_id','=',user.id), ('lone_manager_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1'))]"/>
+        </record>
+
+        <!-- Rule For L2 Manager Profile -->
+        <record id="rule_ltwo_manager_user" model="ir.rule">
+            <field name="name">L2 Manager Rule</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', '|', ('user_id','=',user.id), ('lone_manager_id.user_id','=',user.id), ('ltwo_manager_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1')), (4, ref('hr_employee_kra.group_kra_approver_2'))]"/>
+        </record>
+
+        <!-- Rule For HOD Profile -->
+        <record id="rule_hod_manager_user" model="ir.rule">
+            <field name="name">HOD Rule</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', '|', '|', ('user_id','=',user.id), ('lone_manager_id.user_id','=',user.id), ('ltwo_manager_id.user_id','=',user.id), ('hod_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_user')), (4, ref('hr_employee_kra.group_kra_approver_1')), (4, ref('hr_employee_kra.group_kra_approver_2')), (4, ref('hr_employee_kra.group_kra_hod'))]"/>
+        </record>
+
+        <!-- Rule For Director Profile -->
+        <record id="rule_director_manager_user" model="ir.rule">
+            <field name="name">Director Rule</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('hr_employee_kra.group_kra_director'))]"/>
+        </record>
+
+    </data>
+</odoo>

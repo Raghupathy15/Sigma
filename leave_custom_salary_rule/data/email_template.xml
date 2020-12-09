@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!--Email template Probation Creation -->
+        <record id="email_template_leave_encashment" model="mail.template">
+            <field name="name">Notification Regarding Leave Encashment</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.work_email}</field>
+            <field name="subject">Leave Encashment for ${object.name}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="leave_custom_salary_rule.model_hr_employee"/>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.name},</p>
+                    <p>Kindly Raise request for Leave Encashment in this month or next month ${object.name}. Your leaves will be lapsed , if the request is not raised in the given time.</p>
+                    <br/>
+                    <br/>
+                    <p>Regards,</p>
+                    <p>${user.name}</p>
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>

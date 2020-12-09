@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model="ir.ui.view" id="view_self_declaration_master_form_custom">
+        <field name="name">self.declaration.master</field>
+        <field name="model">self.declaration.master</field>
+        <field name="arch" type="xml">
+        	<form string="Self Declaration Master">
+        		<sheet>
+        			<div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"
+                                options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+        			<group>
+        				<field name="name"/>
+        				<field name="proof_required"/>
+        				<field name="tds_group_id" invisible="1"/>
+        			</group>
+        			<group>
+        				<field name="section_id"/>
+        				<field name="limit"/>
+        			</group>
+        		</sheet>
+
+        	</form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_self_declaration_master_tree_custom">
+		<field name="name">self.declaration.master</field>
+		<field name="model">self.declaration.master</field>
+		<field name="arch" type="xml">
+			<tree string="Self Declaration Master">
+				<field name="name"/>
+				<field name="proof_required"/>
+				<field name="tds_group_id" invisible="1"/>
+				<field name="section_id"/>
+				<field name="active"/>
+			</tree>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window" id="self_declaration_master_action">
+		<field name="name">Self Declaration Master</field>
+		<field name="res_model">self.declaration.master</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem action="self_declaration_master_action" id="self_declaration_master" parent="hr_payroll.menu_hr_payroll_configuration" name="Self Declaration Master"/>
+
+	<!-- Self Declaration Form -->
+
+	<record model="ir.ui.view" id="view_self_declaration_form_custom">
+        <field name="name">self.declaration</field>
+        <field name="model">self.declaration</field>
+        <field name="arch" type="xml">
+        	<form string="Self Declaration" create="0">
+        		<header>
+        		</header>
+
+
+        		<sheet>
+    				<div class="oe_title text-left">
+    					<h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+        				<group>
+	        				<field name="employee_id" readonly="1" options='{"no_open": True, "no_create": True}'/>
+	        				<field name="birthday"/>
+	        				<field name="employee_code" invisible="1"/>
+	        				<field name="job_id" invisible="1"/>
+                            <field name="department_id" invisible="1"/>
+							<field name="company_id" invisible="1"/>
+	        			</group>
+	        			<group>
+                            
+                            <field name="pan"/>
+	        				<field name="account_no"/>
+	        				
+                            <field name="sum_amount" invisible="1"/>
+                        </group>
+	        			<group>
+                        	<field name="doc_date" readonly="1"/>
+                        	<field name="from_year" invisible="1"/>
+                        	<field name="processing_month" invisible="1"/>
+							<field name="self_declare_edit" invisible="1" widget="radio"/>
+							<field name="self_declare_document" invisible="1" widget="radio"/>
+							<field name="delcalration_acces_no" invisible="1"/>
+                        </group>
+        				
+	        		</group>
+	        		<notebook>
+	        			<page string="Self Declaration Details">
+	        				<!-- <span>I, <field name="employee_id" readonly="1"/>  hereby certify that the following amounts claimed exempt/deductible under the Income Tax Act, 1961 read with Income Tax Rules,has been paid out of the Income Chargeable to Income Tax for the year ending March 31, 2020.</span> -->
+	        				<field name="declaration_line_ids" widget="one2many_widgets">
+	        					<tree string="Self Declaration Line" editable="bottom">
+									<field name="delcalration_acces_no" invisible="1"/>
+									<field name="self_declare_edit" invisible="1" widget="radio"/>
+									<field name="self_declare_document" invisible="1" widget="radio"/>
+	        						<field name="sl_no" />
+	        						<field name="tds_group_id" options='{"no_open": True, "no_create": True}' attrs="{'readonly': [('self_declare_edit', '=', 'no')]}"/>
+	        						<field name="tds_group_amount" attrs="{'readonly': [('self_declare_edit', '=', 'no')]}"/>
+	        						<field name="section_id" options='{"no_open": True, "no_create": True}' attrs="{'readonly': [('self_declare_edit', '=', 'no')]}"/>
+	        						<field name="section_amount" invisible="1"/>
+	        						<field name="name" attrs="{'readonly': [('self_declare_edit', '=', 'no')]}"/>
+	        						<field name="limit" attrs="{'readonly': [('self_declare_edit', '=', 'no')]}"/>
+	        						<field name="sub_amount" attrs="{'readonly': [('self_declare_edit', '=', 'no')]}"/>
+	        						<field name="amount" sum="Total" attrs="{'readonly': [('self_declare_edit', '=', 'no')]}"/>
+	        						<field name="proof_required" attrs="{'readonly': [('self_declare_edit', '=', 'no')]}"/>
+	        						<field name="upload_file" filename="file_name" widget="binary" attrs="{'readonly': [('self_declare_document', '=', 'no')]}"/>
+	        					</tree>
+	        				</field>
+	        			</page>
+	        		</notebook>
+        		</sheet>
+        		<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+        	</form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_self_declaration_tree_custom">
+		<field name="name">self.declaration</field>
+		<field name="model">self.declaration</field>
+		<field name="arch" type="xml">
+			<tree string="Self Declaration">
+				<field name="name" string="Seq No"/>
+				<field name="seq_date"/>
+				<field name="employee_id"/>
+				<field name="employee_code"/>
+				<field name="pan"/>
+				<field name="account_no"/>
+				<field name="birthday"/>
+				<field name="job_id"/>
+                <field name="department_id"/>
+			</tree>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window" id="self_declaration_action">
+		<field name="name">Self Declaration Lists</field>
+		<field name="res_model">self.declaration</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+	<record id="self_declaration_tree_extended_group" model="ir.ui.view">
+            <field name="name">self.declaration.extended.group</field>
+            <field name="model">self.declaration</field>
+            <field name="inherit_id" ref="hr_employee_kra.view_self_declaration_tree_custom"/>
+            <field name="groups_id" eval="[(4, ref('hr_employee_kra.group_self_declaration_not_create'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+	<!-- <menuitem id="self_declaration_menu_root" parent="hr_recruitment.menu_hr_recruitment_root" name="Self Declaration" action="self_declaration_action"/> -->
+
+</odoo>

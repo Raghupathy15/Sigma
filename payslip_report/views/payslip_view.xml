@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_report_payslip"
+                string="Custom Payslip"
+                model="hr.payslip"
+                report_type="qweb-pdf"
+                file="payslip_report.report_payslip_report"
+                name="payslip_report.report_payslip_report"
+        />
+    </data>
+</odoo>

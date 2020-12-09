@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_exit_interview_master_form_custom">
+            <field name="name">exit.interview.master</field>
+            <field name="model">exit.interview.master</field>
+            <field name="arch" type="xml">
+                <form string="Exit Interview Master">
+                    <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_exit_interview_master_tree_custom">
+            <field name="name">exit.interview.master</field>
+            <field name="model">exit.interview.master</field>
+            <field name="arch" type="xml">
+                <tree string="Exit Interview Master">
+                    <field name="name"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="exit_interview_master_action">
+            <field name="name">Exit Interview Master</field>
+            <field name="res_model">exit.interview.master</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Exit Interview Form -->
+
+        <record id="kra_probation_intw_tree" model="ir.ui.view">
+            <field name="name">kra.exit.intw.tree</field>
+            <field name="model">kra.exit.intw</field>
+            <field name="arch" type="xml">
+                <tree string="KRA Probation" create="false">
+                    <field name="name" string="Seq No"/>
+                    <field name="seq_date"/>
+                    <field name="employee_id"/>
+                    <field name="l1_manager_id"/>
+                    <field name="job_id"/>
+                    <field name="doj"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="kra_probation_intw_pivot" model="ir.ui.view">
+            <field name="name">kra.exit.intw.pivot</field>
+            <field name="model">kra.exit.intw</field>
+            <field name="arch" type="xml">
+                <pivot string="KRA Exit Intw">
+                    <field name="employee_id"/>
+                    <field name="doj"/>
+                </pivot>
+            </field>
+        </record>
+        <record id="kra_exit_intw_form" model="ir.ui.view">
+            <field name="name">kra.exit.intw.form</field>
+            <field name="model">kra.exit.intw</field>
+            <field name="arch" type="xml">
+                <form string="Probation Plan" create="false">
+                    <header>
+                        <button name="action_submit" string="Submit" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['draft'])] }" groups="hr_employee_kra.group_kra_hr"/>
+                        <button name="button_acknowledge" string="Acknowledge" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['hr_approve'])]}" />
+                        <button name="button_interview_done" string="Done" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['emp_acknowledge'])] }" groups="hr_employee_kra.group_kra_hr"/>
+                        <!-- <button name="action_submit" string="Submited by Approver1" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['draft'])]}"/> -->
+                        <!-- <button name="set_to_draft" string="Set to Draft" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['cancel'])]}" groups="hr_employee_kra.group_kra_user"/>
+                        <button name="action_approve" string="Approve" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['hr_approve'])]}" groups="hr_employee_kra.group_kra_hr"/>
+                        <button name="action_reject" string="Reject" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['hr_approve'])]}" groups="hr_employee_kra.group_kra_hr"/> -->
+                         <button name="action_cancel" string="Cancel" class="btn btn-default" type="object" attrs="{'invisible':[('state','in',['cancel'])]}"/>
+                         <button name="button_set_to_draft" string="Set to Draft" class="btn btn-primary" type="object" attrs="{'invisible':[('state','not in',['cancel'])]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,hr_approve,emp_acknowledge,done"  nolabel="1" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group string="Employee Details">
+                            <group>
+                                <field name="employee_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                <field name="employee_code" invisible="1"/>
+                                <field name="job_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                <field name="department_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                <field name="location_work_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                <field name="l1_manager_id" options='{"no_open": True, "no_create": True}' readonly="1"/>
+                                <field name="l2_manager_id" options='{"no_open": True, "no_create": True}' readonly="1" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="resignation_id" readonly="1" invisible="1"/>
+                                <field name="seq_date" readonly="1" invisible="1"/>
+                                <field name="rev_date" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="user_id" invisible="1"/>
+                                <field name="is_hr" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                        <page string="Interview">
+                            <field name="interview_line_ids" attrs="{'readonly':[('is_hr','!=',True)]}" widget="one2many_widgets">
+                                <tree string="Interview Line" colspan="4" editable="bottom" create="false" delete="false">
+                                    <field name="name" readonly="1" force_save="1" string="."/>
+                                    <field name="answer" string="Employee Feedback"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <!-- <field name="activity_ids" widget="mail_activity"/> -->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+    <!-- Action for All Employee-->
+        <record id="action_kra_exit_intw" model="ir.actions.act_window">
+            <field name="name">Exit Interview</field>
+            <field name="res_model">kra.exit.intw</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="domain">[('employee_id.user_id', '=', uid)]</field>            
+        </record>
+        <!-- Action for HR-->
+        <record id="action_kra_exit_hr" model="ir.actions.act_window">
+            <field name="name">Exit Interview</field>
+            <field name="res_model">kra.exit.intw</field>
+            <field name="view_mode">tree,form,pivot</field>
+        </record>
+        
+    </data>
+</odoo>

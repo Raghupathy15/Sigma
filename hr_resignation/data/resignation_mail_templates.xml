@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Mail to Approver 1 when user raised resignation request -->
+        <record id="email_template_to_app1" model="mail.template">
+            <field name="name">Resignation request</field>
+            <field name="subject">Resignation request from ${object.employee_id.name}</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.manager_id.work_email or object.manager_id.employee_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_resignation.model_hr_resignation"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.manager_id.name},</p>
+                <br/>
+                <p>The below employee raised resignation request.</p>
+                <p>Employee Name : ${object.employee_id.employee_id} -  ${object.employee_id.name}</p>
+                <p>Requested Relieving Date : ${object.expected_revealing_date}</p>
+                <p>Employee Remarks : ${object.reason}</p>
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Mail to Employee if resignation request is approved -->
+        <record id="email_template_to_request_approved" model="mail.template">
+            <field name="name">Resignation request Approved</field>
+            <field name="subject">Your resignation request is approved by ${object.manager_id.name}</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_resignation.model_hr_resignation"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.employee_id.name},</p>
+                <br/>
+                <p>Your resignation request is approved by ${object.manager_id.name}.</p>
+                <p>Approver Reason : ${object.approver_reason}</p>
+                <p>Approved Relieving Date : ${object.approved_revealing_date}</p>
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Mail to Employee if resignation approved date is changed -->
+        <record id="email_template_to_request_date_changed" model="mail.template">
+            <field name="name">Resignation request date changed</field>
+            <field name="subject">Your Relieving date is changed</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_resignation.model_hr_resignation"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.employee_id.name},</p>
+                <br/>
+                <p>Your releving date is changed.</p>
+                <p>Relieving Date: ${object.approved_revealing_date}.</p>
+                <p>Reason : ${object.approver_reason}</p>
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Mail to HR, IT & Accounts if resignation request is approved -->
+        <record id="email_template_to_all_departments" model="mail.template">
+            <field name="name">Resignation request Approved</field>
+            <field name="subject">Employee Resignation is approved</field>
+            <field name="email_from">${user.email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_resignation.model_hr_resignation"/>
+            <field name="body_html"><![CDATA[
+                <p>Hi,</p>
+                <br/>
+                <p>Resignation request from ${object.employee_id.name} is approved by ${object.manager_id.name}.</p>
+                <p>Employee Name : ${object.employee_id.employee_id} -  ${object.employee_id.name}</p>
+                <p>Employee Remarks : ${object.reason}</p>
+                <p>Approver Remarks : ${object.approver_reason}</p>
+                <p>Approved Date : ${object.approved_revealing_date}</p>
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Mail to Employee if resignation request is rejected -->
+        <record id="email_template_to_employee_rejected" model="mail.template">
+            <field name="name">Resignation request Rejected</field>
+            <field name="subject">Your resignation request is rejected by ${object.manager_id.name}</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.employee_id.work_email or object.employee_id.employee_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_resignation.model_hr_resignation"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.employee_id.name},</p>
+                <br/>
+                <p>Your resignation request is rejected by ${object.manager_id.name}.</p>
+                <p>Approved Releaving Date : ${object.approved_revealing_date}</p>
+                <p>Approver Reason : ${object.approver_reason}</p>
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+
+        <!--Mail to Approver 1 if employee cancled the resignation request -->
+        <record id="email_template_to_employee_cancelled" model="mail.template">
+            <field name="name">Resignation request cancelled</field>
+            <field name="subject">Resignation request is cancelled by ${object.employee_id.name}</field>
+            <field name="email_from">${user.email}</field>
+            <field name="email_to">${object.manager_id.work_email or object.manager_id.employee_email}</field>
+            <field name="lang">${user.lang}</field>
+            <field name="model_id" ref="hr_resignation.model_hr_resignation"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear ${object.manager_id.name},</p>
+                <br/>
+                <p>The below empoyee has cancelled the resignation request.</p>
+                <p>Employee Name : ${object.employee_id.employee_id} -  ${object.employee_id.name}</p>
+                <p>Expected releaving date : ${object.expected_revealing_date}</p>
+                <p>Remarks : ${object.cancel_res}</p>
+                <br/>
+                <br/>
+                <p>Regards,</p>
+                <p><strong>ERP AUTOMATION</strong></p>
+                <p>This is a system generated email, do not reply to this email id</p>
+            ]]></field>
+        </record>
+    </data>
+</odoo>

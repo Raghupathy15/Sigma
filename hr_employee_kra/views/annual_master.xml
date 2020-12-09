@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="hr_annual_appraisal_form">
+        <field name="name">hr.annual.appraisal.form</field>
+        <field name="model">hr.annual.appraisal</field>
+        <field name="arch" type="xml">
+            <form string="Annual Appraisal Master">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="kra"/>
+                            <field name="details_kra"/>
+                            <field name="timeline"/>
+                        </group>
+                        <group>
+                            <field name="weightage"/>
+                            <field name="max_rating"/>
+                            <field name="details_of_achievment"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="hr_annual_appraisal_tree">
+        <field name="name">hr.annual.appraisal.tree</field>
+        <field name="model">hr.annual.appraisal</field>
+        <field name="arch" type="xml">
+            <tree string="Appraisal View">
+                <field name="kra"/>
+                <field name="weightage"/>
+                <field name="max_rating"/>
+            </tree>
+        </field>
+    </record>
+    <record id="hr_annual_appraisal_act" model="ir.actions.act_window">
+        <field name="name">Annual Appraisal Master</field>
+        <field name="res_model">hr.annual.appraisal</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.ui.view" id="rate_creteria_tree">
+        <field name="name">rate.creteria.tree</field>
+        <field name="model">rate.creteria</field>
+        <field name="arch" type="xml">
+            <tree string="Rating Creteria">
+                <field name="rating_creteria"/>
+                <field name="eligible_details"/>
+                <field name="final_rating"/>
+                <field name="eligibility_details"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="rate_creteria_form">
+        <field name="name">rate.creteria.form</field>
+        <field name="model">rate.creteria</field>
+        <field name="arch" type="xml">
+            <form string="Rate Creteria Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="rating_creteria"/>
+                            <field name="eligible_details"/>
+                            <field name="final_rating"/>
+                            <field name="eligibility_details"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_rate_creteria" model="ir.actions.act_window">
+        <field name="name">Rate Creteria Master</field>
+        <field name="res_model">rate.creteria</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.ui.view" id="timeline_master_form">
+        <field name="name">timeline.master.form</field>
+        <field name="model">timeline.master</field>
+        <field name="arch" type="xml">
+            <form string="Timeline Master Form">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"
+                                options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_timeline_master" model="ir.actions.act_window">
+        <field name="name">Timeline Master</field>
+        <field name="res_model">timeline.master</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

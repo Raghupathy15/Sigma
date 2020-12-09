@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--Creation 15 Days in advance to the date of probation-->
+    <record id="ir_cron_leave_encashment_via_email" model="ir.cron">
+        <field name="name">Leave Encashment</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_create_encashment()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">1</field>
+        <field eval="False" name="doall" />
+    </record>
+</odoo>

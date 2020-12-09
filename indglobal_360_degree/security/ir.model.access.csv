@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_threesixty_degree,threesixty_degree,model_threesixty_degree,,1,1,1,1

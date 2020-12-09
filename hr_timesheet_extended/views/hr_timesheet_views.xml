@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+       
+        <record id="hr_timesheet_line_tree_extended" model="ir.ui.view">
+            <field name="name">account.analytic.line.tree.hr_timesheet.extended</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='task_id']" position="after">
+                	<field name="name" string="Details" required="1" attrs="{'readonly': [('state', 'not in', ['draft',False])]}"/>
+                    <field name="department_id" invisible="1"/>
+                    <field name="department1_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='date']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', 'not in', ['draft',False])]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='unit_amount']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', 'not in', ['draft',False])]}</attribute>
+                </xpath>
+                <xpath expr="//field [@name='unit_amount']" position="replace">
+                	<field name="unit_amount" widget="timesheet_uom" sum="Total" required="1"/>
+                </xpath>
+                <xpath expr="//field[@name='unit_amount']" position="after">
+                    <field name="approver_remarks" readonly="1"/>
+                    <field name="state" readonly="1"/>                    
+                    <field name="is_approver" invisible="1"/>
+                    <field name="is_expired" invisible="1"/>
+                    <field name="submit_date" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="required">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='project_id']" position="attributes">
+                    <attribute name="string">Project ID and Name</attribute>
+                    <attribute name="attrs">{'readonly': [('state', 'not in', ['draft',False])]}</attribute>
+                    <attribute name="options">{'no_open': True, 'no_create': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='task_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', 'not in', ['draft',False])]}</attribute>
+                    <attribute name="options">{'no_open': True, 'no_create': True}</attribute>
+                    <attribute name="required">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_timesheet_line_tree_extended_group" model="ir.ui.view">
+            <field name="name">account.analytic.line.tree.hr_timesheet.extended.group</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+            <field name="groups_id" eval="[(4, ref('hr_timesheet_extended.group_timesheet_not_create'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="timesheet_view_tree_user_extended" model="ir.ui.view">
+            <field name="name">account.analytic.line.view.tree.with.user.extended</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.timesheet_view_tree_user"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='employee_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', 'not in', ['draft',False])]}</attribute>
+                    <attribute name="options">{'no_open': True, 'no_create': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='employee_id']" position="after">
+                    <field name="emp_count_days" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_timesheet_inherited_form" model="ir.ui.view">
+            <field name="name">account.analytic.line.form.inherit.view</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount']" position="replace">
+                    <field name="amount" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="state" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='project_id']" position="attributes">
+                    <attribute name="options">{'no_open': True, 'no_create': True}</attribute>
+                    <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='task_id']" position="attributes">
+                    <attribute name="options">{'no_open': True, 'no_create': True}</attribute>
+                    <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date']" position="replace">
+                    <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1"/>
+                </xpath>
+                <xpath expr="//field[@name='unit_amount']" position="replace">
+                    <field name="unit_amount" widget="timesheet_uom" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1"/>
+                </xpath>
+
+            </field>
+        </record>
+        <record id="analytic.view_account_analytic_line_form" model="ir.ui.view">
+            <field name="name">account.analytic.line.form</field>
+            <field name="model">account.analytic.line</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Timesheet Entry">
+                    <group>
+                        <group>
+                            <field name="state" invisible="1"/>
+                            <field name="account_id" string="Project Name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="tag_ids" widget="many2many_tags" invisible="1"/>
+                            <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="name" string="Details" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group name="amount">
+                            <field name="amount" invisible="1"/>
+                            <field name="task_id" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="unit_amount" string="Hours" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="product_uom_id" class="oe_inline" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="account_analytic_line_inherit_account" model="ir.ui.view">
+            <field name="name">account.analytic.inherit.form</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="account.view_account_analytic_line_form_inherit_account"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref']" position="replace">
+                    <field name="ref" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="partner_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="replace">
+                    <field name="product_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//group[@name='accounting']" position="replace">
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="hr_timesheet_action_approve_collectively" model="ir.actions.server">
+                <field name="name">Approve timesheets</field>
+                <field name="type">ir.actions.server</field>
+                <field name="model_id" ref="model_account_analytic_line"/>
+                <field name="binding_model_id" ref="model_account_analytic_line"/>
+                <field name="state">code</field>
+                <field name="code">
+                    if records:
+                        action = records.approve_timesheet()
+                </field>
+        </record>
+
+        <record id="hr_timesheet_action_reject_collectively" model="ir.actions.server">
+                <field name="name">Reject timesheets</field>
+                <field name="type">ir.actions.server</field>
+                <field name="model_id" ref="model_account_analytic_line"/>
+                <field name="binding_model_id" ref="model_account_analytic_line"/>
+                <field name="state">code</field>
+                <field name="code">
+                    if records:
+                        action = records.reject_timesheet()
+                </field>
+        </record>
+
+        <record id="hr_timesheet_action_submit_collectively" model="ir.actions.server">
+                <field name="name">Submit for Approval</field>
+                <field name="type">ir.actions.server</field>
+                <field name="model_id" ref="model_account_analytic_line"/>
+                <field name="binding_model_id" ref="model_account_analytic_line"/>
+                <field name="state">code</field>
+                <field name="code">
+                    if records:
+                        action = records.submit_timesheet()
+                </field>
+        </record>
+
+        <record id="hr_timesheet.hr_timesheet_line_search" model="ir.ui.view">
+            <field name="name">account.analytic.line.search</field>
+            <field name="model">account.analytic.line</field>
+            <field name="arch" type="xml">
+                <search string="Timesheet">
+                    <field name="date"/>
+                    <field name="employee_id"/>
+                    <field name="project_id"/>
+                    <field name="task_id"/>
+                    <field name="name"/>
+                    <field name="state"/>
+                    <filter name="mine" string="My Timesheets" domain="[('user_id', '=', uid)]"/>
+                    <filter name="today_date" string="Valid Timesheets" domain="['|',('date', '=', datetime.datetime.today()),('date', '=', datetime.datetime.today() + datetime.timedelta(days=-1))]"/>
+                    <separator/>
+                    <filter name="month" string="Date" date="date"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="groupby_state" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Employee" name="groupby_employee" domain="[]" context="{'group_by':'employee_id'}"/>
+                        <filter string="Project" name="groupby_project" domain="[]" context="{'group_by':'project_id'}"/>
+                        <filter string="Timesheet Date" name="groupby_date" domain="[]" context="{'group_by':'date:day'}" help="Timesheet by Date"/>
+                        <filter string="Task" name="groupby_task" domain="[]" context="{'group_by':'task_id'}"/>
+                        
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="hr_timesheet.act_hr_timesheet_line" model="ir.actions.act_window">
+            <field name="context">{
+                "search_default_week":1,
+                "search_default_today_date": 1
+            }</field>
+        </record>
+
+        <record id="hr_timesheet.timesheet_action_all" model="ir.actions.act_window">
+            <field name="context">{}</field>
+        </record>
+
+        <record id="timesheet_action_approved" model="ir.actions.act_window">
+            <field name="name">Approved Timesheets</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="search_view_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+            <field name="domain">[('state', '=', 'approved'), ('employee_id.lone_manager_id.user_id', '=', uid), ('is_expired', '!=', True)]</field>
+            <field name="context">{
+            	'search_default_groupby_state':1,
+                'search_default_groupby_employee':1,
+                'search_default_groupby_date':1,
+                'create': False,
+            }</field>
+        </record>
+
+        <record id="timesheet_action_pending" model="ir.actions.act_window">
+            <field name="name">Pending Timesheets</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="search_view_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+            <field name="domain">[('state', '=', 'pending'), ('employee_id.lone_manager_id.user_id', '=', uid), ('is_expired', '!=', True)]</field>
+            <field name="context">{
+            	'search_default_groupby_state':1,
+                'search_default_groupby_employee':1,
+                'search_default_groupby_date':1,
+                'create': False,
+            }</field>
+        </record>
+
+        <!-- Menu for Archived Timesheets (STARTS)-->
+        <record id="timesheet_action_expired_id" model="ir.actions.act_window">
+            <field name="name">Archived Timesheets</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.analytic.line</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="domain">['|',('user_id', '=', uid),('employee_id.lone_manager_id.user_id', '=', uid),('is_expired','=',True)]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <!--
+            Menus and Actions
+        -->
+        <record id="hr_timesheet.act_hr_timesheet_line" model="ir.actions.act_window">
+            <field name="name">My Timesheets</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('project_id', '!=', False), ('user_id', '=', uid),('is_expired','!=',True), ('state', '=', 'draft')]</field>
+            <field name="context">{
+                "search_default_week":1,
+            }</field>
+            <field name="search_view_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Record a new activity
+              </p><p>
+                You can register and track your workings hours by project every
+                day. Every time spent on a project will become a cost and can be re-invoiced to
+                customers if required.
+              </p>
+            </field>
+        </record>
+        <record id="hr_timesheet.timesheet_action_all" model="ir.actions.act_window">
+            <field name="name">All Timesheets</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="search_view_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+            <field name="domain">[('project_id', '!=', False), ('is_expired', '!=', True),('state', 'not in', [('draft'), ('rejected')])]</field>
+            <field name="context">{
+                'search_default_week':1,
+                'search_default_groupby_employee':1,
+                'search_default_groupby_project':1,
+                'search_default_groupby_task':1,
+                'create': False,
+            }</field>
+        </record>
+
+    <!-- Approved and Reject Timesheet action -->
+     	<record id="timesheet_action_approval" model="ir.actions.act_window">
+            <field name="name">Timesheet View</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.analytic.line</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('user_id', '=', uid), ('state', 'in', ['approved', 'rejected', 'pending']), ('is_expired', '!=', True)]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+    <!-- Rejected Timesheet action -->
+        <record id="timesheet_action_rejection" model="ir.actions.act_window">
+            <field name="name">Rejected Timesheet</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('employee_id.lone_manager_id.user_id', '=', uid), ('state', '=', 'rejected'), ('is_expired', '!=', True)]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<menuitem name="Recruitment" id="menu_hr_recruitment_sub_root" parent="hr_recruitment.menu_hr_recruitment_root" groups="hr_recruitment.group_hr_recruitment_user" sequence="1"/>
+
+    <menuitem name="Applications" parent="menu_hr_recruitment_sub_root" id="hr_recruitment.menu_crm_case_categ0_act_job" sequence="3"/>
+    <menuitem name="Resumes and Letters" parent="menu_hr_recruitment_sub_root" id="hr_recruitment.menu_crm_case_categ0_act_job02" action="hr_recruitment.hr_applicant_resumes" sequence="4" groups="hr_employee_kra.group_kra_hr"/>
+
+    <!-- New Menu Seggregation for Induction -->
+    <menuitem name="Induction" id="induction_menu_root_main" web_icon="hr_employee_kra,static/description/induction_icon.png"/>
+    <menuitem name="Induction Process" id="induction_menu_root" parent="induction_menu_root_main" sequence="1"/>
+    <!-- Induction Creation for HR-->
+    <menuitem id="hr_induction_creation" name="Induction Creation" parent="induction_menu_root" action="hr_induction_action" groups="hr_employee_kra.group_kra_hr" sequence="1"/> 
+    <!-- My Induction for all Employee-->
+    <menuitem name="My Induction" id="menu_my_induction" parent="induction_menu_root" sequence="2" action="action_induction_creation"/>
+    <!-- Induction Menu For Approval-->
+    <menuitem name="Induction Approval" id="menu_approve_induction" parent="induction_menu_root" sequence="3" action="action_induction_approval" groups="hr_employee_kra.group_kra_approver_1"/>
+    <!-- Induction Configuration Master-->
+    <menuitem id="induction_menu_configuration" name="Configuration" parent="induction_menu_root_main" sequence="3"/> 
+    <menuitem action="hr_employee_kra.hr_induction_master_action" id="hr_induction_master" parent="induction_menu_configuration" groups="hr_employee_kra.group_kra_hr" name="Induction Master" sequence="1"/>
+
+
+    <!-- Probation Evaluation Process Menu -->
+    <menuitem name="Probation Evaluation" id="menu_probation_root" parent="induction_menu_root_main" sequence="2"/>
+    <!-- Probation Creation Menu for Approver-->
+    <menuitem action="hr_employee_kra.action_kra_probation" id="action_kra_probation_sub_menu" parent="menu_probation_root" sequence="1" name="Create Probation" groups="hr_employee_kra.group_kra_approver_1,hr_employee_kra.group_kra_hr"/>
+    <!-- Pobation Approval Menu for HOD-->
+    <menuitem name="Probation Approval" id="action_kra_probation_approval" action="action_probation_approval" parent="menu_probation_root" sequence="2" groups="hr_employee_kra.group_kra_hod"/>
+
+    <!-- Probation Evaluation Process Master -->
+    <menuitem action="hr_employee_kra.action_kra_probation_master" id="action_kra_probation_master_menu" parent="induction_menu_configuration" sequence="2" name="Probation Master" groups="hr_employee_kra.group_kra_hr"/>
+
+
+    <!-- Appraisal Menu Seggregation -->
+    <menuitem name="Appraisal" id="menu_appraisal_root" web_icon="hr_employee_kra,static/description/appraisal_icon.png"/>
+    <menuitem name="KRA Assignment" id="menu_appraisal_kra" parent="menu_appraisal_root" sequence="1"/>
+    <menuitem name="Performance" id="menu_appraisal_sub" parent="menu_appraisal_root" sequence="2"/>
+
+    <!-- KRA Creation Menu for Approver-1-->
+    <menuitem id="hr_kra_creation" name="Create KRA" parent="menu_appraisal_kra" action="hr_kra_action" groups="hr_employee_kra.group_kra_approver_1,hr_employee_kra.group_kra_hr" sequence="2"/>
+    <!-- KRA Approval Menu for Approver-2-->
+    <menuitem id="hr_kra_approval" name="KRA Approval" parent="menu_appraisal_kra" action="approval_kra_action" groups="hr_employee_kra.group_kra_approver_2" sequence="3"/>
+    <!-- My KRA Menu for All employees-->
+    <menuitem id="hr_my_kra" name="My KRA" parent="menu_appraisal_kra" action="my_kra_action" sequence="1"/>
+    <!--Quarterly Menu-->
+    <menuitem action="hr_employee_kra.action_kra_quarterly" id="action_kra_quarterly_menu" parent="menu_appraisal_sub" name="My Quarterly Assessment" sequence="1"/>
+    <!-- Quarterly Approval Menu-->
+    <menuitem action="quarterly_approval_list" id="action_kra_quarterly_approval" parent="menu_appraisal_sub" sequence="2" groups="hr_employee_kra.group_kra_approver_1,hr_employee_kra.group_kra_approver_2,hr_employee_kra.group_kra_hr" name="Quarterly Approval"/>
+    <!-- Annual Appraisal Menu for employee-->
+    <menuitem name="My Annual Assessment" parent="menu_appraisal_sub" id="kra_expense_sub_menu" sequence="3" action="hr_employee_kra.action_kra_appraisal"/>
+    <!-- Annual Appraisal Menu for Approval-->
+    <menuitem name="Annual Approval" parent="menu_appraisal_sub" id="kra_annual_sub_approval" sequence="4" action="action_kra_appraisal_approval" groups="hr_employee_kra.group_kra_hr,hr_employee_kra.group_kra_approver_1,hr_employee_kra.group_kra_approver_2"/>
+    <!--Appraisal Configuration-->
+    <menuitem name="Configuration" id="menu_appraisal_configuration" sequence="3" parent="menu_appraisal_root"/>
+    <!-- Appraisal Master-->
+    <menuitem parent="menu_appraisal_configuration" id="menu_hr_annual_config" name="Annual Appraisal Master" action="hr_employee_kra.hr_annual_appraisal_act" sequence="1" groups="hr_employee_kra.group_kra_hr"/>
+    <menuitem parent="menu_appraisal_configuration" id="menu_overall_rate_config" name="Rate Criteria Master" action="hr_employee_kra.action_rate_creteria" sequence="2" groups="hr_employee_kra.group_kra_hr"/>
+    <menuitem parent="menu_appraisal_configuration" id="menu_timeline_config" name="Timeline Master" action="hr_employee_kra.action_timeline_master" sequence="3" groups="hr_employee_kra.group_kra_hr"/>
+    
+
+    <!-- Exit Process Menu Seggregation-->
+    <menuitem name="Exit Process" id="menu_exit_root" web_icon="hr_employee_kra,static/description/exit_icon.png"/>
+    <menuitem name="Resignation Process" id="menu_exit_sub" parent="menu_exit_root" sequence="0"/>
+    <menuitem name="Exit Process" id="menu_exit_process_sub" parent="menu_exit_root" sequence="1"/>
+    
+    <!-- Resignation Request for All Employee-->
+    <menuitem id="hr_resignation.employee_resignation_request" parent="menu_exit_sub" name="Resignation Request" action="hr_resignation.view_employee_resignation" sequence="1"/>
+    <menuitem id="hr_resignation.employee_resignation_approved" parent="menu_exit_sub" name="Approval Resignations" action="hr_resignation.view_approved_resignation" groups="hr_employee_kra.group_kra_hr,hr_employee_kra.group_kra_approver_1" sequence="2"/>
+    <menuitem action="hr_employee_kra.action_kra_exit_intw" id="action_kra_exit_intw_menu" parent="menu_exit_process_sub" sequence="3" name="Exit Interview" groups="hr_employee_kra.group_kra_user,hr_employee_kra.group_kra_approver_1,hr_employee_kra.group_kra_approver_2,hr_employee_kra.group_kra_hod,hr_employee_kra.group_kra_director"/>
+    <!-- Menu Exit for HR-->
+    <menuitem name="All Exit Interview" id="menu_exit" action="action_kra_exit_hr" parent="menu_exit_process_sub" sequence="4" groups="hr_employee_kra.group_kra_hr"/>
+
+    <menuitem id="clearance_menu_main" parent="menu_exit_process_sub" name="Exit Clearance" action="hr_employee_kra.exit_clearance_action" sequence="5"/>
+
+    <!-- Exit Process Configuration Menu-->
+    <menuitem name="Configuration" id="menu_exit_configuration" parent="menu_exit_root" sequence="2"/>
+    <menuitem action="hr_employee_kra.exit_interview_master_action" id="hr_exit_interview_master_new" parent="menu_exit_configuration" groups="hr_employee_kra.group_kra_hr" name="Exit Interview Master" sequence="1"/>
+    <menuitem action="hr_employee_kra.exit_clearance_master_action" id="hr_exit_clearance" name="Exit Clearance Master" parent="menu_exit_configuration" groups="hr_employee_kra.group_kra_hr" sequence="2"/>
+
+
+    <!-- Menu For Payroll -->
+    <menuitem parent="hr_payroll.menu_hr_payroll_root" name="Self Declaration" id="self_declaration" />
+    <menuitem id="self_declaration_menu_root" parent="self_declaration" name="Self Declaration" action="self_declaration_action"/>
+        
+</odoo>

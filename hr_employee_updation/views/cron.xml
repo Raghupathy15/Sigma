@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--Cron to remove all records other than last 7 days -->
+    <record id="ir_cron_to_delete_records" model="ir.cron">
+        <field name="name">Indglobal - Delete records for "Account Blocking" menu</field>
+        <field name="model_id" ref="model_account_blocking"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_check_date()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+    </record>
+
+</odoo>
